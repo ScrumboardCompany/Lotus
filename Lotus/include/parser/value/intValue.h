@@ -16,6 +16,7 @@ namespace lotus {
 
 		int asInt() override;
 		double asDouble() override;
+		String asString() override;
 
 		String getType() const override;
 

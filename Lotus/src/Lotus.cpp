@@ -1,31 +1,44 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "lexer/lexer.h"
 #include "parser/parser.h"
 #include "parser/value/value.h"
 #include "utils/lotusError.h"
 #include "parser/expression/expresion.h"
-
-void testExpression(const lotus::String expr, double expected) {
-    lotus::Lexer lexer(expr);
-    auto tokens = lexer.tokenize();
-    lotus::Parser parser(tokens);
-
-    try {
-        auto result = parser.parse();
-        double value = result->eval()->asDouble();
-
-        std::wcout << "Expression: " << expr.c_str() << "\n";
-        std::wcout << "Result: " << value << "\n";
-        std::wcout << "Expected: " << expected << "\n";
-        std::wcout << (value == expected ? "Passed" : "Failed") << "\n\n";
-    }
-    catch (const lotus::LotusException& ex) {
-        std::cout << "Error: " << ex.what() << "\n";
-    }
-}
+#include "parser/statement/statement.h"
 
 int main() {
-    testExpression(STRING_LITERAL("7 + (3 * 2) - (8 / 4)"), 12);
+    try {
+        std::wifstream file(L"test.lts"); 
+        file.imbue(std::locale(""));     
+
+        if (!file) {
+            std::wcerr << L"Unable to open file" << std::endl;
+            return 1;
+        }
+
+        std::wstringstream buffer;
+        buffer << file.rdbuf();
+
+        std::wstring content = buffer.str();
+
+        lotus::Lexer lexer(content);
+        auto tokens = lexer.tokenize();
+        lotus::Parser parser(tokens);
+
+        auto parseds = parser.parse();
+
+        for (auto& parsed : parseds) {
+            parsed->execute();
+        }
+    }
+    catch (const lotus::LotusException& e) {
+        std::cout << e.what();
+    }
+    catch (const std::exception& e) {
+        std::cout << e.what();
+    }
 
     return 0;
 }

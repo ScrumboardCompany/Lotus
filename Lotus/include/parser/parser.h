@@ -19,9 +19,13 @@ namespace lotus {
 	public:
 		Parser(const std::list<Token>& tokens);
 
-		Expression parse();
+		std::vector<Statement> parse();
 
 	private:
+
+		Statement getNextStatement();
+
+		Statement handlePrintStatement();
 
 		Expression expression();
 

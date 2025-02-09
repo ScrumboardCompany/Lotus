@@ -13,6 +13,7 @@ namespace lotus {
 
 		virtual int asInt() = 0;
 		virtual double asDouble() = 0;
+		virtual String asString() = 0;
 
 		virtual String getType() const = 0;
 

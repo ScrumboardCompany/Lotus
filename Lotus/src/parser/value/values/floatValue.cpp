@@ -14,6 +14,10 @@ double lotus::FloatValue::asDouble() {
 	return value;
 }
 
+String lotus::FloatValue::asString() {
+	return std::to_wstring(value);
+}
+
 String lotus::FloatValue::getType() const {
 	return STRING_LITERAL("float");
 }

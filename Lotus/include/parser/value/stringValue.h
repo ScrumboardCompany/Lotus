@@ -1,18 +1,18 @@
 #pragma once
 
-#ifndef _FLOATVALUE_
-#define _FLOATVALUE_
+#ifndef _STRINGVALUE_
+#define _STRINGVALUE_
 
 #include "parser/value/value.h"
 
 namespace lotus {
 
-	class FloatValue : public IValue {
-		double value;
+	class StringValue : public IValue {
+		String value;
 
 	public:
 
-		FloatValue(double value);
+		StringValue(const String& value);
 
 		int asInt() override;
 		double asDouble() override;
@@ -31,4 +31,4 @@ namespace lotus {
 
 }
 
-#endif // _INTVALUE_
+#endif // _STRINGVALUE_

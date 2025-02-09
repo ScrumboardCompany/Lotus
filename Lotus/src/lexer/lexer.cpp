@@ -54,7 +54,12 @@ void lotus::Lexer::tokenizeWord() {
         buffer.push_back(current);
         current = next();
     }
-    addToken(TokenType::WORD, buffer);
+    if (keywords.find(buffer) != keywords.end()) {
+        addToken(keywords[buffer], buffer);
+    }
+    else {
+        addToken(TokenType::WORD, buffer);
+    }
 }
 
 void lotus::Lexer::tokenizeText() {
@@ -91,7 +96,7 @@ void lotus::Lexer::tokenizeText() {
         current = next();
     }
     next();
-    addToken(TokenType::TEXT, buffer);
+    addToken(TokenType::STRING_TYPE, buffer);
 }
 
 void lotus::Lexer::tokenizeOperator() {

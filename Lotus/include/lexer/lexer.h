@@ -20,6 +20,10 @@ namespace lotus {
 			{STRING_LITERAL(")"), TokenType::RPAREN},
 		};
 
+		StringMap<TokenType> keywords = {
+			{STRING_LITERAL("print"), TokenType::PRINT},
+		};
+
 		String input;
 		std::list<Token> tokens;
 		size_t pos;

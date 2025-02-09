@@ -11,7 +11,7 @@ std::string lotus::Token::to_string() const {
 		return ("float number");
 	case lotus::TokenType::WORD:
 		return ("word");
-	case lotus::TokenType::TEXT:
+	case lotus::TokenType::STRING_TYPE:
 		return ("string");
 	case lotus::TokenType::PLUS:
 		return ("plus");

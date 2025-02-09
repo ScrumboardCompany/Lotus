@@ -11,6 +11,18 @@ lotus::Parser::Parser(const std::list<Token>& tokens) : pos(0) {
 	}
 }
 
-Expression lotus::Parser::parse() {
-	return expression();
+std::vector<Statement> lotus::Parser::parse() {
+	std::vector<Statement> statements;
+	while (!match(TokenType::END_OF_FILE)) {
+		statements.push_back(getNextStatement());
+	}
+	return statements;
+}
+
+Statement lotus::Parser::getNextStatement() {
+	if (match(TokenType::PRINT)) {
+		return handlePrintStatement();
+	}
+	
+	throw LotusException("Undefined statement");
 }

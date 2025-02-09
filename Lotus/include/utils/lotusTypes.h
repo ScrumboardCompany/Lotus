@@ -12,6 +12,7 @@ namespace lotus {
 
     class IValue;
     class IExpression;
+    class IStatement;
 
 	using String = std::wstring;
     using Char = wchar_t;
@@ -27,6 +28,7 @@ namespace lotus {
 
     using Value = Ptr<IValue>;
     using Expression = Ptr<IExpression>;
+    using Statement = Ptr<IStatement>;
 }
 
 #endif // _LOTUSTYPES_

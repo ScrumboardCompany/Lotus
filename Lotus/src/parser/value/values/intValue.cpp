@@ -1,5 +1,6 @@
 #include "parser/value/intValue.h"
 #include "parser/value/floatValue.h"
+#include "parser/value/stringValue.h"
 #include "utils/lotusError.h"
 
 using namespace lotus;
@@ -12,6 +13,10 @@ int lotus::IntValue::asInt() {
 
 double lotus::IntValue::asDouble() {
 	return static_cast<double>(value);
+}
+
+String lotus::IntValue::asString() {
+    return std::to_wstring(value);
 }
 
 String lotus::IntValue::getType() const {
@@ -30,6 +35,13 @@ Value lotus::IntValue::substract(const Value& other) {
 
 Value lotus::IntValue::multiply(const Value& other) {
     if (other->getType() == STRING_LITERAL("int")) return INT(value * other->asInt());
+    else if (other->getType() == STRING_LITERAL("string")) {
+        String result;
+        for (int i = 0; i < value; i++) {
+            result += other->asString();
+        }
+        return STRING(result);
+    }
     return FLOAT(value * other->asDouble());
 }
 

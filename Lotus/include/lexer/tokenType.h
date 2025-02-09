@@ -8,13 +8,15 @@ namespace lotus {
 	enum class TokenType {
 		INT_TYPE,
 		FLOAT_TYPE,
+		STRING_TYPE,
 		WORD,
-		TEXT,
 
 		PLUS,
 		MINUS,
 		STAR,
 		SLASH,
+
+		PRINT,
 
 		LPAREN,
 		RPAREN,
