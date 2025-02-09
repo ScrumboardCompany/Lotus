@@ -8,6 +8,7 @@
 #define INT MAKE_PTR<IntValue>
 #define FLOAT MAKE_PTR<FloatValue>
 #define STRING MAKE_PTR<StringValue>
+#define UNDEFINED MAKE_PTR<UndefinedValue>
 
 #define STRING_LITERAL(str) []{ \
     if constexpr (std::is_same_v<lotus::String, std::string>) \

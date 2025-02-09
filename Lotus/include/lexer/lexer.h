@@ -16,12 +16,15 @@ namespace lotus {
 			{STRING_LITERAL("-"), TokenType::MINUS},
 			{STRING_LITERAL("*"), TokenType::STAR},
 			{STRING_LITERAL("/"), TokenType::SLASH},
+			{STRING_LITERAL("="), TokenType::EQUAL},
 			{STRING_LITERAL("("), TokenType::LPAREN},
 			{STRING_LITERAL(")"), TokenType::RPAREN},
 		};
 
 		StringMap<TokenType> keywords = {
 			{STRING_LITERAL("print"), TokenType::PRINT},
+			{STRING_LITERAL("let"), TokenType::LET},
+			{STRING_LITERAL("undefined"), TokenType::UNDEFINED_},
 		};
 
 		String input;

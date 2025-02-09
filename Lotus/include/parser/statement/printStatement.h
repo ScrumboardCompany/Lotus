@@ -7,8 +7,6 @@
 #include "utils/lotusDefines.h"
 #include "parser/statement/statement.h"
 
-#include <vector>
-
 namespace lotus {
 
 	class PrintStatement : public IStatement {

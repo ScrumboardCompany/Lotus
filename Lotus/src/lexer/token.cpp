@@ -21,6 +21,18 @@ std::string lotus::Token::to_string() const {
 		return ("star");
 	case lotus::TokenType::SLASH:
 		return ("slash");
+	case lotus::TokenType::EQUAL:
+		return ("equal");
+	case lotus::TokenType::PRINT:
+		return ("print");
+	case lotus::TokenType::LET:
+		return ("let");
+	case lotus::TokenType::LPAREN:
+		return ("left parentheses");
+	case lotus::TokenType::RPAREN:
+		return ("right parentheses");
+	case lotus::TokenType::UNDEFINED_:
+		return ("undefined");
 	default:
 		return ("undefined token");
 	}

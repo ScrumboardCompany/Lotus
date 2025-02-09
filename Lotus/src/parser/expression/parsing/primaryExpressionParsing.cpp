@@ -3,6 +3,8 @@
 #include "parser/expression/intExpression.h"
 #include "parser/expression/floatExpression.h"
 #include "parser/expression/stringExpression.h"
+#include "parser/expression/variableExpression.h"
+#include "parser/expression/undefinedExpression.h"
 
 using namespace lotus;
 
@@ -18,6 +20,12 @@ Expression lotus::Parser::primary() {
 	}
 	if (match(TokenType::STRING_TYPE)) {
 		return MAKE_PTR<StringExpression>(CurrentToken.text);
+	}
+	if (match(TokenType::WORD)) {
+		return MAKE_PTR<VariableExpression>(CurrentToken.text, variables);
+	}
+	if (match(TokenType::UNDEFINED_)) {
+		return MAKE_PTR<UndefinedExpression>();
 	}
 
 	if (match(TokenType::LPAREN)) {

@@ -15,8 +15,11 @@ namespace lotus {
 		MINUS,
 		STAR,
 		SLASH,
+		EQUAL,
 
 		PRINT,
+		LET,
+		UNDEFINED_,
 
 		LPAREN,
 		RPAREN,
