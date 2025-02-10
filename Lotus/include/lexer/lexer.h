@@ -30,6 +30,8 @@ namespace lotus {
 			{STRING_LITERAL(")"), TokenType::RPAREN},
 			{STRING_LITERAL("{"), TokenType::LBRACE},
 			{STRING_LITERAL("}"), TokenType::RBRACE},
+			{STRING_LITERAL("["), TokenType::LBRACKET},
+			{STRING_LITERAL("]"), TokenType::RBRACKET},
 			{STRING_LITERAL(";"), TokenType::SEMICOLON},
 			{STRING_LITERAL(","), TokenType::COMMA},
 		};
@@ -65,6 +67,10 @@ namespace lotus {
 		void tokenizeText();
 
 		void tokenizeOperator();
+
+		void tokenizeComment();
+
+		void tokenizeMultiComment();
 
 		Char peek(const size_t relativePosition) const;
 

@@ -98,3 +98,7 @@ Value lotus::IValue::unaryNot() {
     return Value();
 }
 
+Value lotus::IValue::index(const Value& index) {
+    throwOverloadError(STRING_LITERAL("index"), getType());
+    return Value();
+}

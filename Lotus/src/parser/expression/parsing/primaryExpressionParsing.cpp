@@ -6,6 +6,7 @@
 #include "parser/expression/variableExpression.h"
 #include "parser/expression/undefinedExpression.h"
 #include "parser/expression/boolExpression.h"
+#include "parser/expression/arrayExpression.h"
 
 using namespace lotus;
 
@@ -41,6 +42,11 @@ Expression lotus::Parser::primary() {
 		return handleLetExpression();
 	}
 
+	if (match(TokenType::LBRACKET)) {
+		std::vector<Expression> elements = handleCommas();
+		consume(TokenType::RBRACKET);
+		return MAKE_PTR<ArrayExpression>(elements);
+	}
 	if (match(TokenType::LPAREN)) {
 		Expression result = expression();
 		match(TokenType::RPAREN);

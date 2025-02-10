@@ -75,3 +75,8 @@ Value lotus::StringValue::logicalOr(const Value& other) {
 Value lotus::StringValue::logicalAnd(const Value& other) {
     return BOOL(asBool() && other->asBool());
 }
+
+Value lotus::StringValue::index(const Value& index) {
+    checkThrowIndexError(index, value.size());
+    return STRING(String(1, value[index->asInt()]));
+}

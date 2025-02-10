@@ -6,7 +6,7 @@ using namespace lotus;
 lotus::ArrayValue::ArrayValue(std::vector<Value> elements) : elements(elements) {}
 
 String lotus::ArrayValue::asString() {
-    String result = STRING_LITERAL("[");
+    String result;
 
     for (size_t i = 0; i < elements.size(); i++) {
         result += elements[i]->asString();
@@ -38,4 +38,9 @@ Value lotus::ArrayValue::add(const Value& other) {
     }
     throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
     return Value();
+}
+
+Value lotus::ArrayValue::index(const Value& index) {
+    checkThrowIndexError(index, elements.size());
+    return elements[index->asInt()];
 }

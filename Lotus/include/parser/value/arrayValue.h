@@ -19,6 +19,8 @@ namespace lotus {
 		String getType() const override;
 
 		Value add(const Value& other) override;
+
+		Value index(const Value& index) override;
 	};
 
 }

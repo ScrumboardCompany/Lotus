@@ -32,6 +32,8 @@ namespace lotus {
 		Value inequality(const Value& other) override;
 		Value logicalOr(const Value& other) override;
 		Value logicalAnd(const Value& other) override;
+
+		Value index(const Value& index) override;
 	};
 
 }

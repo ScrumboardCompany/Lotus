@@ -41,6 +41,8 @@ namespace lotus {
 		RPAREN,
 		LBRACE,
 		RBRACE,
+		LBRACKET,
+		RBRACKET,
 		SEMICOLON,
 
 		END_OF_FILE

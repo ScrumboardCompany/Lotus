@@ -13,6 +13,8 @@ std::list<Token> lotus::Lexer::tokenize() {
         if (std::iswdigit(current)) tokenizeNumber();
         else if (isWordChar(current, false)) tokenizeWord();
         else if (current == CHAR_LITERAL('\"')) tokenizeText();
+        else if (current == CHAR_LITERAL('/') && peek(1) == CHAR_LITERAL('*')) tokenizeMultiComment();
+        else if (current == CHAR_LITERAL('#')) tokenizeComment();
         else if (isStartOperator(current)) tokenizeOperator();
 
         else next();       
@@ -67,22 +69,22 @@ void lotus::Lexer::tokenizeText() {
     String buffer;
     Char current = peek(0);
     while (current != CHAR_LITERAL('\"')) {
-        if (current == L'\0')
+        if (current == CHAR_LITERAL('\0'))
             throw LotusException(STRING_LITERAL("No closing found \""));
         if (current == CHAR_LITERAL('\\')) {
             current = next();
 
-            if (CHAR_LITERAL('\"')) {
+            if (current == CHAR_LITERAL('\"')) {
                 current = next();
                 buffer.push_back(CHAR_LITERAL('\"'));
                 continue;
             }
-            else if (CHAR_LITERAL('n')) {
+            else if (current == CHAR_LITERAL('n')) {
                 current = next();
                 buffer.push_back(CHAR_LITERAL('\n'));
                 continue;
             }
-            else if (CHAR_LITERAL('t')) {
+            else if (current == CHAR_LITERAL('t')) {
                 current = next();
                 buffer.push_back(CHAR_LITERAL('\t'));
                 continue;
@@ -120,6 +122,26 @@ void lotus::Lexer::tokenizeOperator() {
             return;
         }
     }
+}
+
+void lotus::Lexer::tokenizeComment() {
+    Char current = peek(0);
+    String stops = STRING_LITERAL("\n\r\0");
+    while (stops.find(current) == String::npos) {
+        current = next();
+    }
+}
+
+void lotus::Lexer::tokenizeMultiComment() {
+    next();
+    next();
+    Char current = peek(0);
+    while (!(current == CHAR_LITERAL('*') && peek(1) == CHAR_LITERAL('/'))) {
+        if (current == CHAR_LITERAL('\0')) throw LotusException(STRING_LITERAL("Missing comment closing"));
+        current = next();
+    }
+    next();
+    next();
 }
 
 Char lotus::Lexer::peek(const size_t relativePosition) const {
