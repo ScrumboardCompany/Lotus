@@ -11,8 +11,12 @@ Value lotus::UnaryExpression::eval() {
 	switch (operation) {
 	case lotus::UnaryOperationType::PLUS:
 		result = expression->eval()->unaryPlus();
+		break;
 	case lotus::UnaryOperationType::MINUS:
 		result = expression->eval()->unaryMinus();
+		break;
+	case lotus::UnaryOperationType::NOT:
+		result = expression->eval()->unaryNot();
 	default:
 		break;
 	}

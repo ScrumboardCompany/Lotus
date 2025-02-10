@@ -28,7 +28,8 @@ String lotus::StringValue::getType() const {
 
 Value lotus::StringValue::add(const Value& other) {
     if (other->getType() == STRING_LITERAL("string")) return STRING(value + other->asString());
-    throw LotusException("Unable to concatenate string");
+    throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
+    return Value();
 }
 
 Value lotus::StringValue::multiply(const Value& other) {
@@ -39,7 +40,8 @@ Value lotus::StringValue::multiply(const Value& other) {
         }
         return STRING(result);
     }
-    throw LotusException("Unable to multuply string");
+    throwOverloadError(STRING_LITERAL("multiply"), getType(), other->getType());
+    return Value();
 }
 
 Value lotus::StringValue::greater(const Value& other) {

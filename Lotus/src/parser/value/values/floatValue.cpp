@@ -41,7 +41,7 @@ Value lotus::FloatValue::multiply(const Value& other) {
 
 Value lotus::FloatValue::divide(const Value& other) {
 	double value2 = other->asDouble();
-	if (value2 == 0) throw LotusException("Can`t divide by zero");
+	if (value2 == 0) throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Can`t divide by zero"));
 	return FLOAT(value / value2);
 }
 

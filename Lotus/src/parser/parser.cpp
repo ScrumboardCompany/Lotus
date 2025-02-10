@@ -1,6 +1,7 @@
 #include "parser/parser.h"
 #include "utils/lotusError.h"
 #include "parser/expression/expresion.h"
+#include "parser/statement/expressionStatement.h"
 
 using namespace lotus;
 
@@ -29,21 +30,17 @@ Statement lotus::Parser::getNextStatement() {
 		statement = handleIfElseStatement();
 	}
 	else if (match(TokenType::ELSE)) {
-		throw LotusException("Cannot use else without if");
+		throw LotusException(STRING_LITERAL("Cannot use else without if"));
 	}
 	else if (match(TokenType::WHILE)) {
 		statement = handleWhileStatement();
 	}
-	else if (match(TokenType::LET)) {
-		statement = handleLetStatement();
+	else if (match(TokenType::FOR)) {
+		statement = handleForStatement();
 	}
-	else if (get(0).type == TokenType::WORD && get(1).type == TokenType::EQUAL) {
-		statement = handleSetStatement();
-	}
+	else statement = MAKE_PTR<ExpressionStatement>(expression());
 
 	match(TokenType::SEMICOLON);
 
-	if (statement) return statement;
-	
-	throw LotusException("Undefined statement");
+	return statement;
 }

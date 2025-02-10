@@ -10,11 +10,11 @@
 namespace lotus {
 
 	class WhileStatement : public IStatement {
-		Expression condition;
+		std::vector<Expression> conditionPart;
 		Statement body;
 	public:
 
-		WhileStatement(Expression condition, Statement body);
+		WhileStatement(std::vector<Expression> conditionPart, Statement body);
 		void execute() override;
 	};
 

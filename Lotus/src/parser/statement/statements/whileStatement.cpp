@@ -1,12 +1,14 @@
 #include "parser/statement/whileStatement.h"
 #include "structures/variables.h"
+#include "utils/utils.h"
 
 using namespace lotus;
 
-lotus::WhileStatement::WhileStatement(Expression condition, Statement body) : condition(condition), body(body) {}
+lotus::WhileStatement::WhileStatement(std::vector<Expression> conditionPart, Statement body)
+	: conditionPart(conditionPart), body(body) {}
 
 void lotus::WhileStatement::execute() {
-	while (condition->eval()->asInt()) {
+	while (callAllExpressionsAndReturnLastValue(conditionPart)->asBool()) {
 		body->execute();
 	}
 }

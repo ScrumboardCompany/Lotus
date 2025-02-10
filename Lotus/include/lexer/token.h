@@ -12,7 +12,7 @@ namespace lotus {
 		TokenType type;
 		String text;
 
-		std::string to_string() const;
+		String type_to_string() const;
 	};
 }
 

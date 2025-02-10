@@ -20,7 +20,7 @@ bool lotus::Parser::match(const TokenType type) {
 Token lotus::Parser::consume(const TokenType type) {
 	const Token CurrentToken = get(0);
 	if (type != CurrentToken.type) {
-		throw LotusException("Expected " + Token({ type, STRING_LITERAL("") }).to_string() + " instead of " + CurrentToken.to_string());
+		throw LotusException(STRING_LITERAL("Expected ") + Token({ type, STRING_LITERAL("") }).type_to_string() + STRING_LITERAL(" instead of ") + CurrentToken.type_to_string());
 	}
 	pos++;
 

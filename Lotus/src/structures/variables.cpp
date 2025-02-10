@@ -5,7 +5,7 @@ using namespace lotus;
 
 void Variables::declare(const String& name, const Value& value) {
 	if (isExists(name)) {
-		throw LotusException("Variable already exists");
+		throw LotusException(STRING_LITERAL("Variable already exists"));
 	}
 
 	variables.emplace(name, value);
@@ -16,7 +16,7 @@ void Variables::set(const String& name, const Value& value) {
 		variables[name] = value;
 	}
 	else {
-		throw LotusException("Undefined variable");
+		throw LotusException(STRING_LITERAL("Undefined variable \"") + name + STRING_LITERAL("\""));
 	}
 }
 
@@ -25,7 +25,7 @@ Value lotus::Variables::get(const String& name) {
 		return variables[name];
 	}
 
-	throw LotusException("Undefined variable");
+	throw LotusException(STRING_LITERAL("Undefined variable \"") + name + STRING_LITERAL("\""));
 }
 
 bool lotus::Variables::isExists(const String& name) {

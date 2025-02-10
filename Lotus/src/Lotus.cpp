@@ -25,6 +25,10 @@ int main() {
 
         lotus::Lexer lexer(content);
         auto tokens = lexer.tokenize();
+
+        /*for (auto& token : tokens) {
+            std::wcout << token.type_to_string().c_str() << "[" << token.text << "] ";
+        }*/
         lotus::Parser parser(tokens);
 
         auto parseds = parser.parse();
@@ -34,7 +38,7 @@ int main() {
         }
     }
     catch (const lotus::LotusException& e) {
-        std::cout << e.what();
+        std::wcout << e.wwhat();
     }
     catch (const std::exception& e) {
         std::cout << e.what();

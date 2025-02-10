@@ -30,15 +30,19 @@ namespace lotus {
 
 		Statement handlePrintStatement();
 
-		Statement handleLetStatement();
+		Expression handleLetExpression();
 
-		Statement handleSetStatement();
+		Expression handleSetExpression();
 
 		Statement handleIfElseStatement();
 
 		Statement handleWhileStatement();
+		
+		Statement handleForStatement();
 
 		Statement handleBlockStatement();
+
+		std::vector<Expression> handleCommas();
 
 		Expression expression();
 

@@ -13,7 +13,7 @@ std::list<Token> lotus::Lexer::tokenize() {
         if (std::iswdigit(current)) tokenizeNumber();
         else if (isWordChar(current, false)) tokenizeWord();
         else if (current == CHAR_LITERAL('\"')) tokenizeText();
-        else if (operators.find(String(1, current)) != operators.end()) tokenizeOperator();
+        else if (isStartOperator(current)) tokenizeOperator();
 
         else next();       
     }
@@ -28,10 +28,10 @@ void lotus::Lexer::tokenizeNumber() {
     while (true) {
         if (current == CHAR_LITERAL('.')) {
             if (hasDot) {
-                throw LotusException("Can`t place two points in number");
+                throw LotusException(STRING_LITERAL("Can`t place two points in number: ") + buffer);
             }
             if (!std::iswdigit(peek(1))) {
-                throw LotusException("Expected digit after .");
+                throw LotusException(STRING_LITERAL("Expected digit after ."));
             }
             hasDot = true;
         }
@@ -68,7 +68,7 @@ void lotus::Lexer::tokenizeText() {
     Char current = peek(0);
     while (current != CHAR_LITERAL('\"')) {
         if (current == L'\0')
-            throw LotusException("No closing found \"");
+            throw LotusException(STRING_LITERAL("No closing found \""));
         if (current == CHAR_LITERAL('\\')) {
             current = next();
 
@@ -135,6 +135,15 @@ Char lotus::Lexer::next() {
 
 void lotus::Lexer::addToken(const TokenType& type, const String& text) {
     tokens.push_back(Token({ type, text }));
+}
+
+bool lotus::Lexer::isStartOperator(Char ch) {
+    for (auto& op : operators) {
+        if (op.first.size() && op.first[0] == ch) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool lotus::Lexer::isWordChar(Char ch, bool checkNumber) {

@@ -11,6 +11,9 @@ Expression lotus::Parser::unary() {
 	if (match(TokenType::MINUS)) {
 		return MAKE_PTR<UnaryExpression>(primary(), UnaryOperationType::MINUS);
 	}
+	if (match(TokenType::NOT)) {
+		return MAKE_PTR<UnaryExpression>(primary(), UnaryOperationType::NOT);
+	}
 
 	return primary();
 }

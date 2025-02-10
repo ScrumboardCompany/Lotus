@@ -31,6 +31,7 @@ namespace lotus {
 			{STRING_LITERAL("{"), TokenType::LBRACE},
 			{STRING_LITERAL("}"), TokenType::RBRACE},
 			{STRING_LITERAL(";"), TokenType::SEMICOLON},
+			{STRING_LITERAL(","), TokenType::COMMA},
 		};
 
 		StringMap<TokenType> keywords = {
@@ -41,7 +42,8 @@ namespace lotus {
 			{STRING_LITERAL("while"), TokenType::WHILE},
 			{STRING_LITERAL("undefined"), TokenType::UNDEFINED_},
 			{STRING_LITERAL("true"), TokenType::TRUE},
-			{STRING_LITERAL("false"), TokenType::FALSE}
+			{STRING_LITERAL("false"), TokenType::FALSE},
+			{STRING_LITERAL("for"), TokenType::FOR}
 		};
 
 		String input;
@@ -69,6 +71,8 @@ namespace lotus {
 		Char next();
 
 		void addToken(const TokenType& type, const String& text = STRING_LITERAL(""));
+
+		bool isStartOperator(Char ch);
 
 		bool isWordChar(Char ch, bool checkNumber = true);
 	};

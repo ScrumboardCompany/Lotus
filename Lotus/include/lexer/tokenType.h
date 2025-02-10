@@ -25,6 +25,7 @@ namespace lotus {
 		BARBAR,
 		AMPAMP,
 		NOT,
+		COMMA,
 
 		PRINT,
 		LET,
@@ -34,6 +35,7 @@ namespace lotus {
 		UNDEFINED_,
 		TRUE,
 		FALSE,
+		FOR,
 
 		LPAREN,
 		RPAREN,

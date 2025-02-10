@@ -22,6 +22,9 @@ Expression lotus::Parser::primary() {
 	if (match(TokenType::STRING_TYPE)) {
 		return MAKE_PTR<StringExpression>(CurrentToken.text);
 	}
+	if (get(0).type == TokenType::WORD && get(1).type == TokenType::EQUAL) {
+		return handleSetExpression();
+	}
 	if (match(TokenType::WORD)) {
 		return MAKE_PTR<VariableExpression>(CurrentToken.text, variables);
 	}
@@ -34,6 +37,9 @@ Expression lotus::Parser::primary() {
 	if (match(TokenType::FALSE)) {
 		return MAKE_PTR<BoolExpression>(false);
 	}
+	if (match(TokenType::LET)) {
+		return handleLetExpression();
+	}
 
 	if (match(TokenType::LPAREN)) {
 		Expression result = expression();
@@ -41,5 +47,5 @@ Expression lotus::Parser::primary() {
 		return result;
 	}
 
-	throw LotusException("Undefined expression");
+	throw LotusException(STRING_LITERAL("Undefined expression"));
 }

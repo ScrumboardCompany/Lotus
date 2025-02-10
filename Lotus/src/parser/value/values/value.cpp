@@ -4,78 +4,97 @@
 using namespace lotus;
 
 int lotus::IValue::asInt() {
-    throw LotusException("No overload for toInt");
+    throwOverloadError(STRING_LITERAL("asInt"), getType());
+    return 0;
 }
 
 double lotus::IValue::asDouble() {
-    throw LotusException("No overload for toFloat");
+    throwOverloadError(STRING_LITERAL("asFloat"), getType());
+    return 0.0;
 }
 
 bool lotus::IValue::asBool() {
-    throw LotusException("No overload for toBool");
+    throwOverloadError(STRING_LITERAL("asBool"), getType());
+    return false;
 }
 
 String lotus::IValue::asString() {
-    throw LotusException("No overload for toString");
+    throwOverloadError(STRING_LITERAL("asString"), getType());
+    return String();
 }
 
 Value lotus::IValue::add(const Value& other) {
-    throw LotusException("No overload for add");
+    throwOverloadError(STRING_LITERAL("add"), getType());
+    return Value();
 }
 
 Value lotus::IValue::substract(const Value& other) {
-    throw LotusException("No overload for substract");
+    throwOverloadError(STRING_LITERAL("substract"), getType());
+    return Value();
 }
 
 Value lotus::IValue::multiply(const Value& other) {
-    throw LotusException("No overload for multiply");
+    throwOverloadError(STRING_LITERAL("multiply"), getType());
+    return Value();
 }
 
 Value lotus::IValue::divide(const Value& other) {
-    throw LotusException("No overload for divide");
+    throwOverloadError(STRING_LITERAL("divide"), getType());
+    return Value();
 }
 
 Value lotus::IValue::greater(const Value& other) {
-    throw LotusException("No overload for greater");
+    throwOverloadError(STRING_LITERAL("greater"), getType());
+    return Value();
 }
 
 Value lotus::IValue::less(const Value& other) {
-    throw LotusException("No overload for less");
+    throwOverloadError(STRING_LITERAL("less"), getType());
+    return Value();
 }
 
 Value lotus::IValue::greaterEqual(const Value& other) {
-    throw LotusException("No overload for greaterEqual");
+    throwOverloadError(STRING_LITERAL("greaterEqual"), getType());
+    return Value();
 }
 
 Value lotus::IValue::lessEqual(const Value& other) {
-    throw LotusException("No overload for lessEqual");
+    throwOverloadError(STRING_LITERAL("lessEqual"), getType());
+    return Value();
 }
 
 Value lotus::IValue::equality(const Value& other) {
-    throw LotusException("No overload for equality");
+    throwOverloadError(STRING_LITERAL("equality"), getType());
+    return Value();
 }
 
 Value lotus::IValue::inequality(const Value& other) {
-    throw LotusException("No overload for inequality");
+    throwOverloadError(STRING_LITERAL("inequality"), getType());
+    return Value();
 }
 
 Value lotus::IValue::logicalOr(const Value& other) {
-    throw LotusException("No overload for logicalOr");
+    throwOverloadError(STRING_LITERAL("logicalOr"), getType());
+    return Value();
 }
 
 Value lotus::IValue::logicalAnd(const Value& other) {
-    throw LotusException("No overload for logicalAnd");
+    throwOverloadError(STRING_LITERAL("logicalAnd"), getType());
+    return Value();
 }
 
 Value lotus::IValue::unaryPlus() {
-    throw LotusException("No overload for unaryPlus");
+    throwOverloadError(STRING_LITERAL("unaryPlus"), getType());
+    return Value();
 }
 
 Value lotus::IValue::unaryMinus() {
-    throw LotusException("No overload for unaryMinus");
+    throwOverloadError(STRING_LITERAL("unaryMinus"), getType());
+    return Value();
 }
 
 Value lotus::IValue::unaryNot() {
-    throw LotusException("No overload for unaryNot");
+    throwOverloadError(STRING_LITERAL("unaryNot"), getType());
+    return Value();
 }
 

@@ -6,7 +6,7 @@ using namespace lotus;
 Statement lotus::Parser::handleIfElseStatement() {
 	consume(TokenType::LPAREN);
 
-	Expression condition = expression();
+	std::vector<Expression> conditionPart = handleCommas();
 
 	consume(TokenType::RPAREN);
 
@@ -18,5 +18,5 @@ Statement lotus::Parser::handleIfElseStatement() {
 		elseBody = handleBlockStatement();
 	}
 
-	return MAKE_PTR<IfElseStatement>(condition, ifBody, elseBody);
+	return MAKE_PTR<IfElseStatement>(conditionPart, ifBody, elseBody);
 }

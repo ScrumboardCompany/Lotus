@@ -1,9 +1,9 @@
 #include "parser/parser.h"
-#include "parser/statement/letStatement.h"
+#include "parser/expression/letExpression.h"
 
 using namespace lotus;
 
-Statement lotus::Parser::handleLetStatement() {
+Expression lotus::Parser::handleLetExpression() {
 	String name = consume(TokenType::WORD).text;
 
 	Expression value = nullptr;
@@ -11,5 +11,5 @@ Statement lotus::Parser::handleLetStatement() {
 		value = expression();
 	}
 
-	return MAKE_PTR<LetStatement>(name, value, variables);
+	return MAKE_PTR<LetExpression>(name, value, variables);
 }

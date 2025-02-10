@@ -3,19 +3,28 @@
 #ifndef _LOTUS_ERROR_
 #define _LOTUS_ERROR_
 
-#include <stdexcept>
-#include <string>
+#include "utils/lotusTypes.h"
 
 namespace lotus {
 
-	class LotusException : public std::runtime_error {
+	class LotusException {
+
+		String msg;
 	public:
 		LotusException() = default;
 		LotusException(const LotusException&) = default;
 		LotusException(LotusException&&) = default;
 
-		LotusException(const std::string& msg) : runtime_error(msg) {}
+		explicit LotusException(const String& msg) : msg(msg) {}
+
+		const String& wwhat() const noexcept {
+			return msg;
+		}
 	};
+
+	void throwOverloadError(const String& overload, const String& type);
+
+	void throwOverloadError(const String& overload, const String& type1, const String& type2);
 }
 
 #endif // _LOTUS_ERROR_

@@ -10,12 +10,12 @@
 namespace lotus {
 
 	class IfElseStatement : public IStatement {
-		Expression condition;
+		std::vector<Expression> conditionPart;
 		Statement ifBody;
 		Statement elseBody;
 	public:
 
-		IfElseStatement(Expression condition, Statement ifBody, Statement elseBody);
+		IfElseStatement(std::vector<Expression> conditionPart, Statement ifBody, Statement elseBody);
 		void execute() override;
 	};
 
