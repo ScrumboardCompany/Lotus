@@ -11,19 +11,30 @@ namespace lotus {
 	class IValue {
 	public:
 
-		virtual int asInt() = 0;
-		virtual double asDouble() = 0;
-		virtual String asString() = 0;
+		virtual int asInt();
+		virtual double asDouble();
+		virtual bool asBool();
+		virtual String asString();
 
 		virtual String getType() const = 0;
 
-		virtual Value add(const Value& other) = 0;
-		virtual Value substract(const Value& other) = 0;
-		virtual Value multiply(const Value& other) = 0;
-		virtual Value divide(const Value& other) = 0;
+		virtual Value add(const Value& other);
+		virtual Value substract(const Value& other);
+		virtual Value multiply(const Value& other);
+		virtual Value divide(const Value& other);
 
-		virtual Value unary_plus() = 0;
-		virtual Value unary_minus() = 0;
+		virtual Value greater(const Value& other);
+		virtual Value less(const Value& other);
+		virtual Value greaterEqual(const Value& other);
+		virtual Value lessEqual(const Value& other);
+		virtual Value equality(const Value& other);
+		virtual Value inequality(const Value& other);
+		virtual Value logicalOr(const Value& other);
+		virtual Value logicalAnd(const Value& other);
+
+		virtual Value unaryPlus();
+		virtual Value unaryMinus();
+		virtual Value unaryNot();
 
 		virtual ~IValue() = default;
 	};

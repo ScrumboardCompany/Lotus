@@ -17,14 +17,31 @@ namespace lotus {
 			{STRING_LITERAL("*"), TokenType::STAR},
 			{STRING_LITERAL("/"), TokenType::SLASH},
 			{STRING_LITERAL("="), TokenType::EQUAL},
+			{STRING_LITERAL(">"), TokenType::GREATER},
+			{STRING_LITERAL("<"), TokenType::LESS},
+			{STRING_LITERAL(">="), TokenType::GREATEREQUAL},
+			{STRING_LITERAL("<"), TokenType::LESSEQUAL},
+			{STRING_LITERAL("=="), TokenType::EQUALEQUAL},
+			{STRING_LITERAL("!="), TokenType::NOTEQUAL},
+			{STRING_LITERAL("||"), TokenType::BARBAR},
+			{STRING_LITERAL("&&"), TokenType::AMPAMP},
+			{STRING_LITERAL("!"), TokenType::NOT},
 			{STRING_LITERAL("("), TokenType::LPAREN},
 			{STRING_LITERAL(")"), TokenType::RPAREN},
+			{STRING_LITERAL("{"), TokenType::LBRACE},
+			{STRING_LITERAL("}"), TokenType::RBRACE},
+			{STRING_LITERAL(";"), TokenType::SEMICOLON},
 		};
 
 		StringMap<TokenType> keywords = {
 			{STRING_LITERAL("print"), TokenType::PRINT},
 			{STRING_LITERAL("let"), TokenType::LET},
+			{STRING_LITERAL("if"), TokenType::IF},
+			{STRING_LITERAL("else"), TokenType::ELSE},
+			{STRING_LITERAL("while"), TokenType::WHILE},
 			{STRING_LITERAL("undefined"), TokenType::UNDEFINED_},
+			{STRING_LITERAL("true"), TokenType::TRUE},
+			{STRING_LITERAL("false"), TokenType::FALSE}
 		};
 
 		String input;

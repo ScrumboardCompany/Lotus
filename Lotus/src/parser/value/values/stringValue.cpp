@@ -1,4 +1,5 @@
 #include "parser/value/stringValue.h"
+#include "parser/value/boolValue.h"
 #include "utils/lotusError.h"
 
 using namespace lotus;
@@ -11,6 +12,10 @@ int lotus::StringValue::asInt() {
 
 double lotus::StringValue::asDouble() {
     return std::stod(value);
+}
+
+bool lotus::StringValue::asBool() {
+    return value.length() != 0;
 }
 
 String lotus::StringValue::asString() {
@@ -26,10 +31,6 @@ Value lotus::StringValue::add(const Value& other) {
     throw LotusException("Unable to concatenate string");
 }
 
-Value lotus::StringValue::substract(const Value& other) {
-    throw LotusException("Unable to substract string");
-}
-
 Value lotus::StringValue::multiply(const Value& other) {
     if (other->getType() == STRING_LITERAL("int")) {
         String result;
@@ -41,15 +42,34 @@ Value lotus::StringValue::multiply(const Value& other) {
     throw LotusException("Unable to multuply string");
 }
 
-Value lotus::StringValue::divide(const Value& other) {
-    throw LotusException("Unable to divide string");
+Value lotus::StringValue::greater(const Value& other) {
+    return BOOL(value > other->asString());
 }
 
-Value lotus::StringValue::unary_plus() {
-    throw LotusException("Unable to find unary plus overload for string");
+Value lotus::StringValue::less(const Value& other) {
+    return BOOL(value < other->asString());
 }
 
-Value lotus::StringValue::unary_minus() {
-    throw LotusException("Unable to find unary minus overload for string");
+Value lotus::StringValue::greaterEqual(const Value& other) {
+    return BOOL(value >= other->asString());
 }
 
+Value lotus::StringValue::lessEqual(const Value& other) {
+    return BOOL(value <= other->asString());
+}
+
+Value lotus::StringValue::equality(const Value& other) {
+    return BOOL(value == other->asString());
+}
+
+Value lotus::StringValue::inequality(const Value& other) {
+    return BOOL(value != other->asString());
+}
+
+Value lotus::StringValue::logicalOr(const Value& other) {
+    return BOOL(asBool() || other->asBool());
+}
+
+Value lotus::StringValue::logicalAnd(const Value& other) {
+    return BOOL(asBool() && other->asBool());
+}

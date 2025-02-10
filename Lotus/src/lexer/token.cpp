@@ -27,10 +27,18 @@ std::string lotus::Token::to_string() const {
 		return ("print");
 	case lotus::TokenType::LET:
 		return ("let");
+	case lotus::TokenType::IF:
+		return ("if");
+	case lotus::TokenType::ELSE:
+		return ("else");
+	case lotus::TokenType::WHILE:
+		return ("while");
 	case lotus::TokenType::LPAREN:
 		return ("left parentheses");
 	case lotus::TokenType::RPAREN:
 		return ("right parentheses");
+	case lotus::TokenType::SEMICOLON:
+		return ("semicolon");
 	case lotus::TokenType::UNDEFINED_:
 		return ("undefined");
 	default:

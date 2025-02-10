@@ -7,6 +7,7 @@
 
 #define INT MAKE_PTR<IntValue>
 #define FLOAT MAKE_PTR<FloatValue>
+#define BOOL MAKE_PTR<BoolValue>
 #define STRING MAKE_PTR<StringValue>
 #define UNDEFINED MAKE_PTR<UndefinedValue>
 

@@ -20,15 +20,30 @@ std::vector<Statement> lotus::Parser::parse() {
 }
 
 Statement lotus::Parser::getNextStatement() {
+	Statement statement;
+
 	if (match(TokenType::PRINT)) {
-		return handlePrintStatement();
+		statement = handlePrintStatement();
+	}
+	else if (match(TokenType::IF)) {
+		statement = handleIfElseStatement();
+	}
+	else if (match(TokenType::ELSE)) {
+		throw LotusException("Cannot use else without if");
+	}
+	else if (match(TokenType::WHILE)) {
+		statement = handleWhileStatement();
 	}
 	else if (match(TokenType::LET)) {
-		return handleLetStatement();
+		statement = handleLetStatement();
 	}
 	else if (get(0).type == TokenType::WORD && get(1).type == TokenType::EQUAL) {
-		return handleSetStatement();
+		statement = handleSetStatement();
 	}
+
+	match(TokenType::SEMICOLON);
+
+	if (statement) return statement;
 	
 	throw LotusException("Undefined statement");
 }

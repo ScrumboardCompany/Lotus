@@ -1,18 +1,18 @@
 #pragma once
 
-#ifndef _INTVALUE_
-#define _INTVALUE_
+#ifndef _BOOLVALUE_
+#define _BOOLVALUE_
 
 #include "parser/value/value.h"
 
 namespace lotus {
 
-	class IntValue : public IValue {
-		int value;
+	class BoolValue : public IValue {
+		bool value;
 
 	public:
 
-		IntValue(int value);
+		BoolValue(bool value);
 
 		int asInt() override;
 		double asDouble() override;
@@ -42,4 +42,4 @@ namespace lotus {
 
 }
 
-#endif // _INTVALUE_
+#endif // _BOOLVALUE_

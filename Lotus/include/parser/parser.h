@@ -34,7 +34,21 @@ namespace lotus {
 
 		Statement handleSetStatement();
 
+		Statement handleIfElseStatement();
+
+		Statement handleWhileStatement();
+
+		Statement handleBlockStatement();
+
 		Expression expression();
+
+		Expression logicalOr();
+
+		Expression logicalAnd();
+
+		Expression equality();
+
+		Expression conditional();
 
 		Expression additive();
 

@@ -5,6 +5,7 @@
 #include "parser/expression/stringExpression.h"
 #include "parser/expression/variableExpression.h"
 #include "parser/expression/undefinedExpression.h"
+#include "parser/expression/boolExpression.h"
 
 using namespace lotus;
 
@@ -26,6 +27,12 @@ Expression lotus::Parser::primary() {
 	}
 	if (match(TokenType::UNDEFINED_)) {
 		return MAKE_PTR<UndefinedExpression>();
+	}
+	if (match(TokenType::TRUE)) {
+		return MAKE_PTR<BoolExpression>(true);
+	}
+	if (match(TokenType::FALSE)) {
+		return MAKE_PTR<BoolExpression>(false);
 	}
 
 	if (match(TokenType::LPAREN)) {
