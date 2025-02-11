@@ -7,21 +7,11 @@
 #include "utils/lotusError.h"
 #include "parser/expression/expresion.h"
 #include "parser/statement/statement.h"
+#include "utils/utils.h"
 
 int main() {
     try {
-        std::wifstream file(L"test.lts"); 
-        file.imbue(std::locale(""));     
-
-        if (!file) {
-            std::wcerr << L"Unable to open file" << std::endl;
-            return 1;
-        }
-
-        std::wstringstream buffer;
-        buffer << file.rdbuf();
-
-        std::wstring content = buffer.str();
+        lotus::String content = lotus::wreadContent(L"test.lts");
 
         lotus::Lexer lexer(content);
         auto tokens = lexer.tokenize();

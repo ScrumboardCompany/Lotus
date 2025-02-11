@@ -34,6 +34,9 @@ namespace lotus {
 			{STRING_LITERAL("]"), TokenType::RBRACKET},
 			{STRING_LITERAL(";"), TokenType::SEMICOLON},
 			{STRING_LITERAL(","), TokenType::COMMA},
+			{STRING_LITERAL("<<"), TokenType::LESSLESS},
+			{STRING_LITERAL(">>"), TokenType::GREATERGREATER},
+			{STRING_LITERAL("<<<"), TokenType::LESSLESSLESS},
 		};
 
 		StringMap<TokenType> keywords = {
@@ -45,7 +48,8 @@ namespace lotus {
 			{STRING_LITERAL("undefined"), TokenType::UNDEFINED_},
 			{STRING_LITERAL("true"), TokenType::TRUE},
 			{STRING_LITERAL("false"), TokenType::FALSE},
-			{STRING_LITERAL("for"), TokenType::FOR}
+			{STRING_LITERAL("for"), TokenType::FOR},
+			{STRING_LITERAL("flag"), TokenType::FLAG},
 		};
 
 		String input;

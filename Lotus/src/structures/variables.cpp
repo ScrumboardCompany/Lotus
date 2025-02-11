@@ -3,6 +3,10 @@
 
 using namespace lotus;
 
+void Variables::forceDeclareOrSet(const String& name, const Value& value) {
+	variables[name] = value;
+}
+
 void Variables::declare(const String& name, const Value& value) {
 	if (isExists(name)) {
 		throw LotusException(STRING_LITERAL("Variable already exists"));

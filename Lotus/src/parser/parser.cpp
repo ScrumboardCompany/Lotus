@@ -38,9 +38,15 @@ Statement lotus::Parser::getNextStatement() {
 	else if (match(TokenType::FOR)) {
 		statement = handleForStatement();
 	}
+	else if (match(TokenType::FLAG)) {
+		statement = handleFlagStatement();
+	}
+	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
+		statement = handleImportStatement();
+	}
 	else statement = MAKE_PTR<ExpressionStatement>(expression());
 
-	match(TokenType::SEMICOLON);
+	while (match(TokenType::SEMICOLON));
 
 	return statement;
 }

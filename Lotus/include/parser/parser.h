@@ -8,6 +8,7 @@
 #include "lexer/token.h"
 #include "utils/lotusDefines.h"
 #include "structures/variables.h"
+#include "structures/flags.h"
 
 #define EOF_TOKEN lotus::Token({ lotus::TokenType::END_OF_FILE, STRING_LITERAL("")})
 
@@ -18,6 +19,10 @@ namespace lotus {
 		size_t pos;
 
 		Variables variables;
+
+		Flags flags;
+
+		friend class ImportStatement;
 
 	public:
 		Parser(const std::list<Token>& tokens);
@@ -37,6 +42,10 @@ namespace lotus {
 		Statement handleWhileStatement();
 		
 		Statement handleForStatement();
+
+		Statement handleImportStatement();
+
+		Statement handleFlagStatement();
 
 		Statement handleBlockStatement();
 

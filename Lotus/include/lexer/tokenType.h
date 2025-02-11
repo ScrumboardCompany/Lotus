@@ -26,6 +26,9 @@ namespace lotus {
 		AMPAMP,
 		NOT,
 		COMMA,
+		LESSLESS,
+		GREATERGREATER,
+		LESSLESSLESS,
 
 		PRINT,
 		LET,
@@ -36,6 +39,7 @@ namespace lotus {
 		TRUE,
 		FALSE,
 		FOR,
+		FLAG,
 
 		LPAREN,
 		RPAREN,
