@@ -33,6 +33,7 @@ namespace lotus {
 			{STRING_LITERAL("["), TokenType::LBRACKET},
 			{STRING_LITERAL("]"), TokenType::RBRACKET},
 			{STRING_LITERAL(";"), TokenType::SEMICOLON},
+			{STRING_LITERAL(":"), TokenType::COLON},
 			{STRING_LITERAL(","), TokenType::COMMA},
 			{STRING_LITERAL("<<"), TokenType::LESSLESS},
 			{STRING_LITERAL(">>"), TokenType::GREATERGREATER},
@@ -49,6 +50,7 @@ namespace lotus {
 			{STRING_LITERAL("true"), TokenType::TRUE},
 			{STRING_LITERAL("false"), TokenType::FALSE},
 			{STRING_LITERAL("for"), TokenType::FOR},
+			{STRING_LITERAL("foreach"), TokenType::FOREACH},
 			{STRING_LITERAL("flag"), TokenType::FLAG},
 		};
 

@@ -39,6 +39,7 @@ namespace lotus {
 		Value logicalAnd(const Value& other) override;
 
 		Value& index(const Value& index) override;
+		Value size() override;
 	};
 
 }

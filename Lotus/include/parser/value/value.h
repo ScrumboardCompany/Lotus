@@ -37,6 +37,7 @@ namespace lotus {
 		virtual Value unaryNot();
 
 		virtual Value& index(const Value& index);
+		virtual Value size();
 
 		virtual ~IValue() = default;
 	};

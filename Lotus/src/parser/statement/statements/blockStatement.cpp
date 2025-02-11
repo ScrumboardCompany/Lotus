@@ -3,7 +3,7 @@
 
 using namespace lotus;
 
-lotus::BlockStatement::BlockStatement(std::vector<Statement> statements) : statements(statements) {}
+lotus::BlockStatement::BlockStatement(const std::vector<Statement>& statements) : statements(statements) {}
 
 void lotus::BlockStatement::execute() {
 	for (auto& statement : statements) {

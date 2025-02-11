@@ -4,8 +4,8 @@
 
 using namespace lotus;
 
-lotus::ForStatement::ForStatement(std::vector<Expression> declaringPart, std::vector<Expression> conditionPart, std::vector<Expression> actionPart, Statement body, Variables& variables)
-	: declaringPart(declaringPart), conditionPart(conditionPart), actionPart(actionPart), body(body), variables(variables) {}
+lotus::ForStatement::ForStatement(const std::vector<Expression>& declaringPart, const std::vector<Expression>& conditionPart, const std::vector<Expression>& actionPart, const Statement& body, Variables& variables)
+: declaringPart(declaringPart), conditionPart(conditionPart), actionPart(actionPart), body(body), variables(variables) {}
 
 void lotus::ForStatement::execute() {
     variables.saveState();

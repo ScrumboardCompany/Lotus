@@ -102,3 +102,16 @@ Value lotus::IntValue::unaryNot() {
     return BOOL(!value);
 }
 
+Value lotus::IntValue::size() {
+    if (value == 0)
+        return INT(1);
+
+    int count = 0;
+
+    while (value != 0) {
+        value = value / 10;
+        ++count;
+    }
+
+    return INT(count);
+}

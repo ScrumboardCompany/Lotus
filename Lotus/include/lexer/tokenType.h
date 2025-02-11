@@ -39,6 +39,7 @@ namespace lotus {
 		TRUE,
 		FALSE,
 		FOR,
+		FOREACH,
 		FLAG,
 
 		LPAREN,
@@ -48,6 +49,7 @@ namespace lotus {
 		LBRACKET,
 		RBRACKET,
 		SEMICOLON,
+		COLON,
 
 		END_OF_FILE
 	};

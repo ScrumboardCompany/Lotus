@@ -89,3 +89,16 @@ Value lotus::FloatValue::unaryNot() {
 	return BOOL(!value);
 }
 
+Value lotus::FloatValue::size() {
+	if (value == 0)
+		return FLOAT(1);
+
+	int count = 0;
+
+	while (value != 0) {
+		value = value / 10;
+		++count;
+	}
+
+	return FLOAT(count);
+}

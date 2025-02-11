@@ -3,7 +3,7 @@
 
 using namespace lotus;
 
-lotus::PrintStatement::PrintStatement(Expression arg) : arg(arg) {}
+lotus::PrintStatement::PrintStatement(const Expression& arg) : arg(arg) {}
 
 void lotus::PrintStatement::execute() {
 	std::wcout << arg->eval()->asString();

@@ -1,4 +1,5 @@
 #include "parser/value/arrayValue.h"
+#include "parser/value/intValue.h"
 #include "utils/lotusError.h"
 
 using namespace lotus;
@@ -43,4 +44,8 @@ Value lotus::ArrayValue::add(const Value& other) {
 Value& lotus::ArrayValue::index(const Value& index) {
     checkThrowIndexError(index, elements.size());
     return elements[index->asInt()];
+}
+
+Value lotus::ArrayValue::size() {
+    return INT(elements.size());
 }

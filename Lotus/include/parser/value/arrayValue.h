@@ -21,6 +21,7 @@ namespace lotus {
 		Value add(const Value& other) override;
 
 		Value& index(const Value& index) override;
+		Value size() override;
 	};
 
 }

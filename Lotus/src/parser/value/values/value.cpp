@@ -82,3 +82,7 @@ Value lotus::IValue::unaryNot() {
 Value& lotus::IValue::index(const Value& index) {
     throwOverloadError(STRING_LITERAL("index"), getType());
 }
+
+Value lotus::IValue::size() {
+    throwOverloadError(STRING_LITERAL("size"), getType());
+}

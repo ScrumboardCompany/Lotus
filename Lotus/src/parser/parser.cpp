@@ -38,6 +38,9 @@ Statement lotus::Parser::getNextStatement() {
 	else if (match(TokenType::FOR)) {
 		statement = handleForStatement();
 	}
+	else if (match(TokenType::FOREACH)) {
+		statement = handleForEachStatement();
+	}
 	else if (match(TokenType::FLAG)) {
 		statement = handleFlagStatement();
 	}

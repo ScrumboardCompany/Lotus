@@ -13,7 +13,7 @@ namespace lotus {
 		Expression expression;
 	public:
 
-		ExpressionStatement(Expression expression);
+		ExpressionStatement(const Expression& expression);
 		void execute() override;
 	};
 

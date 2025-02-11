@@ -16,10 +16,10 @@ namespace lotus {
 		std::stack<StringMap<Value>> savedStates;
 		friend class ImportStatement;
 
-		void forceDeclareOrSet(const String& name, const Value& value = UNDEFINED());
-
 	public:
 		Variables() = default;
+
+		void forceDeclareOrSet(const String& name, const Value& value = UNDEFINED());
 
 		void declare(const String& name, const Value& value = UNDEFINED());
 

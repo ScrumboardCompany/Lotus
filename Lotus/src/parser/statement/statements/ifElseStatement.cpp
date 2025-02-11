@@ -4,7 +4,7 @@
 
 using namespace lotus;
 
-lotus::IfElseStatement::IfElseStatement(std::vector<Expression> conditionPart, Statement ifBody, Statement elseBody, Variables& variables)
+lotus::IfElseStatement::IfElseStatement(const std::vector<Expression>& conditionPart, const Statement& ifBody, const Statement& elseBody, Variables& variables)
 	: conditionPart(conditionPart), ifBody(ifBody), elseBody(elseBody), variables(variables) {}
 
 void lotus::IfElseStatement::execute() {

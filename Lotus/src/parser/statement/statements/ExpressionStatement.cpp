@@ -2,7 +2,7 @@
 
 using namespace lotus;
 
-lotus::ExpressionStatement::ExpressionStatement(Expression expression) : expression(expression) {}
+lotus::ExpressionStatement::ExpressionStatement(const Expression& expression) : expression(expression) {}
 
 void lotus::ExpressionStatement::execute() {
 	expression->eval();

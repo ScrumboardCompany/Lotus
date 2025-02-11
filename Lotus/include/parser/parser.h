@@ -43,6 +43,8 @@ namespace lotus {
 		
 		Statement handleForStatement();
 
+		Statement handleForEachStatement();
+
 		Statement handleImportStatement();
 
 		Statement handleFlagStatement();

@@ -18,7 +18,7 @@ namespace lotus {
 
 	public:
 
-		WhileStatement(std::vector<Expression> conditionPart, Statement body, Variables& variables);
+		WhileStatement(const std::vector<Expression>& conditionPart, const Statement& body, Variables& variables);
 		void execute() override;
 	};
 

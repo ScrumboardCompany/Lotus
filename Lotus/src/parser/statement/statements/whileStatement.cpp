@@ -4,7 +4,7 @@
 
 using namespace lotus;
 
-lotus::WhileStatement::WhileStatement(std::vector<Expression> conditionPart, Statement body, Variables& variables)
+lotus::WhileStatement::WhileStatement(const std::vector<Expression>& conditionPart, const Statement& body, Variables& variables)
 	: conditionPart(conditionPart), body(body), variables(variables) {}
 
 void lotus::WhileStatement::execute() {

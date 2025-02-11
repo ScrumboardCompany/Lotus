@@ -83,3 +83,7 @@ Value& lotus::StringValue::index(const Value& index) {
     tempRef = MAKE_PTR<StringCharReference>(*this, index->asInt());
     return tempRef;
 }
+
+Value lotus::StringValue::size() {
+    return INT(value.size());
+}

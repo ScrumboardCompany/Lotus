@@ -13,7 +13,7 @@ namespace lotus {
 		std::vector<Statement> statements;
 	public:
 
-		BlockStatement(std::vector<Statement> statements);
+		BlockStatement(const std::vector<Statement>& statements);
 		void execute() override;
 	};
 

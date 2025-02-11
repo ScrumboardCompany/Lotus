@@ -38,6 +38,8 @@ namespace lotus {
 		Value unaryPlus() override;
 		Value unaryMinus() override;
 		Value unaryNot() override;
+
+		Value size() override;
 	};
 
 }

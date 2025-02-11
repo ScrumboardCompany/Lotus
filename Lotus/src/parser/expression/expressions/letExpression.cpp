@@ -1,4 +1,5 @@
 #include "parser/expression/letExpression.h"
+#include "structures/variables.h"
 
 using namespace lotus;
 

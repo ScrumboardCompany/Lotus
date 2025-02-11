@@ -26,7 +26,7 @@ void lotus::ImportStatement::execute() {
 
     bool allowOverwrite = flags.getAllowOverwrite();
 
-    if (key == STRING_LITERAL("*") /* check need to import all */) {
+    if (key == STRING_LITERAL("*") /* check needed to import all */) {
         for (auto& variable : parser.variables.variables) {
 
             if (allowOverwrite) {

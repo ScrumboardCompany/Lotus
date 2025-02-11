@@ -4,9 +4,10 @@
 #define _LETEXPRESSION_
 
 #include "parser/expression/expresion.h"
-#include "structures/variables.h"
 
 namespace lotus {
+
+	class Variables;
 
 	class LetExpression : public IExpression {
 
