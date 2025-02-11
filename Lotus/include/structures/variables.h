@@ -7,10 +7,13 @@
 #include "utils/lotusDefines.h"
 #include "parser/value/undefinedValue.h"
 
+#include <stack>
+
 namespace lotus {
 
 	class Variables {
 		StringMap<Value> variables;
+		std::stack<StringMap<Value>> savedStates;
 	public:
 		Variables() = default;
 
@@ -21,6 +24,9 @@ namespace lotus {
 		Value get(const String& name);
 
 		bool isExists(const String& name);
+
+		void saveState();
+		void restoreState();
 	};
 
 }

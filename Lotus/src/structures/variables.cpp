@@ -31,3 +31,17 @@ Value lotus::Variables::get(const String& name) {
 bool lotus::Variables::isExists(const String& name) {
 	return variables.find(name) != variables.end();
 }
+
+void lotus::Variables::saveState() {
+	savedStates.push(variables);
+}
+
+void lotus::Variables::restoreState() {
+	if (!savedStates.empty()) {
+		variables = savedStates.top();
+		savedStates.pop();
+	}
+	else {
+		throw LotusException(STRING_LITERAL("No saved state to restore"));
+	}
+}

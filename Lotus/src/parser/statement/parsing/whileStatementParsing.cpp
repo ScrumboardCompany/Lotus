@@ -12,5 +12,5 @@ Statement lotus::Parser::handleWhileStatement() {
 
 	Statement body = handleBlockStatement();
 
-	return MAKE_PTR<WhileStatement>(conditionPart, body);
+	return MAKE_PTR<WhileStatement>(conditionPart, body, variables);
 }

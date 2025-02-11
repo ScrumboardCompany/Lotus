@@ -9,12 +9,16 @@
 
 namespace lotus {
 
+	class Variables;
+
 	class WhileStatement : public IStatement {
 		std::vector<Expression> conditionPart;
 		Statement body;
+		Variables& variables;
+
 	public:
 
-		WhileStatement(std::vector<Expression> conditionPart, Statement body);
+		WhileStatement(std::vector<Expression> conditionPart, Statement body, Variables& variables);
 		void execute() override;
 	};
 

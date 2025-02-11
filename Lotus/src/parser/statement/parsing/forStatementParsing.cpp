@@ -28,5 +28,5 @@ Statement lotus::Parser::handleForStatement() {
 
 	Statement body = handleBlockStatement();
 
-	return MAKE_PTR<ForStatement>(declaringPart, conditionPart, actionPart, body);
+	return MAKE_PTR<ForStatement>(declaringPart, conditionPart, actionPart, body, variables);
 }

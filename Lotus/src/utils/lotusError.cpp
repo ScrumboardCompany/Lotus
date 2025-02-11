@@ -10,7 +10,7 @@ void lotus::throwOverloadError(const String& overload, const String& type) {
 }
 
 void lotus::throwOverloadError(const String& overload, const String& type1, const String& type2) {
-    throw LotusException(type1 + STRING_LITERAL(": ") + STRING_LITERAL("No overload for") + overload + STRING_LITERAL(" with ") + type2);
+    throw LotusException(type1 + STRING_LITERAL(": ") + STRING_LITERAL("No overload for ") + overload + STRING_LITERAL(" with ") + type2);
 }
 
 void lotus::checkThrowIndexError(const Value& index, int size) {

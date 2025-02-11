@@ -9,13 +9,17 @@
 
 namespace lotus {
 
+	class Variables;
+
 	class IfElseStatement : public IStatement {
 		std::vector<Expression> conditionPart;
 		Statement ifBody;
 		Statement elseBody;
+		Variables& variables;
+
 	public:
 
-		IfElseStatement(std::vector<Expression> conditionPart, Statement ifBody, Statement elseBody);
+		IfElseStatement(std::vector<Expression> conditionPart, Statement ifBody, Statement elseBody, Variables& variables);
 		void execute() override;
 	};
 

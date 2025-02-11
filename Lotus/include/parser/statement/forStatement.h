@@ -9,6 +9,8 @@
 
 namespace lotus {
 
+	class Variables;
+
 	class ForStatement : public IStatement {
 		std::vector<Expression> declaringPart;
 		std::vector<Expression> conditionPart;
@@ -16,9 +18,11 @@ namespace lotus {
 
 		Statement body;
 
+		Variables& variables;
+
 	public:
 
-		ForStatement(std::vector<Expression> declaringPart,	std::vector<Expression> conditionPart, std::vector<Expression> actionPart, Statement body);
+		ForStatement(std::vector<Expression> declaringPart,	std::vector<Expression> conditionPart, std::vector<Expression> actionPart, Statement body, Variables& variables);
 		void execute() override;
 	};
 
