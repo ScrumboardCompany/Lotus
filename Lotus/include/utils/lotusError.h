@@ -22,11 +22,11 @@ namespace lotus {
 		}
 	};
 
-	void throwOverloadError(const String& overload, const String& type);
+	[[noreturn]] void throwOverloadError(const String& overload, const String& type);
 
-	void throwOverloadError(const String& overload, const String& type1, const String& type2);
+	[[noreturn]] void throwOverloadError(const String& overload, const String& type1, const String& type2);
 
-	void checkThrowIndexError(const Value& index, size_t size);
+	void checkThrowIndexError(const Value& index, int size);
 }
 
 #endif // _LOTUS_ERROR_

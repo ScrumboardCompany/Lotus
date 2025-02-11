@@ -7,8 +7,13 @@
 
 namespace lotus {
 
+	class StringCharReference;
+
 	class StringValue : public IValue {
 		String value;
+		Value tempRef;
+
+		friend class StringCharReference;
 
 	public:
 
@@ -33,7 +38,7 @@ namespace lotus {
 		Value logicalOr(const Value& other) override;
 		Value logicalAnd(const Value& other) override;
 
-		Value index(const Value& index) override;
+		Value& index(const Value& index) override;
 	};
 
 }

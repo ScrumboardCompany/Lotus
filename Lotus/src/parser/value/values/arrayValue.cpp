@@ -40,7 +40,7 @@ Value lotus::ArrayValue::add(const Value& other) {
     return Value();
 }
 
-Value lotus::ArrayValue::index(const Value& index) {
+Value& lotus::ArrayValue::index(const Value& index) {
     checkThrowIndexError(index, elements.size());
     return elements[index->asInt()];
 }

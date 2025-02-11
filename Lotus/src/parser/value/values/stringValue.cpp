@@ -1,5 +1,7 @@
 #include "parser/value/stringValue.h"
 #include "parser/value/boolValue.h"
+#include "parser/value/intValue.h"
+#include "parser/value/stringCharReference.h"
 #include "utils/lotusError.h"
 
 using namespace lotus;
@@ -76,7 +78,8 @@ Value lotus::StringValue::logicalAnd(const Value& other) {
     return BOOL(asBool() && other->asBool());
 }
 
-Value lotus::StringValue::index(const Value& index) {
+Value& lotus::StringValue::index(const Value& index) {
     checkThrowIndexError(index, value.size());
-    return STRING(String(1, value[index->asInt()]));
+    tempRef = MAKE_PTR<StringCharReference>(*this, index->asInt());
+    return tempRef;
 }

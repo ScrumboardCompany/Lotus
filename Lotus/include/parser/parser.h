@@ -32,8 +32,6 @@ namespace lotus {
 
 		Expression handleLetExpression();
 
-		Expression handleSetExpression();
-
 		Statement handleIfElseStatement();
 
 		Statement handleWhileStatement();

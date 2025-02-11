@@ -12,6 +12,8 @@ namespace lotus {
 		String name;
 		Variables& variables;
 
+		friend class SetExpression;
+
 	public:
 		VariableExpression(const String& name, Variables& variables);
 

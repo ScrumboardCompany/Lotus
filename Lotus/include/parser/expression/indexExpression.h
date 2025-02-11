@@ -11,6 +11,8 @@ namespace lotus {
 		Expression expression;
 		Expression index;
 
+		friend class SetExpression;
+
 	public:
 		IndexExpression(Expression expression, Expression index);
 

@@ -10,12 +10,11 @@ namespace lotus {
 
 	class SetExpression : public IExpression {
 
-		String name;
-		Expression expression;
-		Variables& variables;
+		Expression expression1;
+		Expression expression2;
 
 	public:
-		SetExpression(const String& name, Expression expression, Variables& variables);
+		SetExpression(const Expression& expression1, const Expression& expression2);
 
 		Value eval() override;
 	};
