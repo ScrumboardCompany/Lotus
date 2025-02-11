@@ -1,4 +1,6 @@
 #include "parser/statement/whileStatement.h"
+#include "parser/statement/continueStatement.h"
+#include "parser/statement/breakStatement.h"
 #include "structures/variables.h"
 #include "utils/utils.h"
 
@@ -11,7 +13,15 @@ void lotus::WhileStatement::execute() {
 	variables.saveState();
 
 	while (callAllExpressionsAndReturnLastValue(conditionPart)->asBool()) {
-		body->execute();
+		try {
+			body->execute();
+		}
+		catch (const ContinueStatement&) {
+			continue;
+		}
+		catch (const BreakStatement&) {
+			break;
+		}
 	}
 
 	variables.restoreState();

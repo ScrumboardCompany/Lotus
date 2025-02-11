@@ -41,6 +41,8 @@ namespace lotus {
 		FOR,
 		FOREACH,
 		FLAG,
+		CONTINUE,
+		BREAK,
 
 		LPAREN,
 		RPAREN,

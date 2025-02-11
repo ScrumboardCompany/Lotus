@@ -1,4 +1,6 @@
 #include "parser/statement/forEachStatement.h"
+#include "parser/statement/continueStatement.h"
+#include "parser/statement/breakStatement.h"
 #include "utils/utils.h"
 #include "structures/variables.h"
 #include "parser/value/intValue.h"
@@ -16,7 +18,15 @@ void lotus::ForEachStatement::execute() {
 
     for (int i = 0; i < evaled->size()->asInt(); i++) {
         variables.set(name, evaled->index(INT(i)));
-        body->execute();
+		try {
+			body->execute();
+		}
+		catch (const ContinueStatement&) {
+			continue;
+		}
+		catch (const BreakStatement&) {
+			break;
+		}
     }
 
     variables.restoreState();

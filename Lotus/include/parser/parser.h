@@ -49,6 +49,10 @@ namespace lotus {
 
 		Statement handleFlagStatement();
 
+		Statement handleContinueStatement();
+
+		Statement handleBreakStatement();
+
 		Statement handleBlockStatement();
 
 		std::vector<Expression> handleCommas();

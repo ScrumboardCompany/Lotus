@@ -44,6 +44,12 @@ Statement lotus::Parser::getNextStatement() {
 	else if (match(TokenType::FLAG)) {
 		statement = handleFlagStatement();
 	}
+	else if (match(TokenType::CONTINUE)) {
+		statement = handleContinueStatement();
+	}
+	else if (match(TokenType::BREAK)) {
+		statement = handleBreakStatement();
+	}
 	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
 		statement = handleImportStatement();
 	}

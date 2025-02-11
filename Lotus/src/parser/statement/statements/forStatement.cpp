@@ -1,4 +1,6 @@
 #include "parser/statement/forStatement.h"
+#include "parser/statement/continueStatement.h"
+#include "parser/statement/breakStatement.h"
 #include "utils/utils.h"
 #include "structures/variables.h"
 
@@ -12,9 +14,21 @@ void lotus::ForStatement::execute() {
 
     for (auto& declare : declaringPart) declare->eval();
 
-    while (callAllExpressionsAndReturnLastValue(conditionPart)->asBool()) {
-        body->execute();
+    auto performAction = [&]() {
         for (auto& action : actionPart) action->eval();
+        };
+
+    while (callAllExpressionsAndReturnLastValue(conditionPart)->asBool()) {
+
+        try {
+            body->execute();
+            performAction();
+        } catch (const ContinueStatement&) {
+            performAction();
+            continue;
+        } catch (const BreakStatement&) {
+            break;
+        }
     }
 
     variables.restoreState();

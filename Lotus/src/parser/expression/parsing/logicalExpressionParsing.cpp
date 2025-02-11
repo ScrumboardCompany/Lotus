@@ -33,7 +33,7 @@ Expression lotus::Parser::equality() {
 	Expression result = conditional();
 
 	while (true) {
-		if (match(TokenType::EQUAL)) {
+		if (match(TokenType::EQUALEQUAL)) {
 			result = MAKE_PTR<LogicalExpression>(result, conditional(), LogicalOperationType::EQUALITY);
 			continue;
 		}

@@ -7,6 +7,8 @@
 #include "utils/lotusError.h"
 #include "parser/expression/expresion.h"
 #include "parser/statement/statement.h"
+#include "parser/statement/continueStatement.h"
+#include "parser/statement/breakStatement.h"
 #include "utils/utils.h"
 
 int main() {
@@ -32,6 +34,12 @@ int main() {
     }
     catch (const std::exception& e) {
         std::cout << e.what();
+    }
+    catch (const lotus::ContinueStatement&) {
+        throw lotus::LotusException(STRING_LITERAL("No continue processing found"));
+    }
+    catch (const lotus::BreakStatement&) {
+        throw lotus::LotusException(STRING_LITERAL("No break processing found"));
     }
 
     return 0;
