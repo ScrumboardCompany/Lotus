@@ -10,16 +10,18 @@
 namespace lotus {
 
 	class Functions;
+	class Variables;
 
 	class DefStatement : public IStatement {
 		String name;
 		Functions& functions;
+		Variables& variables;
 
 		Statement body;
 
 	public:
 
-		DefStatement(const String& name, Functions& functions, const Statement& body);
+		DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body);
 		void execute() override;
 	};
 

@@ -35,17 +35,3 @@ Function Functions::get(const String& name) {
 bool Functions::isExists(const String& name) {
 	return functions.find(name) != functions.end();
 }
-
-void lotus::Functions::saveState() {
-	savedStates.push(functions);
-}
-
-void lotus::Functions::restoreState() {
-	if (!savedStates.empty()) {
-		functions = savedStates.top();
-		savedStates.pop();
-	}
-	else {
-		throw LotusException(STRING_LITERAL("No saved state to restore"));
-	}
-}

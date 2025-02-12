@@ -8,14 +8,10 @@
 #include "parser/value/undefinedValue.h"
 #include "parser/function/function.h"
 
-#include <stack>
-
 namespace lotus {
 
 	class Functions {
 		StringMap<Function> functions;
-		std::stack<StringMap<Function>> savedStates;
-		friend class ImportStatement;
 
 	public:
 		Functions() = default;
@@ -29,9 +25,6 @@ namespace lotus {
 		Function get(const String& name);
 
 		bool isExists(const String& name);
-
-		void saveState();
-		void restoreState();
 	};
 
 }

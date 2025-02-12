@@ -4,18 +4,18 @@
 
 using namespace lotus;
 
-Function::Function(const Statement& body) : body(body) {}
+Function::Function(const Statement& body, Variables* variables) : body(body), variables(variables) {}
 
 Value Function::call() {
-	variables.saveState();
+	variables->saveState();
 
 	try {
 		body->execute();
-		variables.restoreState();
+		variables->restoreState();
 		return UNDEFINED();
 	}
 	catch (const Expression& returnValue) {
-		variables.restoreState();
+		variables->restoreState();
 		return returnValue->eval();
 	}
 

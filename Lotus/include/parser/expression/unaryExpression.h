@@ -10,7 +10,11 @@ namespace lotus {
 	enum class UnaryOperationType {
 		PLUS,
 		MINUS,
-		NOT
+		NOT,
+		PREFIXINCREMENT,
+		POSTFIXINCREMENT,
+		PREFIXDECREMENT,
+		POSTFIXDECREMENT
 	};
 
 	class UnaryExpression : public IExpression {

@@ -78,6 +78,16 @@ Value lotus::StringValue::logicalAnd(const Value& other) {
     return BOOL(asBool() && other->asBool());
 }
 
+Value lotus::StringValue::addSet(const Value& other) {
+    value = add(other)->asString();
+    return STRING(value);
+}
+
+Value lotus::StringValue::multiplySet(const Value& other) {
+    value = multiply(other)->asString();
+    return STRING(value);
+}
+
 Value& lotus::StringValue::index(const Value& index) {
     checkThrowIndexError(index, value.size());
     tempRef = MAKE_PTR<StringCharReference>(*this, index->asInt());

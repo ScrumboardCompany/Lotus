@@ -32,9 +32,18 @@ namespace lotus {
 		virtual Value logicalOr(const Value& other);
 		virtual Value logicalAnd(const Value& other);
 
+		virtual Value addSet(const Value& other);
+		virtual Value substractSet(const Value& other);
+		virtual Value multiplySet(const Value& other);
+		virtual Value divideSet(const Value& other);
+
 		virtual Value unaryPlus();
 		virtual Value unaryMinus();
 		virtual Value unaryNot();
+		virtual Value prefixIncrement();
+		virtual Value postfixIncrement();
+		virtual Value prefixDecrement();
+		virtual Value postfixDecrement();
 
 		virtual Value& index(const Value& index);
 		virtual Value size();

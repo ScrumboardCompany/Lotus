@@ -24,7 +24,7 @@ void Variables::set(const String& name, const Value& value) {
 	}
 }
 
-Value lotus::Variables::get(const String& name) {
+Value& lotus::Variables::get(const String& name) {
 	if (isExists(name)) {
 		return variables[name];
 	}

@@ -67,6 +67,22 @@ Value lotus::IValue::logicalAnd(const Value& other) {
     throwOverloadError(STRING_LITERAL("logicalAnd"), getType());
 }
 
+Value lotus::IValue::addSet(const Value& other) {
+    throwOverloadError(STRING_LITERAL("addSet"), getType());
+}
+
+Value lotus::IValue::substractSet(const Value& other) {
+    throwOverloadError(STRING_LITERAL("v"), getType());
+}
+
+Value lotus::IValue::multiplySet(const Value& other) {
+    throwOverloadError(STRING_LITERAL("multiplySet"), getType());
+}
+
+Value lotus::IValue::divideSet(const Value& other) {
+    throwOverloadError(STRING_LITERAL("divideSet"), getType());
+}
+
 Value lotus::IValue::unaryPlus() {
     throwOverloadError(STRING_LITERAL("unaryPlus"), getType());
 }
@@ -77,6 +93,22 @@ Value lotus::IValue::unaryMinus() {
 
 Value lotus::IValue::unaryNot() {
     throwOverloadError(STRING_LITERAL("unaryNot"), getType());
+}
+
+Value lotus::IValue::prefixIncrement() {
+    throwOverloadError(STRING_LITERAL("prefixIncrement"), getType());
+}
+
+Value lotus::IValue::postfixIncrement() {
+    throwOverloadError(STRING_LITERAL("postfixIncrement"), getType());
+}
+
+Value lotus::IValue::prefixDecrement() {
+    throwOverloadError(STRING_LITERAL("prefixDecrement"), getType());
+}
+
+Value lotus::IValue::postfixDecrement() {
+    throwOverloadError(STRING_LITERAL("postfixDecrement"), getType());
 }
 
 Value& lotus::IValue::index(const Value& index) {

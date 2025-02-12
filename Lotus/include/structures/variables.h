@@ -25,7 +25,7 @@ namespace lotus {
 
 		void set(const String& name, const Value& value);
 
-		Value get(const String& name);
+		Value& get(const String& name);
 
 		bool isExists(const String& name);
 

@@ -90,6 +90,26 @@ Value lotus::IntValue::logicalAnd(const Value& other) {
     return BOOL(asBool() && other->asBool());
 }
 
+Value lotus::IntValue::addSet(const Value& other) {
+    value = add(other)->asInt();
+    return INT(value);
+}
+
+Value lotus::IntValue::substractSet(const Value& other) {
+    value = substract(other)->asInt();
+    return INT(value);
+}
+
+Value lotus::IntValue::multiplySet(const Value& other) {
+    value = multiply(other)->asInt();
+    return INT(value);
+}
+
+Value lotus::IntValue::divideSet(const Value& other) {
+    value = divide(other)->asInt();
+    return INT(value);
+}
+
 Value lotus::IntValue::unaryPlus() {
 	return INT(+value);
 }
@@ -100,6 +120,22 @@ Value lotus::IntValue::unaryMinus() {
 
 Value lotus::IntValue::unaryNot() {
     return BOOL(!value);
+}
+
+Value lotus::IntValue::prefixIncrement() {
+    return INT(++value);
+}
+
+Value lotus::IntValue::postfixIncrement() {
+    return INT(value++);
+}
+
+Value lotus::IntValue::prefixDecrement() {
+    return INT(--value);
+}
+
+Value lotus::IntValue::postfixDecrement() {
+    return INT(value--);
 }
 
 Value lotus::IntValue::size() {

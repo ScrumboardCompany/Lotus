@@ -1,4 +1,5 @@
 #include "parser/expression/unaryExpression.h"
+#include "utils/lotusError.h"
 
 using namespace lotus;
 
@@ -17,8 +18,21 @@ Value lotus::UnaryExpression::eval() {
 		break;
 	case lotus::UnaryOperationType::NOT:
 		result = expression->eval()->unaryNot();
-	default:
 		break;
+	case lotus::UnaryOperationType::PREFIXINCREMENT:
+		result = expression->eval()->prefixIncrement();
+		break;
+	case lotus::UnaryOperationType::POSTFIXINCREMENT:
+		result = expression->eval()->postfixIncrement();
+		break;
+	case lotus::UnaryOperationType::PREFIXDECREMENT:
+		result = expression->eval()->prefixDecrement();
+		break;
+	case lotus::UnaryOperationType::POSTFIXDECREMENT:
+		result = expression->eval()->postfixDecrement();
+		break;
+	default:
+		throw LotusException(STRING_LITERAL("Undefined unary operation"));
 	}
 
 	return result;

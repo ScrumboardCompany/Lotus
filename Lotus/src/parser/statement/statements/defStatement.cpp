@@ -6,11 +6,11 @@
 
 using namespace lotus;
 
-lotus::DefStatement::DefStatement(const String& name, Functions& functions, const Statement& body) : name(name), functions(functions), body(body) {}
+lotus::DefStatement::DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body) : name(name), functions(functions), variables(variables), body(body) {}
 
 void lotus::DefStatement::execute() {
 
-	Function function(body);
+	Function function(body, &variables);
 
 	functions.declare(name, function);
 

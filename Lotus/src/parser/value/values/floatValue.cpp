@@ -77,6 +77,26 @@ Value lotus::FloatValue::logicalAnd(const Value& other) {
 	return BOOL(asBool() && other->asBool());
 }
 
+Value lotus::FloatValue::addSet(const Value& other) {
+	value = add(other)->asDouble();
+	return FLOAT(value);
+}
+
+Value lotus::FloatValue::substractSet(const Value& other) {
+	value = substract(other)->asDouble();
+	return FLOAT(value);
+}
+
+Value lotus::FloatValue::multiplySet(const Value& other) {
+	value = multiply(other)->asDouble();
+	return FLOAT(value);
+}
+
+Value lotus::FloatValue::divideSet(const Value& other) {
+	value = divide(other)->asDouble();
+	return FLOAT(value);
+}
+
 Value lotus::FloatValue::unaryPlus() {
 	return FLOAT(+value);
 }
@@ -89,16 +109,18 @@ Value lotus::FloatValue::unaryNot() {
 	return BOOL(!value);
 }
 
-Value lotus::FloatValue::size() {
-	if (value == 0)
-		return FLOAT(1);
+Value lotus::FloatValue::prefixIncrement() {
+	return FLOAT(++value);
+}
 
-	int count = 0;
+Value lotus::FloatValue::postfixIncrement() {
+	return FLOAT(value++);
+}
 
-	while (value != 0) {
-		value = value / 10;
-		++count;
-	}
+Value lotus::FloatValue::prefixDecrement() {
+	return FLOAT(--value);
+}
 
-	return FLOAT(count);
+Value lotus::FloatValue::postfixDecrement() {
+	return FLOAT(value--);
 }
