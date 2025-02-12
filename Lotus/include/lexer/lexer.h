@@ -54,6 +54,8 @@ namespace lotus {
 			{STRING_LITERAL("flag"), TokenType::FLAG},
 			{STRING_LITERAL("continue"), TokenType::CONTINUE},
 			{STRING_LITERAL("break"), TokenType::BREAK},
+			{STRING_LITERAL("return"), TokenType::RETURN},
+			{STRING_LITERAL("def"), TokenType::DEF},
 		};
 
 		String input;

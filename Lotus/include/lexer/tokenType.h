@@ -43,6 +43,8 @@ namespace lotus {
 		FLAG,
 		CONTINUE,
 		BREAK,
+		RETURN,
+		DEF,
 
 		LPAREN,
 		RPAREN,

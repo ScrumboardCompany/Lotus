@@ -50,6 +50,12 @@ Statement lotus::Parser::getNextStatement() {
 	else if (match(TokenType::BREAK)) {
 		statement = handleBreakStatement();
 	}
+	else if (match(TokenType::RETURN)) {
+		statement = handleReturnStatement();
+	}
+	else if (match(TokenType::DEF)) {
+		statement = handleDefStatement();
+	}
 	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
 		statement = handleImportStatement();
 	}
