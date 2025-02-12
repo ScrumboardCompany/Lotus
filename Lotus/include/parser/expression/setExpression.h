@@ -8,13 +8,23 @@
 
 namespace lotus {
 
+	enum class SetOperationType {
+		SET,
+		ADDSET,
+		SUBSTRACTSET,
+		MULTIPLYSET,
+		DIVIDESET
+	};
+
 	class SetExpression : public IExpression {
 
 		Expression expression1;
 		Expression expression2;
 
+		SetOperationType operation;
+
 	public:
-		SetExpression(const Expression& expression1, const Expression& expression2);
+		SetExpression(const Expression& expression1, const Expression& expression2, const SetOperationType& operation);
 
 		Value eval() override;
 	};

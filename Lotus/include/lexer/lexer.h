@@ -38,6 +38,12 @@ namespace lotus {
 			{STRING_LITERAL("<<"), TokenType::LESSLESS},
 			{STRING_LITERAL(">>"), TokenType::GREATERGREATER},
 			{STRING_LITERAL("<<<"), TokenType::LESSLESSLESS},
+			{STRING_LITERAL("+="), TokenType::PLUSEQUAL},
+			{STRING_LITERAL("-="), TokenType::MINUSQUAL},
+			{STRING_LITERAL("*="), TokenType::STARQUAL},
+			{STRING_LITERAL("/="), TokenType::SLASHQUAL},
+			{STRING_LITERAL("++"), TokenType::PLUSPLUS},
+			{STRING_LITERAL("--"), TokenType::MINUSMINUS},
 		};
 
 		StringMap<TokenType> keywords = {

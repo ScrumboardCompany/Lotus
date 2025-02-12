@@ -35,9 +35,18 @@ namespace lotus {
 		Value logicalOr(const Value& other) override;
 		Value logicalAnd(const Value& other) override;
 
+		Value addSet(const Value& other) override;
+		Value substractSet(const Value& other) override;
+		Value multiplySet(const Value& other) override;
+		Value divideSet(const Value& other) override;
+
 		Value unaryPlus() override;
 		Value unaryMinus() override;
 		Value unaryNot() override;
+		Value prefixIncrement() override;
+		Value postfixIncrement() override;
+		Value prefixDecrement() override;
+		Value postfixDecrement() override;
 
 		Value size() override;
 	};

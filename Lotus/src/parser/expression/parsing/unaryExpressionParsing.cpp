@@ -2,6 +2,7 @@
 #include "parser/expression/unaryExpression.h"
 #include "parser/expression/indexExpression.h"
 #include "parser/expression/setExpression.h"
+#include "parser/expression/arithmeticExpression.h"
 
 using namespace lotus;
 
@@ -18,6 +19,12 @@ Expression lotus::Parser::unary() {
         }
         else if (match(TokenType::NOT)) {
             operations.push_back(UnaryOperationType::NOT);
+        }
+        else if (match(TokenType::PLUSPLUS)) {
+            operations.push_back(UnaryOperationType::PREFIXINCREMENT);
+        }
+        else if (match(TokenType::MINUSMINUS)) {
+            operations.push_back(UnaryOperationType::PREFIXDECREMENT);
         }
         else {
             break;
@@ -36,11 +43,29 @@ Expression lotus::Parser::unary() {
 			consume(TokenType::RBRACKET);
 			result = MAKE_PTR<IndexExpression>(result, index);
 		}
+        else if (match(TokenType::PLUSPLUS)) {
+            result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXINCREMENT);
+        }
+        else if (match(TokenType::MINUSMINUS)) {
+            result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXDECREMENT);
+        }
 		else break;
 	}
 
     if (match(TokenType::EQUAL)) {
-        result = MAKE_PTR<SetExpression>(result, expression());
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::SET);
+    }
+    else if (match(TokenType::PLUSEQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::ADDSET);
+    }
+    else if (match(TokenType::MINUSQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::SUBSTRACTSET);
+    }
+    else if (match(TokenType::STARQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::MULTIPLYSET);
+    }
+    else if (match(TokenType::SLASHQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::DIVIDESET);
     }
 
 	return result;

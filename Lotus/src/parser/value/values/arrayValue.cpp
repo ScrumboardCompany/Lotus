@@ -38,7 +38,13 @@ Value lotus::ArrayValue::add(const Value& other) {
         return ARRAY(newElements);
     }
     throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
-    return Value();
+}
+
+Value lotus::ArrayValue::addSet(const Value& other) {
+    if (auto arr = std::dynamic_pointer_cast<ArrayValue>(add(other))) {
+        elements = arr->elements;
+    }
+    return ARRAY(elements);
 }
 
 Value& lotus::ArrayValue::index(const Value& index) {

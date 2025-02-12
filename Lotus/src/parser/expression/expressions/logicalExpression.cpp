@@ -1,4 +1,5 @@
 #include "parser/expression/logicalExpression.h"
+#include "utils/lotusError.h"
 
 using namespace lotus;
 
@@ -37,8 +38,9 @@ Value lotus::LogicalExpression::eval() {
 		break;
 	case lotus::LogicalOperationType::AND:
 		result = value1->logicalAnd(value2);
-	default:
 		break;
+	default:
+		throw LotusException(STRING_LITERAL("Undefined logical operation"));
 	}
 
 	return result;

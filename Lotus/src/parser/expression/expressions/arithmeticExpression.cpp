@@ -1,4 +1,5 @@
 #include "parser/expression/arithmeticExpression.h"
+#include "utils/lotusError.h"
 
 using namespace lotus;
 
@@ -23,8 +24,9 @@ Value lotus::ArithmeticExpression::eval() {
 		break;
 	case lotus::ArithmeticOperationType::DIVIDE:
 		result = value1->divide(value2);
-	default:
 		break;
+	default:
+		throw LotusException(STRING_LITERAL("Undefined arithmetic operation"));
 	}
 
 	return result;
