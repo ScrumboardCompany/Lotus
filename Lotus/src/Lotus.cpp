@@ -41,7 +41,7 @@ int main() {
     catch (const lotus::BreakStatement&) {
         throw lotus::LotusException(STRING_LITERAL("No break processing found"));
     }
-    catch (const lotus::Expression&) {
+    catch (const lotus::Value&) {
         throw lotus::LotusException(STRING_LITERAL("No return processing found"));
     }
 

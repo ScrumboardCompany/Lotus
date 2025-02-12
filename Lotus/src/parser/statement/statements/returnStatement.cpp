@@ -6,5 +6,5 @@ using namespace lotus;
 lotus::ReturnStatement::ReturnStatement(const Expression& expr) : expr(expr) {}
 
 void lotus::ReturnStatement::execute() {
-	throw expr;
+	throw expr->eval();
 }

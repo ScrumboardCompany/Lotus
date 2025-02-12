@@ -12,9 +12,10 @@ namespace lotus {
 	class FunctionExpression : public IExpression {
 		String name;
 		Functions& functions;
+		std::vector<Expression> args;
 
 	public:
-		FunctionExpression(const String& name, Functions& functions);
+		FunctionExpression(const String& name, Functions& functions, std::vector<Expression> args);
 
 		Value eval() override;
 	};

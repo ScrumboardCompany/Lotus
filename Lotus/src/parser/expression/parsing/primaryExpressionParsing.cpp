@@ -28,9 +28,11 @@ Expression lotus::Parser::primary() {
 
 		if (match(TokenType::LPAREN)) {
 
+			std::vector<Expression> args = handleCommas();
+
 			consume(TokenType::RPAREN);
 
-			return MAKE_PTR<FunctionExpression>(CurrentToken.text, functions);
+			return MAKE_PTR<FunctionExpression>(CurrentToken.text, functions, args);
 		}
 		else {
 			return MAKE_PTR<VariableExpression>(CurrentToken.text, variables);

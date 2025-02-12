@@ -16,12 +16,13 @@ namespace lotus {
 		String name;
 		Functions& functions;
 		Variables& variables;
+		std::vector<String> args;
 
 		Statement body;
 
 	public:
 
-		DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body);
+		DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body, std::vector<String> args);
 		void execute() override;
 	};
 

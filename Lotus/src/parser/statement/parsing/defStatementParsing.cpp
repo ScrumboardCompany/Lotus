@@ -8,9 +8,19 @@ Statement lotus::Parser::handleDefStatement() {
 
 	consume(TokenType::LPAREN);
 
+	std::vector<String> args;
+
+	while (true) {
+		args.push_back(consume(TokenType::WORD).text);
+
+		if (!match(TokenType::COMMA)) {
+			break;
+		}
+	}
+
 	consume(TokenType::RPAREN);
 
 	Statement body = handleBlockStatement();
 
-	return MAKE_PTR<DefStatement>(name, functions, variables, body);
+	return MAKE_PTR<DefStatement>(name, functions, variables, body, args);
 }
