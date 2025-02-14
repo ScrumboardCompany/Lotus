@@ -13,6 +13,8 @@ namespace lotus {
 	class Functions {
 		StringMap<Function> functions;
 
+		friend class ImportStatement;
+
 	public:
 		Functions() = default;
 
@@ -23,6 +25,8 @@ namespace lotus {
 		void set(const String& name, const Function& value);
 
 		Function get(const String& name);
+
+		Value call(const String& name, const std::vector<Value>& args, Variables& variables);
 
 		bool isExists(const String& name);
 	};

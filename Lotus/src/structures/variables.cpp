@@ -32,6 +32,10 @@ Value& lotus::Variables::get(const String& name) {
 	throw LotusException(STRING_LITERAL("Undefined variable \"") + name + STRING_LITERAL("\""));
 }
 
+Value& lotus::Variables::get(const char* name) {
+	return get(STRING_VAR_LITERAL(name));
+}
+
 bool lotus::Variables::isExists(const String& name) {
 	return variables.find(name) != variables.end();
 }

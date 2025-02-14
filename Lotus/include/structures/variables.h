@@ -27,6 +27,8 @@ namespace lotus {
 
 		Value& get(const String& name);
 
+		Value& get(const char* name);
+
 		bool isExists(const String& name);
 
 		void saveState();

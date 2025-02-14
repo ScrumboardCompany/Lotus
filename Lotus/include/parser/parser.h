@@ -10,6 +10,7 @@
 #include "structures/variables.h"
 #include "structures/functions.h"
 #include "structures/flags.h"
+#include "structures/module.h"
 
 #define EOF_TOKEN lotus::Token({ lotus::TokenType::END_OF_FILE, STRING_LITERAL("")})
 
@@ -19,9 +20,9 @@ namespace lotus {
 		std::vector<Token> tokens;
 		size_t pos;
 
-		Variables variables;
+		Module module;
 
-		Functions functions;
+		StringMap<Module> modules;
 
 		Flags flags;
 
@@ -31,6 +32,8 @@ namespace lotus {
 		Parser(const std::list<Token>& tokens);
 
 		std::vector<Statement> parse();
+
+		Module getModule() const;
 
 	private:
 

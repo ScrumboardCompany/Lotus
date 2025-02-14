@@ -32,10 +32,10 @@ Expression lotus::Parser::primary() {
 
 			consume(TokenType::RPAREN);
 
-			return MAKE_PTR<FunctionExpression>(CurrentToken.text, functions, args);
+			return MAKE_PTR<FunctionExpression>(CurrentToken.text, module.functions, module.variables, args);
 		}
 		else {
-			return MAKE_PTR<VariableExpression>(CurrentToken.text, variables);
+			return MAKE_PTR<VariableExpression>(CurrentToken.text, module.variables);
 		}
 		
 	}

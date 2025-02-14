@@ -1,5 +1,4 @@
 #include "parser/parser.h"
-#include "parser/statement/flagStatement.h"
 #include "utils/lotusError.h"
 
 using namespace lotus;
@@ -19,5 +18,6 @@ Statement Parser::handleFlagStatement() {
 		throw LotusException(STRING_LITERAL("Required true or false"));
 	}
 
-	return MAKE_PTR<FlagStatement>(flag, value, flags);
+	flags.set(flag, value);
+	return nullptr;
 }

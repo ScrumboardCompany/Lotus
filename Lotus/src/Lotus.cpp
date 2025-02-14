@@ -23,10 +23,12 @@ int main() {
         }*/
         lotus::Parser parser(tokens);
 
-        auto parseds = parser.parse();
+        auto statements = parser.parse();
 
-        for (auto& parsed : parseds) {
-            parsed->execute();
+        for (auto& statement : statements) {
+            if (statement) {
+                statement->execute();
+            }
         }
     }
     catch (const lotus::LotusException& e) {

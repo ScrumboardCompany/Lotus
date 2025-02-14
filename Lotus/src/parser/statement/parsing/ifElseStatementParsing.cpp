@@ -18,5 +18,5 @@ Statement lotus::Parser::handleIfElseStatement() {
 		elseBody = handleBlockStatement();
 	}
 
-	return MAKE_PTR<IfElseStatement>(conditionPart, ifBody, elseBody, variables);
+	return MAKE_PTR<IfElseStatement>(conditionPart, ifBody, elseBody, module.variables);
 }

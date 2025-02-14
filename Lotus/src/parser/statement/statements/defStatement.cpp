@@ -11,7 +11,7 @@ lotus::DefStatement::DefStatement(const String& name, Functions& functions, Vari
 
 void lotus::DefStatement::execute() {
 
-	Function function(body, &variables, args);
+	Function function(body, args);
 
 	functions.declare(name, function);
 

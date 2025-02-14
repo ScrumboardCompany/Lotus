@@ -11,5 +11,5 @@ Expression lotus::Parser::handleLetExpression() {
 		value = expression();
 	}
 
-	return MAKE_PTR<LetExpression>(name, value, variables);
+	return MAKE_PTR<LetExpression>(name, value, module.variables);
 }

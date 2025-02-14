@@ -2,9 +2,6 @@
 
 #ifndef _BLOCKSTATEMENT_
 #define _BLOCKSTATEMENT_
-
-#include "utils/lotusTypes.h"
-#include "utils/lotusDefines.h"
 #include "parser/statement/statement.h"
 
 namespace lotus {

@@ -2,6 +2,11 @@
 #include "utils/lotusError.h"
 #include "parser/expression/expresion.h"
 #include "parser/statement/expressionStatement.h"
+#include "parser/value/floatValue.h"
+#include "parser/statement/cppFunctionStatement.h"
+#include <iostream>
+
+#include <cmath>
 
 using namespace lotus;
 
@@ -10,6 +15,16 @@ lotus::Parser::Parser(const std::list<Token>& tokens) : pos(0) {
 	for (auto& token : tokens) {
 		this->tokens.push_back(token);
 	}
+
+	Module mathModule;
+
+	mathModule.LET("PI", FLOAT(3.1415));
+
+	mathModule.DEF("pow", [](Variables& variables) {
+		RETURN_VALUE(FLOAT(std::pow(variables.get("x")->asDouble(), variables.get("y")->asDouble())));
+		}, "x", "y");
+
+	modules.emplace(STRING_LITERAL("math"), mathModule);
 }
 
 std::vector<Statement> lotus::Parser::parse() {
@@ -18,6 +33,10 @@ std::vector<Statement> lotus::Parser::parse() {
 		statements.push_back(getNextStatement());
 	}
 	return statements;
+}
+
+Module lotus::Parser::getModule() const {
+	return module;
 }
 
 Statement lotus::Parser::getNextStatement() {

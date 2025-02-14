@@ -4,8 +4,8 @@
 
 using namespace lotus;
 
-lotus::FunctionExpression::FunctionExpression(const String& name, Functions& functions, std::vector<Expression> args)
-	: name(name), functions(functions), args(args) {
+lotus::FunctionExpression::FunctionExpression(const String& name, Functions& functions, Variables& variables, const std::vector<Expression>& args)
+	: name(name), functions(functions), variables(variables), args(args) {
 }
 
 Value lotus::FunctionExpression::eval() {
@@ -17,5 +17,5 @@ Value lotus::FunctionExpression::eval() {
 		values.push_back(arg->eval());
 	}
 
-	return functions.get(name).call(values);
+	return functions.call(name, values, variables);
 }

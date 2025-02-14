@@ -3,8 +3,6 @@
 #ifndef _IFELSESTATEMENT_
 #define _IFELSESTATEMENT_
 
-#include "utils/lotusTypes.h"
-#include "utils/lotusDefines.h"
 #include "parser/statement/statement.h"
 
 namespace lotus {

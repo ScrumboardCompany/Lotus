@@ -12,14 +12,15 @@ namespace lotus {
 
 	class Function {
 		Statement body;
-		Variables* variables;
 		std::vector<String> args;
 
 	public:
-		Function(const Statement& body, Variables* variables, const std::vector<String>& args);
+		Function(const Statement& body, const std::vector<String>& args);
+		Function(const Statement& body, const std::vector<const char*>& args, int);
+
 		Function() = default;
 		~Function() = default;
-		Value call(const std::vector<Value>& args);
+		Value call(const std::vector<Value>& args, Variables& variables);
 	};
 
 }
