@@ -53,6 +53,7 @@ namespace lotus {
 		virtual ~IValue() = default;
 
 		friend class StructStatement;
+		friend class ObjectExpression;
 
 	protected:
 

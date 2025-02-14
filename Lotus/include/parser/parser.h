@@ -41,8 +41,6 @@ namespace lotus {
 
 		Statement getNextStatement();
 
-		Statement handlePrintStatement();
-
 		Expression handleLetExpression();
 
 		Statement handleIfElseStatement();
@@ -70,6 +68,8 @@ namespace lotus {
 		Statement handleStructStatement();
 
 		std::vector<Expression> handleCommas();
+
+		StringMap<Expression> handleFields();
 
 		Expression expression();
 

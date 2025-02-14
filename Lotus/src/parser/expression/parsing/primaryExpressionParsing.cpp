@@ -9,6 +9,7 @@
 #include "parser/expression/arrayExpression.h"
 #include "parser/expression/functionExpression.h"
 #include "parser/expression/fieldExpression.h"
+#include "parser/expression/objectExpression.h"
 
 using namespace lotus;
 
@@ -65,6 +66,9 @@ Expression lotus::Parser::primary() {
 		Expression result = expression();
 		match(TokenType::RPAREN);
 		return result;
+	}
+	if (get(0).type == TokenType::LBRACE) {
+		return MAKE_PTR<ObjectExpression>(handleFields());
 	}
 
 	throw LotusException(STRING_LITERAL("Undefined expression"));
