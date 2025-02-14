@@ -37,6 +37,8 @@ namespace lotus {
 
 	private:
 
+		void loadModules();
+
 		Statement getNextStatement();
 
 		Statement handlePrintStatement();
@@ -64,6 +66,8 @@ namespace lotus {
 		Statement handleReturnStatement();
 
 		Statement handleDefStatement();
+
+		Statement handleStructStatement();
 
 		std::vector<Expression> handleCommas();
 

@@ -8,6 +8,7 @@
 #include "parser/expression/boolExpression.h"
 #include "parser/expression/arrayExpression.h"
 #include "parser/expression/functionExpression.h"
+#include "parser/expression/fieldExpression.h"
 
 using namespace lotus;
 
@@ -28,9 +29,13 @@ Expression lotus::Parser::primary() {
 
 		if (match(TokenType::LPAREN)) {
 
-			std::vector<Expression> args = handleCommas();
+			std::vector<Expression> args;
 
-			consume(TokenType::RPAREN);
+			if(!match(TokenType::RPAREN)) {
+				args = handleCommas();
+
+				consume(TokenType::RPAREN);
+			}
 
 			return MAKE_PTR<FunctionExpression>(CurrentToken.text, module.functions, module.variables, args);
 		}

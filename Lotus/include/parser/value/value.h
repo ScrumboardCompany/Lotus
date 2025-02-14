@@ -16,7 +16,8 @@ namespace lotus {
 		virtual bool asBool();
 		virtual String asString();
 
-		virtual String getType() const = 0;
+		String getType() const;
+		virtual Value& getField(const String& name);
 
 		virtual Value add(const Value& other);
 		virtual Value substract(const Value& other);
@@ -47,8 +48,16 @@ namespace lotus {
 
 		virtual Value& index(const Value& index);
 		virtual Value size();
+		virtual Value sizeInRam() = 0;
 
 		virtual ~IValue() = default;
+
+		friend class StructStatement;
+
+	protected:
+
+		StringMap<Value> fields;
+		String type;
 	};
 }
 

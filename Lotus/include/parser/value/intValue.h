@@ -19,8 +19,6 @@ namespace lotus {
 		bool asBool() override;
 		String asString() override;
 
-		String getType() const override;
-
 		Value add(const Value& other) override;
 		Value substract(const Value& other) override;
 		Value multiply(const Value& other) override;
@@ -49,6 +47,7 @@ namespace lotus {
 		Value postfixDecrement() override;
 
 		Value size() override;
+		Value sizeInRam() override;
 	};
 
 }

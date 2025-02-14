@@ -44,10 +44,10 @@ namespace lotus {
 			{STRING_LITERAL("/="), TokenType::SLASHQUAL},
 			{STRING_LITERAL("++"), TokenType::PLUSPLUS},
 			{STRING_LITERAL("--"), TokenType::MINUSMINUS},
+			{STRING_LITERAL("."), TokenType::DOT},
 		};
 
 		StringMap<TokenType> keywords = {
-			{STRING_LITERAL("print"), TokenType::PRINT},
 			{STRING_LITERAL("let"), TokenType::LET},
 			{STRING_LITERAL("if"), TokenType::IF},
 			{STRING_LITERAL("else"), TokenType::ELSE},
@@ -62,6 +62,7 @@ namespace lotus {
 			{STRING_LITERAL("break"), TokenType::BREAK},
 			{STRING_LITERAL("return"), TokenType::RETURN},
 			{STRING_LITERAL("def"), TokenType::DEF},
+			{STRING_LITERAL("struct"), TokenType::STRUCT},
 		};
 
 		String input;

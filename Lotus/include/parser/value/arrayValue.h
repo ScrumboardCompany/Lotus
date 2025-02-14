@@ -16,14 +16,13 @@ namespace lotus {
 
 		String asString() override;
 
-		String getType() const override;
-
 		Value add(const Value& other) override;
 
 		Value addSet(const Value& other) override;
 
 		Value& index(const Value& index) override;
 		Value size() override;
+		Value sizeInRam() override;
 	};
 
 }

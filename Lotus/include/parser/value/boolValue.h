@@ -19,8 +19,6 @@ namespace lotus {
 		bool asBool() override;
 		String asString() override;
 
-		String getType() const override;
-
 		Value add(const Value& other) override;
 		Value substract(const Value& other) override;
 		Value multiply(const Value& other) override;
@@ -38,6 +36,8 @@ namespace lotus {
 		Value unaryPlus() override;
 		Value unaryMinus() override;
 		Value unaryNot() override;
+
+		Value sizeInRam() override;
 	};
 
 }

@@ -35,8 +35,8 @@ namespace lotus {
 		SLASHQUAL,
 		PLUSPLUS,
 		MINUSMINUS,
+		DOT,
 
-		PRINT,
 		LET,
 		IF,
 		ELSE,
@@ -51,6 +51,7 @@ namespace lotus {
 		BREAK,
 		RETURN,
 		DEF,
+		STRUCT,
 
 		LPAREN,
 		RPAREN,

@@ -11,7 +11,7 @@ namespace lotus {
 		std::vector<Expression> elements;
 
 	public:
-		ArrayExpression(std::vector<Expression> elements);
+		ArrayExpression(const std::vector<Expression>& elements);
 
 		Value eval() override;
 	};

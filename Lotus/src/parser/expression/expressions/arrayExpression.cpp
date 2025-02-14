@@ -3,7 +3,7 @@
 
 using namespace lotus;
 
-lotus::ArrayExpression::ArrayExpression(std::vector<Expression> elements) : elements(elements) {}
+lotus::ArrayExpression::ArrayExpression(const std::vector<Expression>& elements) : elements(elements) {}
 
 Value lotus::ArrayExpression::eval() {
 	std::vector<Value> values;

@@ -16,15 +16,18 @@ lotus::Parser::Parser(const std::list<Token>& tokens) : pos(0) {
 		this->tokens.push_back(token);
 	}
 
-	Module mathModule;
+	//Module mathModule;
 
-	mathModule.LET("PI", FLOAT(3.1415));
+	//mathModule.LET("PI", FLOAT(3.1415));
 
-	mathModule.DEF("pow", [](Variables& variables) {
-		RETURN_VALUE(FLOAT(std::pow(variables.get("x")->asDouble(), variables.get("y")->asDouble())));
-		}, "x", "y");
+	//mathModule.DEF("pow", [](Variables& variables) {
+	//	RETURN_VALUE(FLOAT(std::pow(variables.get("x")->asDouble(), variables.get("y")->asDouble())));
+	//	}, "x", "y");
 
-	modules.emplace(STRING_LITERAL("math"), mathModule);
+	//modules.emplace(STRING_LITERAL("math"), mathModule);
+
+
+	loadModules();
 }
 
 std::vector<Statement> lotus::Parser::parse() {
@@ -42,10 +45,7 @@ Module lotus::Parser::getModule() const {
 Statement lotus::Parser::getNextStatement() {
 	Statement statement;
 
-	if (match(TokenType::PRINT)) {
-		statement = handlePrintStatement();
-	}
-	else if (match(TokenType::IF)) {
+	if (match(TokenType::IF)) {
 		statement = handleIfElseStatement();
 	}
 	else if (match(TokenType::ELSE)) {
@@ -74,6 +74,9 @@ Statement lotus::Parser::getNextStatement() {
 	}
 	else if (match(TokenType::DEF)) {
 		statement = handleDefStatement();
+	}
+	else if (match(TokenType::STRUCT)) {
+		statement = handleStructStatement();
 	}
 	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
 		statement = handleImportStatement();

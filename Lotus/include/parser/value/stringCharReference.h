@@ -18,9 +18,8 @@ namespace lotus {
 
         String asString() override;
 
-        String getType() const override;
-
         StringCharReference& set(const Value& other);
+        Value sizeInRam() override;
     };
 
 }

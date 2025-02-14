@@ -1,6 +1,7 @@
 #include "parser/parser.h"
 #include "parser/expression/unaryExpression.h"
 #include "parser/expression/indexExpression.h"
+#include "parser/expression/fieldExpression.h"
 #include "parser/expression/setExpression.h"
 #include "parser/expression/arithmeticExpression.h"
 
@@ -48,6 +49,10 @@ Expression lotus::Parser::unary() {
         }
         else if (match(TokenType::MINUSMINUS)) {
             result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXDECREMENT);
+        }
+        else if (match(TokenType::DOT)) {
+            String name = consume(TokenType::WORD).text;
+            result = MAKE_PTR<FieldExpression>(result, name);
         }
 		else break;
 	}

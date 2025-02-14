@@ -1,8 +1,13 @@
 #include "parser/value/undefinedValue.h"
 #include "parser/value/boolValue.h"
+#include "parser/value/intValue.h"
 #include "utils/lotusError.h"
 
 using namespace lotus;
+
+lotus::UndefinedValue::UndefinedValue() {
+    type = STRING_LITERAL("undefined");
+}
 
 int lotus::UndefinedValue::asInt() {
     return -1;
@@ -20,6 +25,6 @@ String lotus::UndefinedValue::asString() {
     return STRING_LITERAL("undefined");
 }
 
-String lotus::UndefinedValue::getType() const {
-    return STRING_LITERAL("undefined");
+Value lotus::UndefinedValue::sizeInRam() {
+    return INT(sizeof(UndefinedValue));
 }

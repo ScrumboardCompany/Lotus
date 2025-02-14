@@ -6,7 +6,9 @@
 
 using namespace lotus;
 
-BoolValue::BoolValue(bool value) : value(value) {}
+BoolValue::BoolValue(bool value) : value(value) {
+    type = STRING_LITERAL("bool");
+}
 
 int lotus::BoolValue::asInt() {
     return static_cast<int>(value);
@@ -22,10 +24,6 @@ bool lotus::BoolValue::asBool() {
 
 String lotus::BoolValue::asString() {
     return value ? STRING_LITERAL("true") : STRING_LITERAL("false");
-}
-
-String lotus::BoolValue::getType() const {
-    return STRING_LITERAL("bool");
 }
 
 Value lotus::BoolValue::add(const Value& other) {
@@ -88,3 +86,6 @@ Value lotus::BoolValue::unaryNot() {
     return BOOL(!value);
 }
 
+Value lotus::BoolValue::sizeInRam() {
+    return INT(sizeof(BoolValue));
+}

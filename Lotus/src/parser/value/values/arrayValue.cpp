@@ -4,7 +4,9 @@
 
 using namespace lotus;
 
-lotus::ArrayValue::ArrayValue(std::vector<Value> elements) : elements(elements) {}
+lotus::ArrayValue::ArrayValue(std::vector<Value> elements) : elements(elements) {
+    type = STRING_LITERAL("array");
+}
 
 String lotus::ArrayValue::asString() {
     String result;
@@ -16,10 +18,6 @@ String lotus::ArrayValue::asString() {
         }
     }
     return result;
-}
-
-String lotus::ArrayValue::getType() const {
-	return STRING_LITERAL("array");
 }
 
 Value lotus::ArrayValue::add(const Value& other) {
@@ -54,4 +52,8 @@ Value& lotus::ArrayValue::index(const Value& index) {
 
 Value lotus::ArrayValue::size() {
     return INT(elements.size());
+}
+
+Value lotus::ArrayValue::sizeInRam() {
+    return INT(sizeof(ArrayValue));
 }

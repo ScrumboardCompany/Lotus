@@ -27,6 +27,8 @@ void lotus::ForEachStatement::execute() {
 		catch (const BreakStatement&) {
 			break;
 		}
+
+		//evaled->index(INT(i)) = variables.get(name);
     }
 
     variables.restoreState();

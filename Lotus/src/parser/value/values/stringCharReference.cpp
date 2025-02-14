@@ -1,16 +1,15 @@
 #include "parser/value/stringCharReference.h"
 #include "parser/value/stringValue.h"
+#include "parser/value/intValue.h"
 
 using namespace lotus;
 
-lotus::StringCharReference::StringCharReference(StringValue& parent, int index) : parent(parent), index(index) {}
+lotus::StringCharReference::StringCharReference(StringValue& parent, int index) : parent(parent), index(index) {
+    type = STRING_LITERAL("char_reference");
+}
 
 String lotus::StringCharReference::asString() {
     return String(1, parent.value[index]);
-}
-
-String lotus::StringCharReference::getType() const {
-    return STRING_LITERAL("char_reference");
 }
 
 StringCharReference& lotus::StringCharReference::set(const Value& other) {
@@ -19,4 +18,8 @@ StringCharReference& lotus::StringCharReference::set(const Value& other) {
 
     parent.value[index] = value[0];
     return *this;
+}
+
+Value lotus::StringCharReference::sizeInRam() {
+    return INT(sizeof(StringCharReference));
 }

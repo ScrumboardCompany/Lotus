@@ -12,8 +12,7 @@ Value lotus::FunctionExpression::eval() {
 	
 	std::vector<Value> values;
 
-	for (auto& arg : args)
-	{
+	for (auto& arg : args) {
 		values.push_back(arg->eval());
 	}
 

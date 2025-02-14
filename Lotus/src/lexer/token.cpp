@@ -43,8 +43,6 @@ String lotus::Token::type_to_string() const {
 		return STRING_LITERAL("!");
 	case lotus::TokenType::COMMA:
 		return STRING_LITERAL(",");
-	case lotus::TokenType::PRINT:
-		return STRING_LITERAL("print");
 	case lotus::TokenType::LET:
 		return STRING_LITERAL("let");
 	case lotus::TokenType::IF:

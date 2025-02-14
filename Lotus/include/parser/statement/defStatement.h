@@ -20,7 +20,7 @@ namespace lotus {
 
 	public:
 
-		DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body, std::vector<String> args);
+		DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body, const std::vector<String>& args);
 		void execute() override;
 	};
 

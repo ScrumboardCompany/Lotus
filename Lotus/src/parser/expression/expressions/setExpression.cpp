@@ -1,5 +1,6 @@
 #include "parser/expression/setExpression.h"
 #include "parser/expression/indexExpression.h"
+#include "parser/expression/fieldExpression.h"
 #include "parser/expression/variableExpression.h"
 #include "structures/variables.h"
 #include "utils/lotusError.h"
@@ -55,6 +56,15 @@ Value lotus::SetExpression::eval() {
         }
 
         return container;
+    }
+
+    if (auto fieldExpr = std::dynamic_pointer_cast<FieldExpression>(expression1)) {
+        Value value = fieldExpr->expr->eval();
+        String name = fieldExpr->field;
+
+        Value& element = value->getField(name);
+
+        return applyOperation(element);
     }
 
     return newValue;

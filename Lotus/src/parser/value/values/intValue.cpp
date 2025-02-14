@@ -6,7 +6,9 @@
 
 using namespace lotus;
 
-IntValue::IntValue(int value) : value(value) {}
+IntValue::IntValue(int value) : value(value) {
+    type = STRING_LITERAL("int");
+}
 
 int lotus::IntValue::asInt() {
 	return value;
@@ -23,10 +25,6 @@ bool lotus::IntValue::asBool() {
 
 String lotus::IntValue::asString() {
     return std::to_wstring(value);
-}
-
-String lotus::IntValue::getType() const {
-	return STRING_LITERAL("int");
 }
 
 Value lotus::IntValue::add(const Value& other) {
@@ -150,4 +148,8 @@ Value lotus::IntValue::size() {
     }
 
     return INT(count);
+}
+
+Value lotus::IntValue::sizeInRam() {
+    return INT(sizeof(IntValue));
 }

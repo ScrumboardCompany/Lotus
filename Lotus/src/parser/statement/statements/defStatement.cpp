@@ -6,7 +6,7 @@
 
 using namespace lotus;
 
-lotus::DefStatement::DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body, std::vector<String> args) 
+lotus::DefStatement::DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body, const std::vector<String>& args) 
 	: name(name), functions(functions), variables(variables), body(body), args(args) {}
 
 void lotus::DefStatement::execute() {

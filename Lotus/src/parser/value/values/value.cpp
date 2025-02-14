@@ -19,6 +19,15 @@ String lotus::IValue::asString() {
     throwOverloadError(STRING_LITERAL("asString"), getType());
 }
 
+String lotus::IValue::getType() const {
+    return type;
+}
+
+Value& lotus::IValue::getField(const String& name) {
+    if(fields.find(name) != fields.end()) return fields[name];
+    throw LotusException(STRING_LITERAL("Field \"") + name + STRING_LITERAL("\" does not exist"));
+}
+
 Value lotus::IValue::add(const Value& other) {
     throwOverloadError(STRING_LITERAL("add"), getType());
 }

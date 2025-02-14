@@ -5,7 +5,9 @@
 
 using namespace lotus;
 
-lotus::FloatValue::FloatValue(double value) : value(value) {}
+lotus::FloatValue::FloatValue(double value) : value(value) {
+	type = STRING_LITERAL("float");
+}
 
 int lotus::FloatValue::asInt() {
 	return static_cast<int>(value);
@@ -21,10 +23,6 @@ bool lotus::FloatValue::asBool() {
 
 String lotus::FloatValue::asString() {
 	return std::to_wstring(value);
-}
-
-String lotus::FloatValue::getType() const {
-	return STRING_LITERAL("float");
 }
 
 Value lotus::FloatValue::add(const Value& other) {
@@ -123,4 +121,8 @@ Value lotus::FloatValue::prefixDecrement() {
 
 Value lotus::FloatValue::postfixDecrement() {
 	return FLOAT(value--);
+}
+
+Value lotus::FloatValue::sizeInRam() {
+	return INT(sizeof(FloatValue));
 }

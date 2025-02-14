@@ -14,7 +14,7 @@ namespace lotus {
 		friend class SetExpression;
 
 	public:
-		IndexExpression(Expression expression, Expression index);
+		IndexExpression(const Expression& expression, const Expression& index);
 
 		Value eval() override;
 	};
