@@ -65,9 +65,13 @@ namespace lotus {
 
 		Statement handleDefStatement();
 
-		Statement handleStructStatement();
+		Statement handleClassStatement();
 
-		std::vector<Expression> handleCommas();
+		std::vector<Expression> handleExpressions();
+
+		std::vector<String> handleArgs();
+
+		std::pair<StringMap<Expression>, StringMap<Function>> handleFieldsMethods();
 
 		StringMap<Expression> handleFields();
 

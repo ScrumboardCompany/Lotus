@@ -6,7 +6,7 @@ using namespace lotus;
 Statement lotus::Parser::handleWhileStatement() {
 	consume(TokenType::LPAREN);
 
-	std::vector<Expression> conditionPart = handleCommas();
+	std::vector<Expression> conditionPart = handleExpressions();
 
 	consume(TokenType::RPAREN);
 

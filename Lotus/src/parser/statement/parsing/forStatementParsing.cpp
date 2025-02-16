@@ -8,21 +8,21 @@ Statement lotus::Parser::handleForStatement() {
 
 	std::vector<Expression> declaringPart;
 	if (!match(TokenType::SEMICOLON)) {
-		declaringPart = handleCommas();
+		declaringPart = handleExpressions();
 
 		consume(TokenType::SEMICOLON);
 	}
 
 	std::vector<Expression> conditionPart;
 	if (!match(TokenType::SEMICOLON)) {
-		conditionPart = handleCommas();
+		conditionPart = handleExpressions();
 
 		consume(TokenType::SEMICOLON);
 	}
 
 	std::vector<Expression> actionPart;
 	if (!match(TokenType::RPAREN)) {
-		actionPart = handleCommas();
+		actionPart = handleExpressions();
 		consume(TokenType::RPAREN);
 	}
 

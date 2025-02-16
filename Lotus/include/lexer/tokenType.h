@@ -51,7 +51,7 @@ namespace lotus {
 		BREAK,
 		RETURN,
 		DEF,
-		STRUCT,
+		CLASS,
 
 		LPAREN,
 		RPAREN,

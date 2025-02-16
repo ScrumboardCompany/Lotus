@@ -8,6 +8,9 @@
 
 namespace lotus {
 
+	class Function;
+	class Variables;
+
 	class IValue {
 	public:
 
@@ -18,6 +21,7 @@ namespace lotus {
 
 		String getType() const;
 		virtual Value& getField(const String& name);
+		virtual Value callMethod(const String& name, const std::vector<Value>& args, Variables& variables);
 
 		virtual Value add(const Value& other);
 		virtual Value substract(const Value& other);
@@ -52,12 +56,13 @@ namespace lotus {
 
 		virtual ~IValue() = default;
 
-		friend class StructStatement;
+		friend class ClassStatement;
 		friend class ObjectExpression;
 
 	protected:
 
 		StringMap<Value> fields;
+		StringMap<Function> methods;
 		String type;
 	};
 }

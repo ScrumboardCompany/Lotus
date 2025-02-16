@@ -4,6 +4,7 @@
 #include "parser/expression/fieldExpression.h"
 #include "parser/expression/setExpression.h"
 #include "parser/expression/arithmeticExpression.h"
+#include "parser/expression/methodExpression.h"
 
 using namespace lotus;
 
@@ -52,7 +53,20 @@ Expression lotus::Parser::unary() {
         }
         else if (match(TokenType::DOT)) {
             String name = consume(TokenType::WORD).text;
-            result = MAKE_PTR<FieldExpression>(result, name);
+
+            if (match(TokenType::LPAREN)) {
+
+                std::vector<Expression> args;
+
+                if (!match(TokenType::RPAREN)) {
+                    args = handleExpressions();
+
+                    consume(TokenType::RPAREN);
+                }
+
+                result = MAKE_PTR<MethodExpression>(result, name, args, module.variables);
+            }
+            else result = MAKE_PTR<FieldExpression>(result, name);
         }
 		else break;
 	}

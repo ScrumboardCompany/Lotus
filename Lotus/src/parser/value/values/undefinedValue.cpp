@@ -2,6 +2,7 @@
 #include "parser/value/boolValue.h"
 #include "parser/value/intValue.h"
 #include "utils/lotusError.h"
+#include "parser/function/function.h"
 
 using namespace lotus;
 

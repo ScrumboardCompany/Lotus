@@ -1,6 +1,7 @@
 #include "parser/value/stringCharReference.h"
 #include "parser/value/stringValue.h"
 #include "parser/value/intValue.h"
+#include "parser/function/function.h"
 
 using namespace lotus;
 

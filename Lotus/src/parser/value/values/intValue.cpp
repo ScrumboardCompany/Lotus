@@ -3,6 +3,7 @@
 #include "parser/value/stringValue.h"
 #include "parser/value/boolValue.h"
 #include "utils/lotusError.h"
+#include "parser/function/function.h"
 
 using namespace lotus;
 

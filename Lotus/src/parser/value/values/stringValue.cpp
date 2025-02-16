@@ -3,6 +3,7 @@
 #include "parser/value/intValue.h"
 #include "parser/value/stringCharReference.h"
 #include "utils/lotusError.h"
+#include "parser/function/function.h"
 
 using namespace lotus;
 

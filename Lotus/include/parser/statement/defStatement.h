@@ -4,6 +4,7 @@
 #define _DEFSTATEMENT_
 
 #include "parser/statement/statement.h"
+#include "parser/function/function.h"
 
 namespace lotus {
 
@@ -14,13 +15,11 @@ namespace lotus {
 		String name;
 		Functions& functions;
 		Variables& variables;
-		std::vector<String> args;
-
-		Statement body;
+		Function function;
 
 	public:
 
-		DefStatement(const String& name, Functions& functions, Variables& variables, const Statement& body, const std::vector<String>& args);
+		DefStatement(const String& name, Functions& functions, Variables& variables, const Function& function);
 		void execute() override;
 	};
 

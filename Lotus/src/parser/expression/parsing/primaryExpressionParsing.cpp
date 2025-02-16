@@ -32,8 +32,8 @@ Expression lotus::Parser::primary() {
 
 			std::vector<Expression> args;
 
-			if(!match(TokenType::RPAREN)) {
-				args = handleCommas();
+			if (!match(TokenType::RPAREN)) {
+				args = handleExpressions();
 
 				consume(TokenType::RPAREN);
 			}
@@ -58,10 +58,16 @@ Expression lotus::Parser::primary() {
 		return handleLetExpression();
 	}
 	if (match(TokenType::LBRACKET)) {
-		std::vector<Expression> elements = handleCommas();
-		consume(TokenType::RBRACKET);
+
+		std::vector<Expression> elements;
+		
+		if (!match(TokenType::RBRACKET)) {
+			elements = handleExpressions();
+			consume(TokenType::RBRACKET);
+		}
 		return MAKE_PTR<ArrayExpression>(elements);
 	}
+
 	if (match(TokenType::LPAREN)) {
 		Expression result = expression();
 		match(TokenType::RPAREN);

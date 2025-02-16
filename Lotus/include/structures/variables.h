@@ -6,7 +6,6 @@
 #include "utils/lotusTypes.h"
 #include "utils/lotusDefines.h"
 #include "parser/value/undefinedValue.h"
-
 #include <stack>
 
 namespace lotus {
@@ -15,6 +14,7 @@ namespace lotus {
 		StringMap<Value> variables;
 		std::stack<StringMap<Value>> savedStates;
 		friend class ImportStatement;
+		friend class IValue;
 
 	public:
 		Variables() = default;

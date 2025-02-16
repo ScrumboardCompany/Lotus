@@ -2,7 +2,7 @@
 
 using namespace lotus;
 
-std::vector<Expression> lotus::Parser::handleCommas() {
+std::vector<Expression> lotus::Parser::handleExpressions() {
 	std::vector<Expression> expressions;
 
 	while (true) {

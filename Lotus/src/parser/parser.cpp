@@ -75,8 +75,8 @@ Statement lotus::Parser::getNextStatement() {
 	else if (match(TokenType::DEF)) {
 		statement = handleDefStatement();
 	}
-	else if (match(TokenType::STRUCT)) {
-		statement = handleStructStatement();
+	else if (match(TokenType::CLASS)) {
+		statement = handleClassStatement();
 	}
 	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
 		statement = handleImportStatement();

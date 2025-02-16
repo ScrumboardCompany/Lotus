@@ -7,8 +7,6 @@
 
 namespace lotus {
 
-	class Variables;
-
 	class FieldExpression : public IExpression {
 
 		Expression expr;

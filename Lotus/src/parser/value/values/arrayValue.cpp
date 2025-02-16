@@ -1,6 +1,7 @@
 #include "parser/value/arrayValue.h"
 #include "parser/value/intValue.h"
 #include "utils/lotusError.h"
+#include "parser/function/function.h"
 
 using namespace lotus;
 
