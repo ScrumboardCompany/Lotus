@@ -44,6 +44,8 @@ namespace lotus {
 			{STRING_LITERAL("/="), TokenType::SLASHQUAL},
 			{STRING_LITERAL("++"), TokenType::PLUSPLUS},
 			{STRING_LITERAL("--"), TokenType::MINUSMINUS},
+			{STRING_LITERAL("**"), TokenType::STARSTAR},
+			{STRING_LITERAL("//"), TokenType::SLASHSLASH},
 			{STRING_LITERAL("."), TokenType::DOT},
 		};
 

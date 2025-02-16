@@ -27,6 +27,8 @@ namespace lotus {
 		virtual Value substract(const Value& other);
 		virtual Value multiply(const Value& other);
 		virtual Value divide(const Value& other);
+		virtual Value power(const Value& other);
+		virtual Value divideModule(const Value& other);
 
 		virtual Value greater(const Value& other);
 		virtual Value less(const Value& other);

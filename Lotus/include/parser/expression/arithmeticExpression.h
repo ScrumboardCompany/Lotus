@@ -11,7 +11,9 @@ namespace lotus {
 		ADD,
 		SUBSTRACT,
 		MULTIPLY,
-		DIVIDE
+		DIVIDE,
+		POWER,
+		MODULE
 	};
 
 	class ArithmeticExpression : public IExpression {

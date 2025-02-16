@@ -24,6 +24,8 @@ namespace lotus {
 		NOTEQUAL,
 		BARBAR,
 		AMPAMP,
+		STARSTAR,
+		SLASHSLASH,
 		NOT,
 		COMMA,
 		LESSLESS,

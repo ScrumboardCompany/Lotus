@@ -25,6 +25,12 @@ Value lotus::ArithmeticExpression::eval() {
 	case lotus::ArithmeticOperationType::DIVIDE:
 		result = value1->divide(value2);
 		break;
+	case lotus::ArithmeticOperationType::POWER:
+		result = value1->power(value2);
+		break;
+	case lotus::ArithmeticOperationType::MODULE:
+		result = value1->divideModule(value2);
+		break;
 	default:
 		throw LotusException(STRING_LITERAL("Undefined arithmetic operation"));
 	}

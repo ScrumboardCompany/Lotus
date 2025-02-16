@@ -65,6 +65,14 @@ Value lotus::IValue::divide(const Value& other) {
     throwOverloadError(STRING_LITERAL("divide"), getType());
 }
 
+Value lotus::IValue::power(const Value& other) {
+    throwOverloadError(STRING_LITERAL("power"), getType());
+}
+
+Value lotus::IValue::divideModule(const Value& other) {
+    throwOverloadError(STRING_LITERAL("divideModule"), getType());
+}
+
 Value lotus::IValue::greater(const Value& other) {
     throwOverloadError(STRING_LITERAL("greater"), getType());
 }

@@ -43,6 +43,14 @@ Value lotus::BoolValue::divide(const Value& other) {
     return INT(asInt())->divide(other);
 }
 
+Value lotus::BoolValue::power(const Value& other) {
+    return INT(asInt())->power(other);
+}
+
+Value lotus::BoolValue::divideModule(const Value& other) {
+    return INT(asInt())->divideModule(other);
+}
+
 Value lotus::BoolValue::greater(const Value& other) {
     return INT(asInt())->greater(other);
 }

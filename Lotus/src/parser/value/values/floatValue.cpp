@@ -3,6 +3,7 @@
 #include "parser/value/floatValue.h"
 #include "parser/value/boolValue.h"
 #include "parser/function/function.h"
+#include <cmath>
 
 using namespace lotus;
 
@@ -42,6 +43,14 @@ Value lotus::FloatValue::divide(const Value& other) {
 	double value2 = other->asDouble();
 	if (value2 == 0) throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Can`t divide by zero"));
 	return FLOAT(value / value2);
+}
+
+Value lotus::FloatValue::power(const Value& other) {
+	return FLOAT(pow(value, other->asDouble()));
+}
+
+Value lotus::FloatValue::divideModule(const Value& other) {
+	throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Can`t use module operator over float type"));
 }
 
 Value lotus::FloatValue::greater(const Value& other) {

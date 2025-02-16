@@ -29,6 +29,12 @@ Expression lotus::Parser::multiplicative() {
 		else if (match(TokenType::SLASH)) {
 			result = MAKE_PTR<ArithmeticExpression>(result, unary(), ArithmeticOperationType::DIVIDE);
 			continue;
+		} else if (match(TokenType::STARSTAR)) {
+			result = MAKE_PTR<ArithmeticExpression>(result, unary(), ArithmeticOperationType::POWER);
+			continue;
+		} else if (match(TokenType::SLASHSLASH)) {
+			result = MAKE_PTR<ArithmeticExpression>(result, unary(), ArithmeticOperationType::MODULE);
+			continue;
 		}
 		break;
 	}

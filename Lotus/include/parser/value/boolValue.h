@@ -23,6 +23,8 @@ namespace lotus {
 		Value substract(const Value& other) override;
 		Value multiply(const Value& other) override;
 		Value divide(const Value& other) override;
+		Value power(const Value& other) override;
+		Value divideModule(const Value& other) override;
 
 		Value greater(const Value& other) override;
 		Value less(const Value& other) override;
