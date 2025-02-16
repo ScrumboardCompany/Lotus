@@ -16,17 +16,6 @@ lotus::Parser::Parser(const std::list<Token>& tokens) : pos(0) {
 		this->tokens.push_back(token);
 	}
 
-	//Module mathModule;
-
-	//mathModule.LET("PI", FLOAT(3.1415));
-
-	//mathModule.DEF("pow", [](Variables& variables) {
-	//	RETURN_VALUE(FLOAT(std::pow(variables.get("x")->asDouble(), variables.get("y")->asDouble())));
-	//	}, "x", "y");
-
-	//modules.emplace(STRING_LITERAL("math"), mathModule);
-
-
 	loadModules();
 }
 
@@ -77,6 +66,9 @@ Statement lotus::Parser::getNextStatement() {
 	}
 	else if (match(TokenType::CLASS)) {
 		statement = handleClassStatement();
+	}
+	else if (match(TokenType::SWITCH)) {
+		statement = handleSwitchCaseStatement();
 	}
 	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
 		statement = handleImportStatement();

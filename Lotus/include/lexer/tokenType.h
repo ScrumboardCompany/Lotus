@@ -52,6 +52,9 @@ namespace lotus {
 		RETURN,
 		DEF,
 		CLASS,
+		SWITCH,
+		CASE,
+		DEFAULT,
 
 		LPAREN,
 		RPAREN,

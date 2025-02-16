@@ -63,6 +63,9 @@ namespace lotus {
 			{STRING_LITERAL("return"), TokenType::RETURN},
 			{STRING_LITERAL("def"), TokenType::DEF},
 			{STRING_LITERAL("class"), TokenType::CLASS},
+			{STRING_LITERAL("switch"), TokenType::SWITCH},
+			{STRING_LITERAL("case"), TokenType::CASE},
+			{STRING_LITERAL("default"), TokenType::DEFAULT},
 		};
 
 		String input;
