@@ -75,7 +75,7 @@ namespace lotus {
 
 		std::vector<String> handleArgs();
 
-		std::pair<StringMap<Expression>, StringMap<Function>> handleFieldsMethods();
+		std::pair<RawFields_t, Methods_t> handleFieldsMethods();
 
 		StringMap<Expression> handleFields();
 

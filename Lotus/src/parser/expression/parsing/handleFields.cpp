@@ -1,15 +1,28 @@
 #include "parser/parser.h"
 #include "parser/function/function.h"
+#include "structures/classStructures.h"
 
 using namespace lotus;
 
-std::pair<StringMap<Expression>, StringMap<Function>> lotus::Parser::handleFieldsMethods() {
-	StringMap<Expression> fields;
-	StringMap<Function> methods;
+std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
+	RawFields_t fields;
+	Methods_t methods;
 
 	consume(TokenType::LBRACE);
 
+	AccessModifierType accessModifier = AccessModifierType::PRIVATE;
+
 	while (!match(TokenType::RBRACE)) {
+
+		if (match(TokenType::PUBLIC)) {
+			accessModifier = AccessModifierType::PUBLIC;
+			consume(TokenType::COLON);
+		}
+		if (match(TokenType::PRIVATE)) {
+			accessModifier = AccessModifierType::PRIVATE;
+			consume(TokenType::COLON);
+		}
+
 		if (match(TokenType::DEF)) {
 			String methodName = consume(TokenType::WORD).text;
 
@@ -17,7 +30,11 @@ std::pair<StringMap<Expression>, StringMap<Function>> lotus::Parser::handleField
 
 			Statement body = handleBlockStatement();
 
-			methods.emplace(methodName, Function(body, args));
+			MethodMemberInfo memberInfo;
+			memberInfo.value = Function(body, args);
+			memberInfo.accessModifier = accessModifier;
+
+			methods.emplace(methodName, memberInfo);
 		}
 		else {
 			String fieldName = consume(TokenType::WORD).text;
@@ -29,7 +46,10 @@ std::pair<StringMap<Expression>, StringMap<Function>> lotus::Parser::handleField
 
 			while (match(TokenType::SEMICOLON));
 
-			fields.emplace(fieldName, fieldValue);
+			ClassMemberInfo memberInfo;
+			memberInfo.accessModifier = accessModifier;
+
+			fields.emplace(fieldName, std::make_pair(fieldValue, memberInfo));
 		}
 	}
 

@@ -14,6 +14,10 @@ namespace lotus {
     class IExpression;
     class IStatement;
 
+    struct ClassMemberInfo;
+    struct FieldMemberInfo;
+    struct MethodMemberInfo;
+
 	using String = std::wstring;
     using Char = wchar_t;
 
@@ -29,6 +33,10 @@ namespace lotus {
     using Value = Ptr<IValue>;
     using Expression = Ptr<IExpression>;
     using Statement = Ptr<IStatement>;
+
+    using RawFields_t = StringMap<std::pair<Expression, ClassMemberInfo>>;
+    using Fields_t = StringMap<FieldMemberInfo>;
+    using Methods_t = StringMap<MethodMemberInfo>;
 }
 
 #endif // _LOTUSTYPES_

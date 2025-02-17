@@ -58,6 +58,8 @@ namespace lotus {
 		SWITCH,
 		CASE,
 		DEFAULT,
+		PUBLIC,
+		PRIVATE,
 
 		LPAREN,
 		RPAREN,

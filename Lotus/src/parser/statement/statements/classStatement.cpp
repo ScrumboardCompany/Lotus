@@ -5,7 +5,7 @@
 
 using namespace lotus;
 
-lotus::ClassStatement::ClassStatement(Functions& functions, const String& name, const StringMap<Expression>& fields, const StringMap<Function>& methods)
+lotus::ClassStatement::ClassStatement(Functions& functions, const String& name, RawFields_t& fields, const Methods_t& methods)
 	: functions(functions), name(name), fields(fields), methods(methods) {
 }
 
@@ -14,7 +14,12 @@ void lotus::ClassStatement::execute() {
 	Function function(MAKE_PTR<CppFunctionStatement>([&](Variables&) {
 		ClassValue value;
 		for (auto& field : fields) {
-			value.fields.emplace(field.first, field.second ? field.second->eval() : UNDEFINED());
+
+			FieldMemberInfo memberInfo;
+			memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
+			memberInfo.accessModifier = field.second.second.accessModifier;
+
+			value.fields.emplace(field.first, memberInfo);
 		}
 
 		value.methods = methods;

@@ -4,6 +4,7 @@
 #define _CLASSSTATEMENT_
 
 #include "parser/statement/statement.h"
+#include "structures/classStructures.h"
 
 namespace lotus {
 
@@ -12,13 +13,13 @@ namespace lotus {
 
 	class ClassStatement : public IStatement {
 		String name;
-		StringMap<Expression> fields;
-		StringMap<Function> methods;
+		RawFields_t fields;
+		Methods_t methods;
 		Functions& functions;
 
 	public:
 
-		ClassStatement(Functions& functions, const String& name, const StringMap<Expression>& fields, const StringMap<Function>& methods);
+		ClassStatement(Functions& functions, const String& name, RawFields_t& fields, const Methods_t& methods);
 		void execute() override;
 	};
 

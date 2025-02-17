@@ -5,6 +5,7 @@
 
 #include "parser/value/value.h"
 #include "parser/function/function.h"
+#include "structures/classStructures.h"
 
 namespace lotus {
 
@@ -24,8 +25,8 @@ namespace lotus {
 		Value sizeInRam() override;
 
 	protected:
-		StringMap<Value> fields;
-		StringMap<Function> methods;
+		Fields_t fields;
+		Methods_t methods;
 	};
 
 }

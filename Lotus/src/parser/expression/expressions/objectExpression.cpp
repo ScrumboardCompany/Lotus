@@ -11,7 +11,11 @@ lotus::ObjectExpression::ObjectExpression(const StringMap<Expression>& fields)
 Value lotus::ObjectExpression::eval() {
 	ClassValue value;
 	for (auto& field : fields) {
-		value.fields.emplace(field.first, field.second ? field.second->eval() : UNDEFINED());
+		FieldMemberInfo memberInfo;
+		memberInfo.value = field.second ? field.second->eval() : UNDEFINED();
+		memberInfo.accessModifier = AccessModifierType::PUBLIC;
+
+		value.fields.emplace(field.first, memberInfo);
 	}
 	value.type = STRING_LITERAL("object");
 

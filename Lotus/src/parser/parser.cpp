@@ -22,7 +22,7 @@ lotus::Parser::Parser(const std::list<Token>& tokens) : pos(0) {
 std::vector<Statement> lotus::Parser::parse() {
 	std::vector<Statement> statements;
 	while (!match(TokenType::END_OF_FILE)) {
-		statements.push_back(getNextStatement());
+		statements.push_back(getNextGlobalStatement());
 	}
 	return statements;
 }
