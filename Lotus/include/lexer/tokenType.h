@@ -38,6 +38,7 @@ namespace lotus {
 		PLUSPLUS,
 		MINUSMINUS,
 		DOT,
+		QUESTION,
 
 		LET,
 		IF,

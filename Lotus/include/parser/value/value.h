@@ -63,8 +63,6 @@ namespace lotus {
 
 	protected:
 
-		StringMap<Value> fields;
-		StringMap<Function> methods;
 		String type;
 	};
 }

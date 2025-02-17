@@ -59,7 +59,7 @@ Value lotus::IntValue::divide(const Value& other) {
 }
 
 Value lotus::IntValue::power(const Value& other) {
-    if (other->getType() == STRING_LITERAL("int")) return INT(pow(value, other->asInt()));
+    if (other->getType() == STRING_LITERAL("int")) return INT(static_cast<int>(pow(value, other->asInt())));
     return FLOAT(pow(value, other->asDouble()));
 }
 

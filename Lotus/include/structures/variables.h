@@ -14,7 +14,7 @@ namespace lotus {
 		StringMap<Value> variables;
 		std::stack<StringMap<Value>> savedStates;
 		friend class ImportStatement;
-		friend class IValue;
+		friend class ClassValue;
 
 	public:
 		Variables() = default;

@@ -9,11 +9,11 @@ lotus::ObjectExpression::ObjectExpression(const StringMap<Expression>& fields)
 }
 
 Value lotus::ObjectExpression::eval() {
-	Value value = MAKE_PTR<ClassValue>();
+	ClassValue value;
 	for (auto& field : fields) {
-		value->fields.emplace(field.first, field.second ? field.second->eval() : UNDEFINED());
+		value.fields.emplace(field.first, field.second ? field.second->eval() : UNDEFINED());
 	}
-	value->type = STRING_LITERAL("object");
+	value.type = STRING_LITERAL("object");
 
-	return value;
+	return MAKE_PTR<ClassValue>(value);
 }

@@ -20,20 +20,29 @@ Expression lotus::Parser::additive() {
 }
 
 Expression lotus::Parser::multiplicative() {
-	Expression result = unary();
+	Expression result = exponential();
 	while (true) {
 		if (match(TokenType::STAR)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, unary(), ArithmeticOperationType::MULTIPLY);
+			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::MULTIPLY);
 			continue;
 		}
 		else if (match(TokenType::SLASH)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, unary(), ArithmeticOperationType::DIVIDE);
-			continue;
-		} else if (match(TokenType::STARSTAR)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, unary(), ArithmeticOperationType::POWER);
+			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::DIVIDE);
 			continue;
 		} else if (match(TokenType::SLASHSLASH)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, unary(), ArithmeticOperationType::MODULE);
+			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::MODULE);
+			continue;
+		}
+		break;
+	}
+	return result;
+}
+
+Expression lotus::Parser::exponential() {
+	Expression result = unary();
+	while (true) {
+		if (match(TokenType::STARSTAR)) {
+			result = MAKE_PTR<ArithmeticExpression>(result, unary(), ArithmeticOperationType::POWER);
 			continue;
 		}
 		break;

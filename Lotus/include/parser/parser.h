@@ -79,6 +79,8 @@ namespace lotus {
 
 		Expression expression();
 
+		Expression ternary();
+
 		Expression logicalOr();
 
 		Expression logicalAnd();
@@ -90,6 +92,8 @@ namespace lotus {
 		Expression additive();
 
 		Expression multiplicative();
+
+		Expression exponential();
 
 		Expression unary();
 

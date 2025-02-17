@@ -3,5 +3,5 @@
 using namespace lotus;
 
 Expression lotus::Parser::expression() {
-	return logicalOr();
+	return ternary();
 }

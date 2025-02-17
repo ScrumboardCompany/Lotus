@@ -27,26 +27,11 @@ String lotus::IValue::getType() const {
 }
 
 Value& lotus::IValue::getField(const String& name) {
-    if (fields.find(name) != fields.end()) return fields[name];
-    throw LotusException(STRING_LITERAL("Field \"") + name + STRING_LITERAL("\" does not exist"));
+    throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Field \"") + name + STRING_LITERAL("\" does not exist"));
 }
 
 Value lotus::IValue::callMethod(const String& name, const std::vector<Value>& args, Variables& variables) {
-    if (methods.find(name) != methods.end()) {
-        
-        Value thisValue = MAKE_PTR<ClassValue>();
-        thisValue->fields = fields;
-        thisValue->methods = methods;
-
-        variables.declare(STRING_LITERAL("this"), thisValue);
-
-        Value returnValue = methods[name].call(args, variables);
-
-        variables.variables.erase(STRING_LITERAL("this"));
-
-        return returnValue;
-    }
-    throw LotusException(STRING_LITERAL("Method \"") + name + STRING_LITERAL("\" does not exist"));
+    throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Method \"") + name + STRING_LITERAL("\" does not exist"));
 }
 
 Value lotus::IValue::add(const Value& other) {

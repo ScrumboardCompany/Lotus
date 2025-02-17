@@ -12,15 +12,15 @@ lotus::ClassStatement::ClassStatement(Functions& functions, const String& name, 
 void lotus::ClassStatement::execute() {
 
 	Function function(MAKE_PTR<CppFunctionStatement>([&](Variables&) {
-		Value value = MAKE_PTR<ClassValue>();
+		ClassValue value;
 		for (auto& field : fields) {
-			value->fields.emplace(field.first, field.second ? field.second->eval() : UNDEFINED());
+			value.fields.emplace(field.first, field.second ? field.second->eval() : UNDEFINED());
 		}
 
-		value->methods = methods;
-		value->type = name;
+		value.methods = methods;
+		value.type = name;
 
-		RETURN_VALUE(value);
+		RETURN_VALUE(MAKE_PTR<ClassValue>(value));
 		}), std::vector<String>());
 
 	functions.declare(name, function);

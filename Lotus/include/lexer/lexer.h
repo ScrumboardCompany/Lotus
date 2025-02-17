@@ -47,6 +47,7 @@ namespace lotus {
 			{STRING_LITERAL("**"), TokenType::STARSTAR},
 			{STRING_LITERAL("//"), TokenType::SLASHSLASH},
 			{STRING_LITERAL("."), TokenType::DOT},
+			{STRING_LITERAL("?"), TokenType::QUESTION},
 		};
 
 		StringMap<TokenType> keywords = {
