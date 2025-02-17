@@ -5,6 +5,7 @@
 #include "parser/expression/setExpression.h"
 #include "parser/expression/arithmeticExpression.h"
 #include "parser/expression/methodExpression.h"
+#include "parser/expression/callLambdaExpression.h"
 
 using namespace lotus;
 
@@ -45,6 +46,17 @@ Expression lotus::Parser::unary() {
 			consume(TokenType::RBRACKET);
 			result = MAKE_PTR<IndexExpression>(result, index);
 		}
+        else if (match(TokenType::LPAREN)) {
+            std::vector<Expression> args;
+
+            if (!match(TokenType::RPAREN)) {
+                args = handleExpressions();
+
+                consume(TokenType::RPAREN);
+            }
+
+            result = MAKE_PTR<CallLambdaExpression>(module.variables, args, result);
+        }
         else if (match(TokenType::PLUSPLUS)) {
             result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXINCREMENT);
         }

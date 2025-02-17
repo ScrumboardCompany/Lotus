@@ -39,6 +39,8 @@ namespace lotus {
 
 		void loadModules();
 
+		Statement getNextGlobalStatement();
+
 		Statement getNextStatement();
 
 		Expression handleLetExpression();

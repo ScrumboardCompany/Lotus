@@ -10,5 +10,5 @@ Statement lotus::Parser::handleDefStatement() {
 
 	Statement body = handleBlockStatement();
 
-	return MAKE_PTR<DefStatement>(name, module.functions, module.variables, Function(body, args));
+	return MAKE_PTR<DefStatement>(name, module.functions, Function(body, args));
 }

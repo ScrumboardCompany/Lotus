@@ -6,8 +6,8 @@
 
 using namespace lotus;
 
-lotus::DefStatement::DefStatement(const String& name, Functions& functions, Variables& variables, const Function& function)
-	: name(name), functions(functions), variables(variables), function(function) {}
+lotus::DefStatement::DefStatement(const String& name, Functions& functions, const Function& function)
+	: name(name), functions(functions), function(function) {}
 
 void lotus::DefStatement::execute() {
 	functions.declare(name, function);

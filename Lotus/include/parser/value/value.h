@@ -22,6 +22,7 @@ namespace lotus {
 		String getType() const;
 		virtual Value& getField(const String& name);
 		virtual Value callMethod(const String& name, const std::vector<Value>& args, Variables& variables);
+		virtual Value call(const std::vector<Value>& args, Variables& variables);
 
 		virtual Value add(const Value& other);
 		virtual Value substract(const Value& other);

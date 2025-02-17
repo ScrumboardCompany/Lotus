@@ -31,6 +31,28 @@ Module lotus::Parser::getModule() const {
 	return module;
 }
 
+Statement lotus::Parser::getNextGlobalStatement() {
+	Statement statement;
+
+	if (match(TokenType::FLAG)) {
+		statement = handleFlagStatement();
+	} 
+	else if (match(TokenType::DEF)) {
+		statement = handleDefStatement();
+	}
+	else if (match(TokenType::CLASS)) {
+		statement = handleClassStatement();
+	}
+	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
+		statement = handleImportStatement();
+	}
+	else statement = getNextStatement();
+
+	while (match(TokenType::SEMICOLON));
+
+	return statement;
+}
+
 Statement lotus::Parser::getNextStatement() {
 	Statement statement;
 
@@ -49,9 +71,6 @@ Statement lotus::Parser::getNextStatement() {
 	else if (match(TokenType::FOREACH)) {
 		statement = handleForEachStatement();
 	}
-	else if (match(TokenType::FLAG)) {
-		statement = handleFlagStatement();
-	}
 	else if (match(TokenType::CONTINUE)) {
 		statement = handleContinueStatement();
 	}
@@ -61,17 +80,8 @@ Statement lotus::Parser::getNextStatement() {
 	else if (match(TokenType::RETURN)) {
 		statement = handleReturnStatement();
 	}
-	else if (match(TokenType::DEF)) {
-		statement = handleDefStatement();
-	}
-	else if (match(TokenType::CLASS)) {
-		statement = handleClassStatement();
-	}
 	else if (match(TokenType::SWITCH)) {
 		statement = handleSwitchCaseStatement();
-	}
-	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
-		statement = handleImportStatement();
 	}
 	else statement = MAKE_PTR<ExpressionStatement>(expression());
 

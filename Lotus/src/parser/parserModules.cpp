@@ -24,6 +24,10 @@ void lotus::Parser::loadModules() {
 		RETURN_VALUE(variables.get("arg")->size());
 		}, "arg");
 
+	module.DEF("sizeof", [](Variables& variables) {
+		RETURN_VALUE(variables.get("arg")->sizeInRam());
+		}, "arg");
+
 	module.DEF("int", [](Variables& variables) {
 		RETURN_VALUE(INT(variables.get("arg")->asInt()));
 		}, "arg");

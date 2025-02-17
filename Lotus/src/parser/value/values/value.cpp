@@ -34,6 +34,10 @@ Value lotus::IValue::callMethod(const String& name, const std::vector<Value>& ar
     throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Method \"") + name + STRING_LITERAL("\" does not exist"));
 }
 
+Value lotus::IValue::call(const std::vector<Value>& args, Variables& variables) {
+    throwOverloadError(STRING_LITERAL("call"), getType());
+}
+
 Value lotus::IValue::add(const Value& other) {
     throwOverloadError(STRING_LITERAL("add"), getType());
 }
