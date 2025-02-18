@@ -20,15 +20,27 @@ namespace lotus {
 
 		void forceDeclareOrSet(const String& name, const Function& value);
 
+		void forceDeclareOrSet(const char* name, const Function& value);
+
 		void declare(const String& name, const Function& value);
+
+		void declare(const char* name, const Function& value);
 
 		void set(const String& name, const Function& value);
 
+		void set(const char* name, const Function& value);
+
 		Function get(const String& name);
+
+		Function get(const char* name);
 
 		Value call(const String& name, const std::vector<Value>& args, Variables& variables);
 
+		Value call(const char* name, const std::vector<Value>& args, Variables& variables);
+
 		bool isExists(const String& name);
+
+		bool isExists(const char* name);
 	};
 
 }

@@ -10,13 +10,10 @@
 namespace lotus {
 
 	class CppFunctionStatement : public IStatement {
-
-		Ptr<Variables> variables;
-		std::function<void(Variables&)> body;
+		std::function<void()> body;
 
 	public:
-		CppFunctionStatement(const std::function<void(Variables&)>& body);
-		void setVariables(Variables& variables);
+		CppFunctionStatement(const std::function<void()>& body);
 
 		void execute() override;
 	};

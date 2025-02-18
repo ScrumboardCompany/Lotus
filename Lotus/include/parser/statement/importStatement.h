@@ -7,23 +7,23 @@
 
 namespace lotus {
 
-	class Variables;
-	class Functions;
 	struct Module;
 	class Flags;
+	class Parser;
 
 	class ImportStatement : public IStatement {
 		
 		String key;
 		String filePath;
-		Variables& variables;
-		Functions& functions;
+		Module& currentModule;
 		StringMap<Module>& modules;
 		const Flags& flags;
 
+		Ptr<Parser> parser;
+
 	public:
 
-		ImportStatement(const String& key, const String& filePath, Variables& variables, Functions& functions, StringMap<Module>& modules, const Flags& flags);
+		ImportStatement(const String& key, const String& filePath, Module& module, StringMap<Module>& currentModule, const Flags& flags);
 		void execute() override;
 	};
 

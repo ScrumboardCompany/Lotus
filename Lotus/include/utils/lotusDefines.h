@@ -14,6 +14,8 @@
 
 #define RETURN_VALUE(value) throw Value(value)
 
+#define MAKE_CPP_FUNCTION(body, ...) Function(MAKE_PTR<CppFunctionStatement>([&]() -> void body), {__VA_ARGS__}, int())
+
 #define STRING_LITERAL(str) []{ \
     if constexpr (std::is_same_v<lotus::String, std::string>) \
         return str; \

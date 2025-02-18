@@ -1,0 +1,28 @@
+#pragma once
+
+#ifndef _STATICMETHODEXPRESSION_
+#define _STATICMETHODEXPRESSION_
+
+#include "parser/expression/expresion.h"
+
+namespace lotus {
+
+	class Variables;
+	class Statics;
+
+	class StaticMethodExpression : public IExpression {
+
+		String staticName;
+		String method;
+		std::vector<Expression> args;
+		Variables& variables;
+		Statics& statics;
+
+	public:
+		StaticMethodExpression(const String& staticName, const String& method, const std::vector<Expression>& args, Variables& variables, Statics& statics);
+
+		Value eval() override;
+	};
+}
+
+#endif // _STATICMETHODEXPRESSION_

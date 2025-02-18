@@ -27,13 +27,7 @@ Value Function::call(const std::vector<Value>& args, Variables& variables) {
 	}
 
 	try {
-		if (auto cppBody = std::dynamic_pointer_cast<CppFunctionStatement>(body)) {
-			cppBody->setVariables(variables);
-			cppBody->execute();
-		}
-		else {
-			body->execute();
-		}
+		body->execute();
 
 		variables.restoreState();
 		return UNDEFINED();

@@ -11,7 +11,7 @@ lotus::ClassStatement::ClassStatement(Functions& functions, const String& name, 
 
 void lotus::ClassStatement::execute() {
 
-	Function function(MAKE_PTR<CppFunctionStatement>([&](Variables&) {
+	Function function(MAKE_PTR<CppFunctionStatement>([&]() {
 		ClassValue value;
 		for (auto& field : fields) {
 

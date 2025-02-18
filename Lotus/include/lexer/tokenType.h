@@ -39,6 +39,9 @@ namespace lotus {
 		MINUSMINUS,
 		DOT,
 		QUESTION,
+		SEMICOLON,
+		COLON,
+		COLONCOLON,
 
 		LET,
 		IF,
@@ -60,6 +63,7 @@ namespace lotus {
 		DEFAULT,
 		PUBLIC,
 		PRIVATE,
+		STATIC,
 
 		LPAREN,
 		RPAREN,
@@ -67,8 +71,6 @@ namespace lotus {
 		RBRACE,
 		LBRACKET,
 		RBRACKET,
-		SEMICOLON,
-		COLON,
 
 		END_OF_FILE
 	};

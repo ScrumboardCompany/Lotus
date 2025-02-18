@@ -21,15 +21,23 @@ namespace lotus {
 
 		void forceDeclareOrSet(const String& name, const Value& value = UNDEFINED());
 
+		void forceDeclareOrSet(const char* name, const Value& value = UNDEFINED());
+
 		void declare(const String& name, const Value& value = UNDEFINED());
 
+		void declare(const char* name, const Value& value = UNDEFINED());
+
 		void set(const String& name, const Value& value);
+
+		void set(const char* name, const Value& value);
 
 		Value& get(const String& name);
 
 		Value& get(const char* name);
 
 		bool isExists(const String& name);
+
+		bool isExists(const char* name);
 
 		void saveState();
 		void restoreState();

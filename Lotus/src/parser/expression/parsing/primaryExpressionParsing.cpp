@@ -11,6 +11,8 @@
 #include "parser/expression/fieldExpression.h"
 #include "parser/expression/objectExpression.h"
 #include "parser/expression/lambdaExpression.h"
+#include "parser/expression/staticFieldExpression.h"
+#include "parser/expression/staticMethodExpression.h"
 
 using namespace lotus;
 
@@ -43,7 +45,25 @@ Expression lotus::Parser::primary() {
 		return MAKE_PTR<FunctionExpression>(CurrentToken.text, module.functions, module.variables, args);
 	}
 	if (match(TokenType::WORD)) {
-		return MAKE_PTR<VariableExpression>(CurrentToken.text, module.variables);
+		if (match(TokenType::COLONCOLON)) {
+			String name = consume(TokenType::WORD).text;
+
+			if (match(TokenType::LPAREN)) {
+				std::vector<Expression> args;
+
+				if (!match(TokenType::RPAREN)) {
+					args = handleExpressions();
+
+					consume(TokenType::RPAREN);
+				}
+
+				return MAKE_PTR<StaticMethodExpression>(CurrentToken.text, name, args, module.variables, module.statics);
+			}
+			else {
+				return MAKE_PTR<StaticFieldExpression>(CurrentToken.text, name, module.statics);
+			}
+		}
+		else return MAKE_PTR<VariableExpression>(CurrentToken.text, module.variables);
 	}
 	if (match(TokenType::UNDEFINED_)) {
 		return MAKE_PTR<UndefinedExpression>();

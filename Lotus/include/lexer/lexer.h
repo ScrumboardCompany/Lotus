@@ -48,6 +48,7 @@ namespace lotus {
 			{STRING_LITERAL("//"), TokenType::SLASHSLASH},
 			{STRING_LITERAL("."), TokenType::DOT},
 			{STRING_LITERAL("?"), TokenType::QUESTION},
+			{STRING_LITERAL("::"), TokenType::COLONCOLON},
 		};
 
 		StringMap<TokenType> keywords = {
@@ -71,6 +72,7 @@ namespace lotus {
 			{STRING_LITERAL("default"), TokenType::DEFAULT},
 			{STRING_LITERAL("public"), TokenType::PUBLIC},
 			{STRING_LITERAL("private"), TokenType::PRIVATE},
+			{STRING_LITERAL("static"), TokenType::STATIC},
 		};
 
 		String input;

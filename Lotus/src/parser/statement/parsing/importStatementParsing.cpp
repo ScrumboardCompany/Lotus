@@ -16,5 +16,5 @@ Statement Parser::handleImportStatement() {
 
 	String filePath = consume(TokenType::STRING_TYPE).text;
 
-	return MAKE_PTR<ImportStatement>(key, filePath, module.variables, module.functions, modules, flags);
+	return MAKE_PTR<ImportStatement>(key, filePath, module, modules, flags);
 }

@@ -40,8 +40,11 @@ Statement lotus::Parser::getNextGlobalStatement() {
 	else if (match(TokenType::DEF)) {
 		statement = handleDefStatement();
 	}
-	else if (match(TokenType::CLASS)) {
+	else if (match(TokenType::CLASS)) { 
 		statement = handleClassStatement();
+	}
+	else if (match(TokenType::STATIC)) {
+		statement = handleStaticStatement();
 	}
 	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
 		statement = handleImportStatement();

@@ -71,6 +71,8 @@ namespace lotus {
 
 		Statement handleSwitchCaseStatement();
 
+		Statement handleStaticStatement();
+
 		std::vector<Expression> handleExpressions();
 
 		std::vector<String> handleArgs();
