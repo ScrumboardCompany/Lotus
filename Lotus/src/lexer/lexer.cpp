@@ -126,8 +126,14 @@ void lotus::Lexer::tokenizeOperator() {
 
 void lotus::Lexer::tokenizeComment() {
     Char current = peek(0);
-    String stops = STRING_LITERAL("\n\r\0");
-    while (stops.find(current) == String::npos) {
+
+    std::vector<Char> stops = {
+        CHAR_LITERAL('\n'),
+        CHAR_LITERAL('\r'),
+        CHAR_LITERAL('\0'),
+    };
+
+    while (std::find(stops.begin(), stops.end(), current) == stops.end()) {
         current = next();
     }
 }

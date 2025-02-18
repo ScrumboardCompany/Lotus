@@ -22,7 +22,7 @@ lotus::Parser::Parser(const std::list<Token>& tokens) : pos(0) {
 std::vector<Statement> lotus::Parser::parse() {
 	std::vector<Statement> statements;
 	while (!match(TokenType::END_OF_FILE)) {
-		statements.push_back(getNextStatement());
+		statements.push_back(getNextGlobalStatement());
 	}
 	return statements;
 }
@@ -40,8 +40,11 @@ Statement lotus::Parser::getNextGlobalStatement() {
 	else if (match(TokenType::DEF)) {
 		statement = handleDefStatement();
 	}
-	else if (match(TokenType::CLASS)) {
+	else if (match(TokenType::CLASS)) { 
 		statement = handleClassStatement();
+	}
+	else if (match(TokenType::STATIC)) {
+		statement = handleStaticStatement();
 	}
 	else if ((get(0).type == TokenType::WORD || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
 		statement = handleImportStatement();
