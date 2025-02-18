@@ -36,7 +36,7 @@ void lotus::Statics::set(const char* name, const Static& value) {
 	set(STRING_VAR_LITERAL(name), value);
 }
 
-Static lotus::Statics::get(const String& name) {
+Static& lotus::Statics::get(const String& name) {
 	if (isExists(name)) {
 		return statics[name];
 	}
@@ -44,7 +44,7 @@ Static lotus::Statics::get(const String& name) {
 	throw LotusException(STRING_LITERAL("Undefined static \"") + name + STRING_LITERAL("\""));
 }
 
-Static lotus::Statics::get(const char* name) {
+Static& lotus::Statics::get(const char* name) {
 	return get(STRING_VAR_LITERAL(name));
 }
 

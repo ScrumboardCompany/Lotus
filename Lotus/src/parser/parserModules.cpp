@@ -3,7 +3,12 @@
 #include "parser/value/intValue.h"
 #include "parser/value/floatValue.h"
 #include "parser/value/boolValue.h"
+#include "utils/lotusError.h"
 #include <iostream>
+#include <thread>
+#include <string>
+#include <locale>
+#include <codecvt>
 
 void lotus::Parser::loadModules() {
 	module.DEF("print", {
@@ -44,13 +49,50 @@ void lotus::Parser::loadModules() {
 		RETURN_VALUE(BOOL(module.variables.get("arg")->asBool()));
 		}, "arg");
 
-	Static popaStatic;
+	loadMathModule();
+	loadTimeModule();
+}
 
-	popaStatic.addField("PI", FieldMemberInfo(FLOAT(3.14342354), AccessModifierType::PUBLIC));
+void lotus::Parser::loadMathModule() {
+	Module Math;
+	Static MathStatic;
 
-	popaStatic.addMethod("GetPi", MethodMemberInfo(MAKE_CPP_FUNCTION({
-		RETURN_VALUE(module.statics.get("Math").getField("PI"));
-		}), AccessModifierType::PUBLIC));
+	MathStatic.addField("PI", FieldMemberInfo(FLOAT(3.14342354), AccessModifierType::PUBLIC));
+	MathStatic.addField("E", FieldMemberInfo(FLOAT(2.7182818284), AccessModifierType::PUBLIC));
 
-	module.STATIC("Math", popaStatic);
+	MathStatic.addMethod("absolute", MethodMemberInfo(MAKE_CPP_FUNCTION({
+		if (module.variables.get("arg")->getType() == STRING_LITERAL("int")) RETURN_VALUE(INT(std::abs(module.variables.get("arg")->asInt())));
+		RETURN_VALUE(FLOAT(std::abs(module.variables.get("arg")->asDouble())));
+		}, "arg"), AccessModifierType::PUBLIC));
+
+	MathStatic.addMethod("round", MethodMemberInfo(MAKE_CPP_FUNCTION({
+		RETURN_VALUE(INT(module.variables.get("arg")->asInt()));
+		}, "arg"), AccessModifierType::PUBLIC));
+
+	MathStatic.addMethod("min", MethodMemberInfo(MAKE_CPP_FUNCTION({
+		RETURN_VALUE(FLOAT(std::min(module.variables.get("arg1")->asDouble(), module.variables.get("arg2")->asDouble())));
+		}, "arg1", "arg2"), AccessModifierType::PUBLIC));
+
+	MathStatic.addMethod("max", MethodMemberInfo(MAKE_CPP_FUNCTION({
+		RETURN_VALUE(FLOAT(std::max(module.variables.get("arg1")->asDouble(), module.variables.get("arg2")->asDouble())));
+		}, "arg1", "arg2"), AccessModifierType::PUBLIC));
+
+	MathStatic.addMethod("sqrt", MethodMemberInfo(MAKE_CPP_FUNCTION({
+		RETURN_VALUE(FLOAT(std::sqrt(module.variables.get("arg")->asDouble())));
+		}, "arg"), AccessModifierType::PUBLIC));
+
+	Math.STATIC("Math", MathStatic);
+	modules.emplace(STRING_LITERAL("Math"), Math);
+}
+
+void lotus::Parser::loadTimeModule() {
+	Module Time;
+	Static TimeStatic;
+
+	TimeStatic.addMethod("sleep", MethodMemberInfo(MAKE_CPP_FUNCTION({
+		std::this_thread::sleep_for(std::chrono::milliseconds(module.variables.get("duration")->asInt()));
+		}, "duration"), AccessModifierType::PUBLIC));
+
+	Time.STATIC("Time", TimeStatic);
+	modules.emplace(STRING_LITERAL("Time"), Time);
 }

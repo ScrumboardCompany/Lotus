@@ -25,9 +25,9 @@ namespace lotus {
 
 		void set(const char* name, const Static& value);
 
-		Static get(const String& name);
+		Static& get(const String& name);
 
-		Static get(const char* name);
+		Static& get(const char* name);
 
 		bool isExists(const String& name);
 

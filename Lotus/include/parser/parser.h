@@ -39,6 +39,10 @@ namespace lotus {
 
 		void loadModules();
 
+		void loadMathModule();
+
+		void loadTimeModule();
+
 		Statement getNextGlobalStatement();
 
 		Statement getNextStatement();
