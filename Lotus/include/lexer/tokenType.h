@@ -37,6 +37,10 @@ namespace lotus {
 		SLASHQUAL,
 		PLUSPLUS,
 		MINUSMINUS,
+		AMP,
+		BAR,
+		TILDA,
+		CARET,
 		DOT,
 		QUESTION,
 

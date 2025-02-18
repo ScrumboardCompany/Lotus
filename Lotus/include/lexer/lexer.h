@@ -46,6 +46,10 @@ namespace lotus {
 			{STRING_LITERAL("--"), TokenType::MINUSMINUS},
 			{STRING_LITERAL("**"), TokenType::STARSTAR},
 			{STRING_LITERAL("//"), TokenType::SLASHSLASH},
+			{STRING_LITERAL("&"), TokenType::AMP},
+			{STRING_LITERAL("|"), TokenType::BAR},
+			{STRING_LITERAL("~"), TokenType::TILDA},
+			{STRING_LITERAL("^"), TokenType::CARET},
 			{STRING_LITERAL("."), TokenType::DOT},
 			{STRING_LITERAL("?"), TokenType::QUESTION},
 		};

@@ -31,6 +31,13 @@ namespace lotus {
 		virtual Value power(const Value& other);
 		virtual Value divideModule(const Value& other);
 
+		virtual Value bitwiseAnd(const Value& other);
+		virtual Value bitwiseOr(const Value& other);
+		virtual Value bitwiseXor(const Value& other);
+		virtual Value bitwiseNot();
+		virtual Value bitwiseLeftShift(const Value& other);
+		virtual Value bitwiseRightShift(const Value& other);
+
 		virtual Value greater(const Value& other);
 		virtual Value less(const Value& other);
 		virtual Value greaterEqual(const Value& other);

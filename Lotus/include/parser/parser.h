@@ -91,6 +91,12 @@ namespace lotus {
 
 		Expression conditional();
 
+		Expression bitwise();
+
+		Expression bitwiseShifts();
+
+		Expression bitwiseNot();
+
 		Expression additive();
 
 		Expression multiplicative();

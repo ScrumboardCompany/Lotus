@@ -51,6 +51,40 @@ Value lotus::BoolValue::divideModule(const Value& other) {
     return INT(asInt())->divideModule(other);
 }
 
+Value lotus::BoolValue::bitwiseAnd(const Value& other) {
+    if (other->getType() == STRING_LITERAL("int")) return BOOL(value & other->asInt());
+    if (other->getType() == STRING_LITERAL("bool")) return BOOL(value & other->asBool());
+    throwOverloadError(STRING_LITERAL("bitwiseAnd"), getType(), other->getType());
+}
+
+Value lotus::BoolValue::bitwiseOr(const Value& other) {
+    if (other->getType() == STRING_LITERAL("int")) return BOOL(value | other->asInt());
+    if (other->getType() == STRING_LITERAL("bool")) return BOOL(value | other->asBool());
+    throwOverloadError(STRING_LITERAL("bitwiseOr"), getType(), other->getType());
+}
+
+Value lotus::BoolValue::bitwiseXor(const Value& other) {
+    if (other->getType() == STRING_LITERAL("int")) return BOOL(value ^ other->asInt());
+    if (other->getType() == STRING_LITERAL("bool")) return BOOL(value ^ other->asBool());
+    throwOverloadError(STRING_LITERAL("bitwiseXor"), getType(), other->getType());
+}
+
+Value lotus::BoolValue::bitwiseNot() {
+    return BOOL(~value);
+}
+
+Value lotus::BoolValue::bitwiseLeftShift(const Value& other) {
+    if (other->getType() == STRING_LITERAL("int")) return BOOL(value << other->asInt());
+    if (other->getType() == STRING_LITERAL("bool")) return BOOL(value << other->asBool());
+    throwOverloadError(STRING_LITERAL("bitwiseLeftShift"), getType(), other->getType());
+}
+
+Value lotus::BoolValue::bitwiseRightShift(const Value& other) {
+    if (other->getType() == STRING_LITERAL("int")) return BOOL(value >> other->asInt());
+    if (other->getType() == STRING_LITERAL("bool")) return BOOL(value << other->asBool());
+    throwOverloadError(STRING_LITERAL("bitwiseRightShift"), getType(), other->getType());
+}
+
 Value lotus::BoolValue::greater(const Value& other) {
     return INT(asInt())->greater(other);
 }

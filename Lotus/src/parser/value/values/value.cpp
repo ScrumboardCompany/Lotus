@@ -62,6 +62,30 @@ Value lotus::IValue::divideModule(const Value& other) {
     throwOverloadError(STRING_LITERAL("divideModule"), getType());
 }
 
+Value lotus::IValue::bitwiseAnd(const Value& other) {
+    throwOverloadError(STRING_LITERAL("bitwiseAnd"), getType());
+}
+
+Value lotus::IValue::bitwiseOr(const Value& other) {
+    throwOverloadError(STRING_LITERAL("bitwiseOr"), getType());
+}
+
+Value lotus::IValue::bitwiseXor(const Value& other) {
+    throwOverloadError(STRING_LITERAL("bitwiseXor"), getType());
+}
+
+Value lotus::IValue::bitwiseNot() {
+    throwOverloadError(STRING_LITERAL("bitwiseNot"), getType());
+}
+
+Value lotus::IValue::bitwiseLeftShift(const Value& other) {
+    throwOverloadError(STRING_LITERAL("bitwiseLeftShift"), getType());
+}
+
+Value lotus::IValue::bitwiseRightShift(const Value& other) {
+    throwOverloadError(STRING_LITERAL("bitwiseRightShift"), getType());
+}
+
 Value lotus::IValue::greater(const Value& other) {
     throwOverloadError(STRING_LITERAL("greater"), getType());
 }

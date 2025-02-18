@@ -26,6 +26,13 @@ namespace lotus {
 		Value power(const Value& other) override;
 		Value divideModule(const Value& other) override;
 
+		Value bitwiseAnd(const Value& other) override;
+		Value bitwiseOr(const Value& other) override;
+		Value bitwiseXor(const Value& other) override;
+		Value bitwiseNot() override;
+		Value bitwiseLeftShift(const Value& other) override;
+		Value bitwiseRightShift(const Value& other) override;
+
 		Value greater(const Value& other) override;
 		Value less(const Value& other) override;
 		Value greaterEqual(const Value& other) override;

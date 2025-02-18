@@ -47,23 +47,23 @@ Expression lotus::Parser::equality() {
 }
 
 Expression lotus::Parser::conditional() {
-	Expression result = additive();
+	Expression result = bitwise();
 
 	while (true) {
 		if (match(TokenType::LESS)) {
-			result = MAKE_PTR<LogicalExpression>(result, additive(), LogicalOperationType::LESS);
+			result = MAKE_PTR<LogicalExpression>(result, bitwise(), LogicalOperationType::LESS);
 			continue;
 		}
 		if (match(TokenType::LESSEQUAL)) {
-			result = MAKE_PTR<LogicalExpression>(result, additive(), LogicalOperationType::LESSEQUAL);
+			result = MAKE_PTR<LogicalExpression>(result, bitwise(), LogicalOperationType::LESSEQUAL);
 			continue;
 		}
 		if (match(TokenType::GREATER)) {
-			result = MAKE_PTR<LogicalExpression>(result, additive(), LogicalOperationType::GREATER);
+			result = MAKE_PTR<LogicalExpression>(result, bitwise(), LogicalOperationType::GREATER);
 			continue;
 		}
 		if (match(TokenType::GREATEREQUAL)) {
-			result = MAKE_PTR<LogicalExpression>(result, additive(), LogicalOperationType::GREATEREQUAL);
+			result = MAKE_PTR<LogicalExpression>(result, bitwise(), LogicalOperationType::GREATEREQUAL);
 			continue;
 		}
 		break;
