@@ -6,7 +6,7 @@ using namespace lotus;
 Statement lotus::Parser::handleDefStatement() {
 	String name = consume(TokenType::WORD).text;
 
-	std::vector<String> args = handleArgs();
+	std::vector<Argument> args = handleArgs();
 
 	Statement body = handleBlockStatement();
 

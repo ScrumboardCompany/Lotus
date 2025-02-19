@@ -14,10 +14,14 @@ void lotus::StaticStatement::execute() {
 		memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
 		memberInfo.accessModifier = field.second.second.accessModifier;
 
-		value.fields.emplace(field.first, memberInfo);
+		value.addField(field.first, memberInfo);
 	}
 
-	value.methods = methods;
+	for (auto& method : methods) {
+		for (size_t i = 0; i < method.second.size(); i++) {
+			value.addMethod(method.first, method.second[i]);
+		}
+	}
 
 	statics.declare(name, value);
 }

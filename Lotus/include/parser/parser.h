@@ -79,7 +79,7 @@ namespace lotus {
 
 		std::vector<Expression> handleExpressions();
 
-		std::vector<String> handleArgs();
+		std::vector<Argument> handleArgs();
 
 		std::pair<RawFields_t, Methods_t> handleFieldsMethods();
 

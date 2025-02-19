@@ -11,7 +11,7 @@
 namespace lotus {
 
 	class Functions {
-		//StringMap<Function> functions;
+
 		StringMap<std::vector<Function>> functions;
 
 		friend class ImportStatement;

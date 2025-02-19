@@ -27,7 +27,7 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 		if (match(TokenType::DEF)) {
 			String methodName = consume(TokenType::WORD).text;
 
-			std::vector<String> args = handleArgs();
+			std::vector<Argument> args = handleArgs();
 
 			Statement body = handleBlockStatement();
 

@@ -7,23 +7,25 @@
 #include "utils/lotusDefines.h"
 #include "parser/statement/statement.h"
 #include "structures/variables.h"
+#include "structures/argument.h"
 
 namespace lotus {
 
 	class Function {
 		Statement body;
-		std::vector<String> args;
+		std::vector<Argument> args;
 
 		friend class ClassStatement;
 
 	public:
-		Function(const Statement& body, const std::vector<String>& args);
+		Function(const Statement& body, const std::vector<Argument>& args);
 		Function(const Statement& body, const std::vector<const char*>& args, int);
 
 		Function() = default;
 		~Function() = default;
-		Value call(const std::vector<Value>& args, Variables& variables);
+		Value call(const std::vector<Value>& callArgs, Variables& variables);
 		size_t getArgsCount() const;
+		bool hasVariadic() const;
 	};
 
 }

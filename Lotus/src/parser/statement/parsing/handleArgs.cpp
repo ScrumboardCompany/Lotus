@@ -1,9 +1,11 @@
 #include "parser/parser.h"
+#include "structures/argument.h"
+#include "utils/lotusError.h"
 
 using namespace lotus;
 
-std::vector<String> lotus::Parser::handleArgs() {
-	std::vector<String> args;
+std::vector<Argument> lotus::Parser::handleArgs() {
+	std::vector<Argument> args;
 
 	consume(TokenType::LPAREN);
 
@@ -11,6 +13,7 @@ std::vector<String> lotus::Parser::handleArgs() {
 
 		while (true) {
 			args.push_back(consume(TokenType::WORD).text);
+			if (match(TokenType::STAR)) args.back().isVariadic = true;
 
 			if (!match(TokenType::COMMA)) {
 				break;
@@ -18,6 +21,20 @@ std::vector<String> lotus::Parser::handleArgs() {
 		}
 
 		consume(TokenType::RPAREN);
+	}
+
+	bool hasVariadic = false;
+	for (size_t i = 0; i < args.size(); i++) {
+
+		if (args[i].isVariadic) {
+			if (hasVariadic) {
+				throw LotusException(STRING_LITERAL("Cannot have more one variadic argument"));
+			}
+			else hasVariadic = true;
+		}
+	}
+	if (hasVariadic && !args.back().isVariadic) {
+		throw LotusException(STRING_LITERAL("Variadic argument should be the last one"));
 	}
 
 	return args;

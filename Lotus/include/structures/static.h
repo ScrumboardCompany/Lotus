@@ -4,12 +4,11 @@
 #define _STATIC_
 
 #include "structures/classStructures.h"
+#include "parser/value/classValue.h"
 
 namespace lotus {
 
 	struct Static {
-		Fields_t fields;
-		Methods_t methods;
 
 		void addField(const String& name, const FieldMemberInfo& memberInfo);
 		void addMethod(const String& name, const MethodMemberInfo& memberInfo);
@@ -20,6 +19,9 @@ namespace lotus {
 		Value& getField(const char* name);
 		Value callMethod(const String& name, const std::vector<Value>& args, Variables& variables);
 		Value callMethod(const char* name, const std::vector<Value>& args, Variables& variables);
+
+	private:
+		ClassValue value;
 	};
 }
 

@@ -13,9 +13,14 @@ namespace lotus {
 		friend class ClassStatement;
 		friend class ObjectExpression;
 
+		MethodMemberInfo getMethod(const String& name, size_t argsCount);
+
 	public:
 
 		ClassValue() = default;
+
+		void declareField(const String& name, const FieldMemberInfo& memberInfo);
+		void declareMethod(const String& name, const MethodMemberInfo& memberInfo);
 
 		Value& getField(const String& name) override;
 		Value callMethod(const String& name, const std::vector<Value>& args, Variables& variables) override;

@@ -25,11 +25,15 @@ void lotus::ClassStatement::execute() {
 					value.fields.emplace(field.first, memberInfo);
 				}
 
-				value.methods = methods;
+				for (auto& method : methods) {
+			for (size_t i = 0; i < method.second.size(); i++) {
+				value.declareMethod(method.first, method.second[i]);
+			}
+		}
 				value.type = name;
 				std::vector<Value> argsValues;
 				for (auto& arg : method.value.args) {
-					argsValues.push_back(variables.get(arg));
+					argsValues.push_back(variables.get(arg.name));
 				}
 				value.callMethod(name, argsValues, variables);
 

@@ -19,6 +19,7 @@ void lotus::Functions::forceSet(const char* name, const Function& value) {
 
 void Functions::declare(const String& name, const Function& value) {
 	if (isExists(name)) {
+
 		for (auto& function : functions[name]) {
 			if (function.getArgsCount() == value.getArgsCount()) throw LotusException(STRING_LITERAL("Function \"") + name + STRING_LITERAL("\" with ") + std::to_wstring(value.getArgsCount()) + STRING_LITERAL(" arguments already exists"));
 		}
@@ -54,10 +55,17 @@ void lotus::Functions::set(const char* name, const Function& value) {
 }
 
 Function Functions::get(const String& name, size_t argsCount) {
+
 	if (isExists(name)) {
+
+		Ptr<Function> variadic = nullptr;
 		for (auto& function : functions[name]) {
-			size_t test = function.getArgsCount();
+			if (function.hasVariadic() && argsCount >= function.getArgsCount() - 1) variadic = MAKE_PTR<Function>(function);
 			if (function.getArgsCount() == argsCount) return function;
+		}
+
+		if (variadic) {
+			return *variadic;
 		}
 		throw LotusException(STRING_LITERAL("No overload with ") + std::to_wstring(argsCount) + STRING_LITERAL(" arguments for \"") + name + STRING_LITERAL("\""));
 	}
