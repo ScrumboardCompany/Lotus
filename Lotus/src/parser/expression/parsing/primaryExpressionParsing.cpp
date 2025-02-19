@@ -78,7 +78,7 @@ Expression lotus::Parser::primary() {
 		return handleLetExpression();
 	}
 	if (match(TokenType::DEF)) {
-		std::vector<String> args = handleArgs();
+		std::vector<Argument> args = handleArgs();
 
 		Statement body = handleBlockStatement();
 

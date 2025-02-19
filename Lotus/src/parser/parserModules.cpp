@@ -4,6 +4,7 @@
 #include "parser/value/floatValue.h"
 #include "parser/value/boolValue.h"
 #include "utils/lotusError.h"
+#include "structures/variables.h"
 #include <iostream>
 #include <thread>
 #include <string>
@@ -11,9 +12,13 @@
 #include <codecvt>
 
 void lotus::Parser::loadModules() {
+
 	module.DEF("print", {
-		std::wcout << module.variables.get("arg")->asString();
-		}, "arg");
+		Value args = module.variables.get("args");
+		for (int i = 0, size = args->size()->asInt(); i < size; i++) {
+			std::wcout << args->index(INT(i))->asString();
+		}
+		}, "args*");
 
 	module.DEF("input", {
 		String input;

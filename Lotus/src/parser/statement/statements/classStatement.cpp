@@ -22,11 +22,15 @@ void lotus::ClassStatement::execute() {
 			value.fields.emplace(field.first, memberInfo);
 		}
 
-		value.methods = methods;
+		for (auto& method : methods) {
+			for (size_t i = 0; i < method.second.size(); i++) {
+				value.declareMethod(method.first, method.second[i]);
+			}
+		}
 		value.type = name;
 
 		RETURN_VALUE(MAKE_PTR<ClassValue>(value));
-		}), std::vector<String>());
+		}), std::vector<Argument>());
 
 	functions.declare(name, function);
 }
