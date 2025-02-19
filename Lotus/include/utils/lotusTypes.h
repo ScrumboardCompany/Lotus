@@ -36,7 +36,7 @@ namespace lotus {
 
     using RawFields_t = StringMap<std::pair<Expression, ClassMemberInfo>>;
     using Fields_t = StringMap<FieldMemberInfo>;
-    using Methods_t = StringMap<MethodMemberInfo>;
+    using Methods_t = StringMap<std::vector<MethodMemberInfo>>;
 }
 
 #endif // _LOTUSTYPES_

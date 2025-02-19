@@ -65,9 +65,17 @@ void lotus::ImportStatement::execute() {
         for (auto& function : module.functions.functions) {
 
             if (allowOverwrite) {
-                currentModule.functions.forceDeclareOrSet(function.first, function.second);
+                for (auto& functionSecond : function.second) {
+                    currentModule.functions.forceSet(function.first, functionSecond);
+                }
+                //currentModule.functions.forceSet(function.first, function.second);
             }
-            else currentModule.functions.declare(function.first, function.second);
+            else {
+                for (auto& functionSecond : function.second) {
+                    currentModule.functions.declare(function.first, functionSecond);
+                }
+                //currentModule.functions.declare(function.first, function.second);
+            }
         }
 
         for (auto& Static : module.statics.statics) {

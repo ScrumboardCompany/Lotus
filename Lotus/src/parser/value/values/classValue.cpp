@@ -34,9 +34,18 @@ Value& lotus::ClassValue::getField(const String& name) {
 Value lotus::ClassValue::callMethod(const String& name, const std::vector<Value>& args, Variables& variables) {
     if (methods.find(name) != methods.end()) {
 
-        if (methods[name].accessModifier == AccessModifierType::PRIVATE) {
-            throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
+        bool hasOverload = false;
+
+        for (auto& method : methods[name]) {
+            if (method.value.getArgsCount() == args.size()) {
+                hasOverload = true;
+                if (method.accessModifier == AccessModifierType::PRIVATE) {
+                    throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
+                }
+            }
         }
+
+        if(!hasOverload) throw LotusException(STRING_LITERAL("No overload with ") + std::to_wstring(args.size()) + STRING_LITERAL(" arguments for \"") + name + STRING_LITERAL("\""));
 
         ClassValue thisValue;
         thisValue.fields = fields;
@@ -46,13 +55,21 @@ Value lotus::ClassValue::callMethod(const String& name, const std::vector<Value>
             field.second.accessModifier = AccessModifierType::PUBLIC;
         }
 
-        for (auto& method : thisValue.methods) {
-            method.second.accessModifier = AccessModifierType::PUBLIC;
+        for (auto& methodVector : thisValue.methods) {
+            for (auto& method : methodVector.second) {
+                method.accessModifier = AccessModifierType::PUBLIC;
+            }
         }
 
         variables.declare(STRING_LITERAL("this"), MAKE_PTR<ClassValue>(thisValue));
 
-        Value returnValue = methods[name].value.call(args, variables);
+        Value returnValue = nullptr;
+
+        for (auto& method : methods[name]) {
+            if (method.value.getArgsCount() == args.size()) {
+                returnValue = method.value.call(args, variables);
+            }
+        }
 
         if (auto thisValueAfterMethod = std::dynamic_pointer_cast<ClassValue>(variables.get(STRING_LITERAL("this")))) {if (fields.size() != thisValueAfterMethod->fields.size()) throw LotusException(STRING_LITERAL("Different size of thisValue before method and after method"));
 

@@ -38,3 +38,7 @@ Value Function::call(const std::vector<Value>& args, Variables& variables) {
 	}
 
 }
+
+size_t lotus::Function::getArgsCount() const {
+	return args.size();
+}

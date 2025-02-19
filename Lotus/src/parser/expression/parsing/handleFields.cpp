@@ -1,6 +1,7 @@
 #include "parser/parser.h"
 #include "parser/function/function.h"
 #include "structures/classStructures.h"
+#include "utils/lotusError.h"
 
 using namespace lotus;
 
@@ -34,7 +35,13 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 			memberInfo.value = Function(body, args);
 			memberInfo.accessModifier = accessModifier;
 
-			methods.emplace(methodName, memberInfo);
+			if (methods.find(methodName) != methods.end()) {
+				for (auto& method : methods[methodName]) {
+					if (method.value.getArgsCount() == args.size()) throw LotusException(STRING_LITERAL("Method \"") + methodName + STRING_LITERAL("\" with ") + std::to_wstring(args.size()) + STRING_LITERAL(" arguments already exists"));
+				}
+
+				methods[methodName].push_back(memberInfo);
+			} else methods.emplace(methodName, std::vector<MethodMemberInfo>{memberInfo});
 		}
 		else {
 			String fieldName = consume(TokenType::WORD).text;

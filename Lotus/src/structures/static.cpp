@@ -8,7 +8,14 @@ void lotus::Static::addField(const String& name, const FieldMemberInfo& memberIn
 }
 
 void lotus::Static::addMethod(const String& name, const MethodMemberInfo& memberInfo) {
-	methods.emplace(name, memberInfo);
+	if (methods.find(name) != methods.end()) {
+		for (auto& method : methods[name]) {
+			if (method.value.getArgsCount() == memberInfo.value.getArgsCount()) throw LotusException(STRING_LITERAL("Method \"") + name + STRING_LITERAL("\" with ") + std::to_wstring(memberInfo.value.getArgsCount()) + STRING_LITERAL(" arguments already exists"));
+		}
+
+		methods[name].push_back(memberInfo);
+	}
+	else methods.emplace(name, std::vector<MethodMemberInfo>{memberInfo});
 }
 
 void lotus::Static::addField(const char* name, const FieldMemberInfo& memberInfo) {
@@ -36,11 +43,28 @@ Value& lotus::Static::getField(const char* name) {
 Value lotus::Static::callMethod(const String& name, const std::vector<Value>& args, Variables& variables) {
 	if (methods.find(name) == methods.end()) throw LotusException(STRING_LITERAL("Method \"") + name + STRING_LITERAL("\" doesn`t exist"));
 
-	if (methods[name].accessModifier == AccessModifierType::PRIVATE) {
-		throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
+	bool hasOverload = false;
+
+	for (auto& method : methods[name]) {
+		if (method.value.getArgsCount() == args.size()) {
+			hasOverload = true;
+			if (method.accessModifier == AccessModifierType::PRIVATE) {
+				throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
+			}
+		}
 	}
 
-	return methods[name].value.call(args, variables);
+	if (!hasOverload) throw LotusException(STRING_LITERAL("No overload with ") + std::to_wstring(args.size()) + STRING_LITERAL(" arguments for \"") + name + STRING_LITERAL("\""));
+
+	Value returnValue = nullptr;
+
+	for (auto& method : methods[name]) {
+		if (method.value.getArgsCount() == args.size()) {
+			returnValue = method.value.call(args, variables);
+		}
+	}
+
+	return returnValue;
 }
 
 Value lotus::Static::callMethod(const char* name, const std::vector<Value>& args, Variables& variables) {

@@ -21,6 +21,7 @@ namespace lotus {
 		Function() = default;
 		~Function() = default;
 		Value call(const std::vector<Value>& args, Variables& variables);
+		size_t getArgsCount() const;
 	};
 
 }

@@ -3,20 +3,31 @@
 
 using namespace lotus;
 
-void Functions::forceDeclareOrSet(const String& name, const Function& value) {
-	functions[name] = value;
+void Functions::forceSet(const String& name, const Function& value) {
+	for (auto& function : functions[name]) {
+		if (function.getArgsCount() == value.getArgsCount()) {
+			function = value;
+			return;
+		}
+	}
+	throw LotusException(STRING_LITERAL("No function overload for \"") + std::to_wstring(value.getArgsCount()) + STRING_LITERAL(" arguments found \""));
 }
 
-void lotus::Functions::forceDeclareOrSet(const char* name, const Function& value) {
-	forceDeclareOrSet(STRING_VAR_LITERAL(name), value);
+void lotus::Functions::forceSet(const char* name, const Function& value) {
+	forceSet(STRING_VAR_LITERAL(name), value);
 }
 
 void Functions::declare(const String& name, const Function& value) {
 	if (isExists(name)) {
-		throw LotusException(STRING_LITERAL("Function \"") + name + STRING_LITERAL("\" already exists"));
-	}
+		for (auto& function : functions[name]) {
+			if (function.getArgsCount() == value.getArgsCount()) throw LotusException(STRING_LITERAL("Function \"") + name + STRING_LITERAL("\" with ") + std::to_wstring(value.getArgsCount()) + STRING_LITERAL(" arguments already exists"));
+		}
 
-	functions.emplace(name, value);
+		functions[name].push_back(value);
+	}
+	else {
+		functions.emplace(name, std::vector<Function>{value});
+	}
 }
 
 void lotus::Functions::declare(const char* name, const Function& value) {
@@ -25,7 +36,13 @@ void lotus::Functions::declare(const char* name, const Function& value) {
 
 void Functions::set(const String& name, const Function& value) {
 	if (isExists(name)) {
-		functions[name] = value;
+		for (auto& function : functions[name]) {
+			if (function.getArgsCount() == value.getArgsCount()) {
+				function = value;
+				return;
+			}
+		}
+		throw LotusException(STRING_LITERAL("No overload with ") + std::to_wstring(value.getArgsCount()) + STRING_LITERAL(" arguments for \"") + name + STRING_LITERAL("\""));
 	}
 	else {
 		throw LotusException(STRING_LITERAL("Undefined function \"") + name + STRING_LITERAL("\""));
@@ -36,20 +53,24 @@ void lotus::Functions::set(const char* name, const Function& value) {
 	set(STRING_VAR_LITERAL(name), value);
 }
 
-Function Functions::get(const String& name) {
+Function Functions::get(const String& name, size_t argsCount) {
 	if (isExists(name)) {
-		return functions[name];
+		for (auto& function : functions[name]) {
+			size_t test = function.getArgsCount();
+			if (function.getArgsCount() == argsCount) return function;
+		}
+		throw LotusException(STRING_LITERAL("No overload with ") + std::to_wstring(argsCount) + STRING_LITERAL(" arguments for \"") + name + STRING_LITERAL("\""));
 	}
 
 	throw LotusException(STRING_LITERAL("Undefined function \"") + name + STRING_LITERAL("\""));
 }
 
-Function lotus::Functions::get(const char* name) {
-	return get(STRING_VAR_LITERAL(name));
+Function lotus::Functions::get(const char* name, size_t argsCount) {
+	return get(STRING_VAR_LITERAL(name), argsCount);
 }
 
 Value lotus::Functions::call(const String& name, const std::vector<Value>& args, Variables& variables) {
-	return get(name).call(args, variables);
+	return get(name, args.size()).call(args, variables);
 }
 
 Value lotus::Functions::call(const char* name, const std::vector<Value>& args, Variables& variables) {

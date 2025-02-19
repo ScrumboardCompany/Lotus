@@ -11,16 +11,17 @@
 namespace lotus {
 
 	class Functions {
-		StringMap<Function> functions;
+		//StringMap<Function> functions;
+		StringMap<std::vector<Function>> functions;
 
 		friend class ImportStatement;
 
 	public:
 		Functions() = default;
 
-		void forceDeclareOrSet(const String& name, const Function& value);
+		void forceSet(const String& name, const Function& value);
 
-		void forceDeclareOrSet(const char* name, const Function& value);
+		void forceSet(const char* name, const Function& value);
 
 		void declare(const String& name, const Function& value);
 
@@ -30,9 +31,9 @@ namespace lotus {
 
 		void set(const char* name, const Function& value);
 
-		Function get(const String& name);
+		Function get(const String& name, size_t argsCount = 0);
 
-		Function get(const char* name);
+		Function get(const char* name, size_t argsCount = 0);
 
 		Value call(const String& name, const std::vector<Value>& args, Variables& variables);
 
