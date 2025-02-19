@@ -10,7 +10,7 @@ using namespace lotus;
 lotus::ForEachStatement::ForEachStatement(const Expression& expression, const String& name, Variables& variables, const Statement& body) : expression(expression), name(name), variables(variables), body(body) {}
 
 void lotus::ForEachStatement::execute() {
-    variables.saveState();
+    variables.enterScope();
 
     variables.declare(name);
 
@@ -31,5 +31,5 @@ void lotus::ForEachStatement::execute() {
 		//evaled->index(INT(i)) = variables.get(name);
     }
 
-    variables.restoreState();
+    variables.exitScope();
 }

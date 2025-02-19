@@ -10,7 +10,7 @@ lotus::ForStatement::ForStatement(const std::vector<Expression>& declaringPart, 
 : declaringPart(declaringPart), conditionPart(conditionPart), actionPart(actionPart), body(body), variables(variables) {}
 
 void lotus::ForStatement::execute() {
-    variables.saveState();
+    variables.enterScope();
 
     for (auto& declare : declaringPart) declare->eval();
 
@@ -31,5 +31,5 @@ void lotus::ForStatement::execute() {
         }
     }
 
-    variables.restoreState();
+    variables.exitScope();
 }

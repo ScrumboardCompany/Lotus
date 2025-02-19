@@ -16,10 +16,11 @@ namespace lotus {
 		RawFields_t fields;
 		Methods_t methods;
 		Functions& functions;
+		Variables& variables;
 
 	public:
 
-		ClassStatement(Functions& functions, const String& name, RawFields_t& fields, const Methods_t& methods);
+		ClassStatement(Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods);
 		void execute() override;
 	};
 

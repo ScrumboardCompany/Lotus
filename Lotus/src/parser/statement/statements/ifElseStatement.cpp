@@ -8,7 +8,7 @@ lotus::IfElseStatement::IfElseStatement(const std::vector<Expression>& condition
 	: conditionPart(conditionPart), ifBody(ifBody), elseBody(elseBody), variables(variables) {}
 
 void lotus::IfElseStatement::execute() {
-	variables.saveState();
+	variables.enterScope();
 
 	if (callAllExpressionsAndReturnLastValue(conditionPart)->asBool()) {
 		ifBody->execute();
@@ -16,5 +16,5 @@ void lotus::IfElseStatement::execute() {
 		elseBody->execute();
 	}
 
-	variables.restoreState();
+	variables.exitScope();
 }

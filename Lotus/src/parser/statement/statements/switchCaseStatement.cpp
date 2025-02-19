@@ -14,22 +14,22 @@ void lotus::SwitchCaseStatement::execute() {
     for (auto& Case : cases) {
         if (caseMatched || valueToCheck->equality(Case.first->eval())->asBool()) {
             caseMatched = true;
-            variables.saveState();
+            variables.enterScope();
 
             try {
                 Case.second->execute();
-                variables.restoreState();
+                variables.exitScope();
             }
             catch (const BreakStatement&) {
-                variables.restoreState();
+                variables.exitScope();
                 return;
             }
         }
     }
 
     if (!caseMatched && defaultBody) {
-        variables.saveState();
+        variables.enterScope();
         defaultBody->execute();
-        variables.restoreState();
+        variables.exitScope();
     }
 }

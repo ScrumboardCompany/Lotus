@@ -4,68 +4,91 @@
 using namespace lotus;
 
 void Variables::forceDeclareOrSet(const String& name, const Value& value) {
-	variables[name] = value;
+	if (scopes.empty()) {
+		variables[name] = value;
+	}
+	else {
+		scopes.back()[name] = value;
+	}
 }
 
-void lotus::Variables::forceDeclareOrSet(const char* name, const Value& value) {
+void Variables::forceDeclareOrSet(const char* name, const Value& value) {
 	forceDeclareOrSet(STRING_VAR_LITERAL(name), value);
 }
 
 void Variables::declare(const String& name, const Value& value) {
-	if (isExists(name)) {
-		throw LotusException(STRING_LITERAL("Variable \"") + name + STRING_LITERAL("\" already exists"));
+	if (scopes.back().count(name) > 0) {
+		throw LotusException(STRING_LITERAL("Variable \"") + name + STRING_LITERAL("\" already exists in this scope"));
 	}
 
-	variables.emplace(name, value);
+	scopes.back()[name] = value;
 }
 
-void lotus::Variables::declare(const char* name, const Value& value) {
+void Variables::declare(const char* name, const Value& value) {
 	declare(STRING_VAR_LITERAL(name), value);
 }
 
 void Variables::set(const String& name, const Value& value) {
-	if (isExists(name)) {
+	for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
+		if (it->count(name) > 0) {
+			(*it)[name] = value;
+			return;
+		}
+	}
+
+	if (variables.count(name) > 0) {
 		variables[name] = value;
+		return;
 	}
-	else {
-		throw LotusException(STRING_LITERAL("Undefined variable \"") + name + STRING_LITERAL("\""));
-	}
+
+	throw LotusException(STRING_LITERAL("Undefined variable \"") + name + STRING_LITERAL("\""));
 }
 
-void lotus::Variables::set(const char* name, const Value& value) {
+void Variables::set(const char* name, const Value& value) {
 	set(STRING_VAR_LITERAL(name), value);
 }
 
-Value& lotus::Variables::get(const String& name) {
-	if (isExists(name)) {
+Value& Variables::get(const String& name) {
+	for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
+		if (it->count(name) > 0) {
+			return (*it)[name];
+		}
+	}
+
+	if (variables.count(name) > 0) {
 		return variables[name];
 	}
 
 	throw LotusException(STRING_LITERAL("Undefined variable \"") + name + STRING_LITERAL("\""));
 }
 
-Value& lotus::Variables::get(const char* name) {
+Value& Variables::get(const char* name) {
 	return get(STRING_VAR_LITERAL(name));
 }
 
-bool lotus::Variables::isExists(const String& name) {
-	return variables.find(name) != variables.end();
+bool Variables::isExists(const String& name) {
+	for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
+		if (it->count(name) > 0) {
+			return true;
+		}
+	}
+
+	return variables.count(name) > 0;
 }
 
-bool lotus::Variables::isExists(const char* name) {
+bool Variables::isExists(const char* name) {
 	return isExists(STRING_VAR_LITERAL(name));
 }
 
-void lotus::Variables::saveState() {
-	savedStates.push(variables);
+void Variables::enterScope() {
+	scopes.emplace_back(); 
 }
 
-void lotus::Variables::restoreState() {
-	if (!savedStates.empty()) {
-		variables = savedStates.top();
-		savedStates.pop();
+void Variables::exitScope() {
+	if (scopes.size() > 1) { 
+		scopes.pop_back();
 	}
 	else {
-		throw LotusException(STRING_LITERAL("No saved state to restore"));
+		throw LotusException(STRING_LITERAL("Cannot exit global scope"));
 	}
 }

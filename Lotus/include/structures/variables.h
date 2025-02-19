@@ -7,17 +7,20 @@
 #include "utils/lotusDefines.h"
 #include "parser/value/undefinedValue.h"
 #include <stack>
+#include <vector>
 
 namespace lotus {
 
 	class Variables {
 		StringMap<Value> variables;
-		std::stack<StringMap<Value>> savedStates;
+		std::vector<StringMap<Value>> scopes;
 		friend class ImportStatement;
 		friend class ClassValue;
 
 	public:
-		Variables() = default;
+		Variables() {
+			enterScope();
+		}
 
 		void forceDeclareOrSet(const String& name, const Value& value = UNDEFINED());
 
@@ -39,8 +42,8 @@ namespace lotus {
 
 		bool isExists(const char* name);
 
-		void saveState();
-		void restoreState();
+		void enterScope(); 
+		void exitScope();
 	};
 
 }

@@ -60,6 +60,15 @@ Value lotus::SetExpression::eval() {
         return container;
     }
 
+    if (auto fieldExpr = std::dynamic_pointer_cast<FieldExpression>(expression1)) {
+        Value value = fieldExpr->expr->eval();
+        String name = fieldExpr->field;
+
+        Value& element = value->getField(name);
+
+        return applyOperation(element);
+    }
+
     if (auto staticField = std::dynamic_pointer_cast<StaticFieldExpression>(expression1)) {
         Value& field = staticField->statics.get(staticField->staticName).getField(staticField->field);
         return applyOperation(field);

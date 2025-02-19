@@ -10,17 +10,6 @@ Value lotus::ClassValue::sizeInRam() {
     return INT(sizeof(ClassValue));
 }
 
-void lotus::ClassValue::constructor(const std::vector<Value>& args, Variables& variables) {
-    if (methods.find(STRING_LITERAL("constructor")) != methods.end()) callMethod(STRING_LITERAL("constructor"), args, variables);
-    else {
-        for (auto& field : fields) {
-            if (auto classField = std::dynamic_pointer_cast<ClassValue>(field.second.value)) {
-                classField->constructor({}, variables);
-            }
-        }
-    }
-}
-
 Value& lotus::ClassValue::getField(const String& name) {
     if (fields.find(name) != fields.end()) {
         if (fields[name].accessModifier == AccessModifierType::PRIVATE) {

@@ -2,31 +2,41 @@
 #include "parser/statement/cppFunctionStatement.h"
 #include "parser/value/classValue.h"
 #include "structures/functions.h"
+#include "structures/variables.h"
 
 using namespace lotus;
 
-lotus::ClassStatement::ClassStatement(Functions& functions, const String& name, RawFields_t& fields, const Methods_t& methods)
-	: functions(functions), name(name), fields(fields), methods(methods) {
+lotus::ClassStatement::ClassStatement(Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods)
+	: functions(functions), variables(variables), name(name), fields(fields), methods(methods) {
 }
 
 void lotus::ClassStatement::execute() {
 
-	Function function(MAKE_PTR<CppFunctionStatement>([&]() {
-		ClassValue value;
-		for (auto& field : fields) {
+	if (methods.find(name) != methods.end()) {
+		for (auto& method : methods[name]) {
+			Function function(MAKE_PTR<CppFunctionStatement>([&]() {
+				ClassValue value;
+				for (auto& field : fields) {
 
-			FieldMemberInfo memberInfo;
-			memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
-			memberInfo.accessModifier = field.second.second.accessModifier;
+					FieldMemberInfo memberInfo;
+					memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
+					memberInfo.accessModifier = field.second.second.accessModifier;
 
-			value.fields.emplace(field.first, memberInfo);
+					value.fields.emplace(field.first, memberInfo);
+				}
+
+				value.methods = methods;
+				value.type = name;
+				std::vector<Value> argsValues;
+				for (auto& arg : method.value.args) {
+					argsValues.push_back(variables.get(arg));
+				}
+				value.callMethod(name, argsValues, variables);
+
+				RETURN_VALUE(MAKE_PTR<ClassValue>(value));
+				}), method.value.args);
+
+			functions.declare(name, function);
 		}
-
-		value.methods = methods;
-		value.type = name;
-
-		RETURN_VALUE(MAKE_PTR<ClassValue>(value));
-		}), std::vector<String>());
-
-	functions.declare(name, function);
+	}
 }

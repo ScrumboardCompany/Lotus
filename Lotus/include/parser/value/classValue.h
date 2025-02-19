@@ -17,8 +17,6 @@ namespace lotus {
 
 		ClassValue() = default;
 
-		void constructor(const std::vector<Value>& args, Variables& variables);
-
 		Value& getField(const String& name) override;
 		Value callMethod(const String& name, const std::vector<Value>& args, Variables& variables) override;
 

@@ -10,7 +10,7 @@ lotus::WhileStatement::WhileStatement(const std::vector<Expression>& conditionPa
 	: conditionPart(conditionPart), body(body), variables(variables) {}
 
 void lotus::WhileStatement::execute() {
-	variables.saveState();
+	variables.enterScope();
 
 	while (callAllExpressionsAndReturnLastValue(conditionPart)->asBool()) {
 		try {
@@ -24,5 +24,5 @@ void lotus::WhileStatement::execute() {
 		}
 	}
 
-	variables.restoreState();
+	variables.exitScope();
 }

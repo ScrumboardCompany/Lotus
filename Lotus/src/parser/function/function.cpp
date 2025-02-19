@@ -20,7 +20,7 @@ Value Function::call(const std::vector<Value>& args, Variables& variables) {
 		throw LotusException(STRING_LITERAL("Incorrect number of arguments"));
 	}
 
-	variables.saveState();
+	variables.enterScope();
 
 	for (size_t i = 0; i < args.size(); i++) {
 		variables.declare(this->args[i], args[i]);
@@ -29,11 +29,11 @@ Value Function::call(const std::vector<Value>& args, Variables& variables) {
 	try {
 		body->execute();
 
-		variables.restoreState();
+		variables.exitScope();
 		return UNDEFINED();
 	}
 	catch (const Value& returnValue) {
-		variables.restoreState();
+		variables.exitScope();
 		return returnValue;
 	}
 

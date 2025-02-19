@@ -14,6 +14,8 @@ namespace lotus {
 		Statement body;
 		std::vector<String> args;
 
+		friend class ClassStatement;
+
 	public:
 		Function(const Statement& body, const std::vector<String>& args);
 		Function(const Statement& body, const std::vector<const char*>& args, int);
