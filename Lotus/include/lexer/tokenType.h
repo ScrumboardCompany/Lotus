@@ -67,6 +67,7 @@ namespace lotus {
 		DEFAULT,
 		PUBLIC,
 		PRIVATE,
+		PROTECTED,
 		STATIC,
 
 		LPAREN,

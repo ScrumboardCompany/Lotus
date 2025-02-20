@@ -6,8 +6,8 @@
 
 using namespace lotus;
 
-lotus::ClassStatement::ClassStatement(Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods)
-	: functions(functions), variables(variables), name(name), fields(fields), methods(methods) {
+lotus::ClassStatement::ClassStatement(Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods, const std::vector<String>& parents)
+	: functions(functions), variables(variables), name(name), fields(fields), methods(methods), parents(parents) {
 }
 
 void lotus::ClassStatement::execute() {
@@ -31,6 +31,14 @@ void lotus::ClassStatement::execute() {
 					}
 				}
 				value.type = name;
+
+				std::vector<ClassValue> parentClasses;
+				for (auto& parent : parents) {
+					if (auto parentClass = std::dynamic_pointer_cast<ClassValue>(functions.call(parent, {}, variables))) {
+						value.parents.push_back(*parentClass);
+					}
+				}
+
 				std::vector<Value> argsValues;
 				for (auto& arg : method.value.args) {
 					argsValues.push_back(variables.get(arg.name));
@@ -68,6 +76,13 @@ void lotus::ClassStatement::execute() {
 			}
 
 			value.type = name;
+
+			std::vector<ClassValue> parentClasses;
+			for (auto& parent : parents) {
+				if (auto parentClass = std::dynamic_pointer_cast<ClassValue>(functions.call(parent, {}, variables))) {
+					value.parents.push_back(*parentClass);
+				}
+			}
 
 			RETURN_VALUE(MAKE_PTR<ClassValue>(value));
 			}), {});
