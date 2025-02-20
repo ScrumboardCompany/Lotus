@@ -1,4 +1,5 @@
 #include "parser/expression/methodExpression.h"
+#include "structures/variables.h"
 
 using namespace lotus;
 

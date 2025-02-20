@@ -10,6 +10,10 @@ lotus::LambdaValue::LambdaValue(const Function& function, Variables& variables) 
 	type = STRING_LITERAL("lambda");
 }
 
+size_t LambdaValue::getArgsCount() const {
+	return function.getArgsCount();
+}
+
 Value lotus::LambdaValue::call(const std::vector<Value>& args, Variables& variables) {
 	return function.call(args, variables);
 }

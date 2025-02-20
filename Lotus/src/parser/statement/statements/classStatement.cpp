@@ -26,10 +26,10 @@ void lotus::ClassStatement::execute() {
 				}
 
 				for (auto& method : methods) {
-			for (size_t i = 0; i < method.second.size(); i++) {
-				value.declareMethod(method.first, method.second[i]);
-			}
-		}
+					for (size_t i = 0; i < method.second.size(); i++) {
+						value.declareMethod(method.first, method.second[i]);
+					}
+				}
 				value.type = name;
 				std::vector<Value> argsValues;
 				for (auto& arg : method.value.args) {
@@ -42,5 +42,36 @@ void lotus::ClassStatement::execute() {
 
 			functions.declare(name, function);
 		}
+	}
+	else {
+		Function function(MAKE_PTR<CppFunctionStatement>([&]() {
+			ClassValue value;
+			for (auto& field : fields) {
+
+				FieldMemberInfo memberInfo;
+				memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
+				memberInfo.accessModifier = field.second.second.accessModifier;
+
+				value.fields.emplace(field.first, memberInfo);
+			}
+
+			for (auto& field : value.fields) {
+				if (auto fieldClass = std::dynamic_pointer_cast<ClassValue>(field.second.value)) {
+					fieldClass->callMethod(fieldClass->getType(), {}, variables);
+				}
+			}
+
+			for (auto& method : methods) {
+				for (size_t i = 0; i < method.second.size(); i++) {
+					value.declareMethod(method.first, method.second[i]);
+				}
+			}
+
+			value.type = name;
+
+			RETURN_VALUE(MAKE_PTR<ClassValue>(value));
+			}), {});
+
+		functions.declare(name, function);
 	}
 }

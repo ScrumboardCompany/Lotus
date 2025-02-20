@@ -18,6 +18,8 @@ namespace lotus {
 
 		LambdaValue(const Function& function, Variables& variables);
 
+		size_t getArgsCount() const;
+
 		Value call(const std::vector<Value>& args, Variables& variables) override;
 
 		Value sizeInRam() override;

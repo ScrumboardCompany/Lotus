@@ -1,5 +1,6 @@
 #include "parser/value/classValue.h"
 #include "parser/value/intValue.h"
+#include "parser/value/lambdaValue.h"
 #include "utils/lotusError.h"
 #include "parser/function/function.h"
 #include "structures/variables.h"
@@ -54,6 +55,12 @@ Value& lotus::ClassValue::getField(const String& name) {
 }
 
 Value ClassValue::callMethod(const String& name, const std::vector<Value>& args, Variables& variables) {
+    if (fields.find(name) != fields.end()) {
+        if (auto lambda = std::dynamic_pointer_cast<LambdaValue>(getField(name))) {
+            if (lambda->getArgsCount() == args.size()) return getField(name)->call(args, variables);
+        }
+    }
+
     auto methodInfo = getMethod(name, args.size());
     if (methodInfo.accessModifier == AccessModifierType::PRIVATE) {
         throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
