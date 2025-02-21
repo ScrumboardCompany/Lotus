@@ -15,6 +15,14 @@ namespace lotus {
 
 		MethodMemberInfo getMethod(const String& name, size_t argsCount);
 
+		std::vector<ClassValue> parents;
+
+		void collectInheritedMembers(ClassValue& thisValue);
+
+		bool hasField(const String& name);
+
+		bool assignField(const String& name, const FieldMemberInfo& field);
+
 	public:
 
 		ClassValue() = default;

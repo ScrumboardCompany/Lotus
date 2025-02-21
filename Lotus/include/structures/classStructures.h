@@ -11,6 +11,7 @@ namespace lotus {
 	enum class AccessModifierType {
 		PUBLIC,
 		PRIVATE,
+		PROTECTED,
 	};
 
 	struct ClassMemberInfo {

@@ -76,6 +76,7 @@ namespace lotus {
 			{STRING_LITERAL("default"), TokenType::DEFAULT},
 			{STRING_LITERAL("public"), TokenType::PUBLIC},
 			{STRING_LITERAL("private"), TokenType::PRIVATE},
+			{STRING_LITERAL("protected"), TokenType::PROTECTED},
 			{STRING_LITERAL("static"), TokenType::STATIC},
 		};
 

@@ -11,7 +11,7 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 
 	consume(TokenType::LBRACE);
 
-	AccessModifierType accessModifier = AccessModifierType::PRIVATE;
+	AccessModifierType accessModifier = AccessModifierType::PUBLIC;
 
 	while (!match(TokenType::RBRACE)) {
 
@@ -21,6 +21,10 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 		}
 		if (match(TokenType::PRIVATE)) {
 			accessModifier = AccessModifierType::PRIVATE;
+			consume(TokenType::COLON);
+		}
+		if (match(TokenType::PROTECTED)) {
+			accessModifier = AccessModifierType::PROTECTED;
 			consume(TokenType::COLON);
 		}
 
