@@ -28,9 +28,7 @@ String lotus::StringValue::asString() {
 }
 
 Value lotus::StringValue::add(const Value& other) {
-    if (other->getType() == STRING_LITERAL("string")) return STRING(value + other->asString());
-    throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
-    return Value();
+    return STRING(value + other->asString());
 }
 
 Value lotus::StringValue::multiply(const Value& other) {
@@ -42,7 +40,6 @@ Value lotus::StringValue::multiply(const Value& other) {
         return STRING(result);
     }
     throwOverloadError(STRING_LITERAL("multiply"), getType(), other->getType());
-    return Value();
 }
 
 Value lotus::StringValue::greater(const Value& other) {
