@@ -14,9 +14,9 @@ Function::Function(const Statement& body, const std::vector<const char*>& args, 
 	for (auto& arg : args) {
 		std::string argInString = arg;
 
-		bool isVariadic = !argInString.empty() && argInString.back() == '*';
+		bool isVariadic = argInString.size() >= 3 && argInString.substr(argInString.size() - 3) == "...";
 		if (isVariadic) {
-			argInString.pop_back();
+			argInString.erase(argInString.size() - 3);
 		}
 
 		this->args.emplace_back(STRING_VAR_LITERAL(argInString.c_str()), isVariadic);

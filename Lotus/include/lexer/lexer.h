@@ -53,6 +53,7 @@ namespace lotus {
 			{STRING_LITERAL("."), TokenType::DOT},
 			{STRING_LITERAL("?"), TokenType::QUESTION},
 			{STRING_LITERAL("::"), TokenType::COLONCOLON},
+			{STRING_LITERAL("..."), TokenType::DOTDOTDOT},
 		};
 
 		StringMap<TokenType> keywords = {

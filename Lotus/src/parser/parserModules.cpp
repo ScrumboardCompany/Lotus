@@ -18,7 +18,14 @@ void lotus::Parser::loadModules() {
 		for (int i = 0, size = args->size()->asInt(); i < size; i++) {
 			std::wcout << args->index(INT(i))->asString();
 		}
-		}, "args*");
+		}, "args...");
+
+	module.DEF("println", {
+		Value args = module.variables.get("args");
+		for (int i = 0, size = args->size()->asInt(); i < size; i++) {
+			std::wcout << args->index(INT(i))->asString() << std::endl;
+		}
+		}, "args...");
 
 	module.DEF("input", {
 		String input;
