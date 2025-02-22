@@ -37,14 +37,14 @@ Expression lotus::Parser::unary() {
     Expression result = primary();
 
     for (auto it = operations.rbegin(); it != operations.rend(); ++it) {
-        result = MAKE_PTR<UnaryExpression>(result, *it);
+        result = MAKE_PTR<UnaryExpression>(result, *it, module.variables);
     }
 
 	while (true) {
 		if (match(TokenType::LBRACKET)) {
 			Expression index = expression();
 			consume(TokenType::RBRACKET);
-			result = MAKE_PTR<IndexExpression>(result, index);
+			result = MAKE_PTR<IndexExpression>(result, index, module.variables);
 		}
         else if (match(TokenType::LPAREN)) {
             std::vector<Expression> args;
@@ -58,10 +58,10 @@ Expression lotus::Parser::unary() {
             result = MAKE_PTR<CallLambdaExpression>(module.variables, args, result);
         }
         else if (match(TokenType::PLUSPLUS)) {
-            result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXINCREMENT);
+            result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXINCREMENT, module.variables);
         }
         else if (match(TokenType::MINUSMINUS)) {
-            result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXDECREMENT);
+            result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXDECREMENT, module.variables);
         }
         else if (match(TokenType::DOT)) {
             String name = consume(TokenType::WORD).text;
@@ -84,19 +84,43 @@ Expression lotus::Parser::unary() {
 	}
 
     if (match(TokenType::EQUAL)) {
-        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::SET);
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::SET, module.variables);
     }
     else if (match(TokenType::PLUSEQUAL)) {
-        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::ADDSET);
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::ADDSET, module.variables);
     }
     else if (match(TokenType::MINUSQUAL)) {
-        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::SUBSTRACTSET);
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::SUBSTRACTSET, module.variables);
     }
     else if (match(TokenType::STARQUAL)) {
-        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::MULTIPLYSET);
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::MULTIPLYSET, module.variables);
     }
     else if (match(TokenType::SLASHQUAL)) {
-        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::DIVIDESET);
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::DIVIDESET, module.variables);
+    }
+    else if (match(TokenType::STARSTAREQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::POWERSET, module.variables);
+    }
+    else if (match(TokenType::SLASHSLASHEQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::DIVIDEMODULESET, module.variables);
+    }
+    else if (match(TokenType::GREATERGREATEREQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::BITIWSERIGHTSHIFTSET, module.variables);
+    }
+    else if (match(TokenType::LESSLESSEQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::BITWISELEFTSHIFTSET, module.variables);
+    }
+    else if (match(TokenType::AMPEQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::BITWISEANDSET, module.variables);
+    }
+    else if (match(TokenType::BAREQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::BITWISEORSET, module.variables);
+    }
+    else if (match(TokenType::CARETEQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::BITWISEXORSET, module.variables);
+    }
+    else if (match(TokenType::TILDAEQUAL)) {
+        result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::BITWISENOTSET, module.variables);
     }
 
 	return result;

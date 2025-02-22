@@ -7,6 +7,8 @@
 
 namespace lotus {
 
+	class Variables;
+
 	class LotusException {
 
 		String msg;
@@ -26,7 +28,7 @@ namespace lotus {
 
 	[[noreturn]] void throwOverloadError(const String& overload, const String& type1, const String& type2);
 
-	void checkThrowIndexError(const Value& index, int size);
+	void checkThrowIndexError(const Value& index, int size, Variables& variables);
 }
 
 #endif // _LOTUS_ERROR_

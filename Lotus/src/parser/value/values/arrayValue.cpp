@@ -11,11 +11,11 @@ lotus::ArrayValue::ArrayValue(std::vector<Value> elements) : elements(elements) 
     type = STRING_LITERAL("array");
 }
 
-String lotus::ArrayValue::asString() {
+String lotus::ArrayValue::asString(Variables& variables) {
     String result;
 
     for (size_t i = 0; i < elements.size(); i++) {
-        result += elements[i]->asString();
+        result += elements[i]->asString(variables);
         if (i < elements.size() - 1) {
             result += STRING_LITERAL(", ");
         }
@@ -23,7 +23,7 @@ String lotus::ArrayValue::asString() {
     return result;
 }
 
-Value lotus::ArrayValue::add(const Value& other) {
+Value lotus::ArrayValue::add(const Value& other, Variables& variables) {
     if (other->getType() == STRING_LITERAL("array")) {
         std::vector<Value> newElements = elements;
 
@@ -41,8 +41,8 @@ Value lotus::ArrayValue::add(const Value& other) {
     throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
 }
 
-Value lotus::ArrayValue::addSet(const Value& other) {
-    if (auto arr = std::dynamic_pointer_cast<ArrayValue>(add(other))) {
+Value lotus::ArrayValue::addSet(const Value& other, Variables& variables) {
+    if (auto arr = std::dynamic_pointer_cast<ArrayValue>(add(other, variables))) {
         elements = arr->elements;
     }
     return ARRAY(elements);
@@ -66,12 +66,24 @@ void lotus::ArrayValue::foreach(const String& name, const Statement& body, Varia
 
 }
 
-Value& lotus::ArrayValue::index(const Value& index) {
-    checkThrowIndexError(index, elements.size());
-    return elements[index->asInt()];
+Value lotus::ArrayValue::getOfIndex(const Value& index, Variables& variables) {
+    if (index->getType() == STRING_LITERAL("int")) {
+        checkThrowIndexError(index, elements.size(), variables);
+        return elements[index->asInt(variables)];
+    }
+    throwOverloadError(STRING_LITERAL("getOfIndex"), getType(), index->getType());
 }
 
-Value lotus::ArrayValue::size() {
+Value lotus::ArrayValue::setOfIndex(const Value& index, const Value& other, Variables& variables) {
+    if (index->getType() == STRING_LITERAL("int")) {
+        checkThrowIndexError(index, elements.size(), variables);
+        elements[index->asInt(variables)] = other;
+        return elements[index->asInt(variables)];
+    }
+    throwOverloadError(STRING_LITERAL("setOfIndex"), getType(), index->getType());
+}
+
+Value lotus::ArrayValue::size(Variables& variables) {
     return INT(elements.size());
 }
 

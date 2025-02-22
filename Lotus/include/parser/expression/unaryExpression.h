@@ -7,6 +7,8 @@
 
 namespace lotus {
 
+	class Variables;
+
 	enum class UnaryOperationType {
 		PLUS,
 		MINUS,
@@ -19,11 +21,12 @@ namespace lotus {
 
 	class UnaryExpression : public IExpression {
 		Expression expression;
+		Variables& variables;
 
 		UnaryOperationType operation;
 
 	public:
-		UnaryExpression(const Expression& expression, const UnaryOperationType& operation);
+		UnaryExpression(const Expression& expression, const UnaryOperationType& operation, Variables& variables);
 
 		Value eval() override;
 	};

@@ -29,13 +29,197 @@ bool lotus::ClassValue::assignField(const String& name, const FieldMemberInfo& f
     return false;
 }
 
+int lotus::ClassValue::asInt(Variables& variables) {
+    return callMethod(STRING_LITERAL("__asInt__"), {}, variables)->asInt(variables);
+}
+
+double lotus::ClassValue::asDouble(Variables& variables) {
+    return callMethod(STRING_LITERAL("__asDouble__"), {}, variables)->asDouble(variables);
+}
+
+bool lotus::ClassValue::asBool(Variables& variables) {
+    return callMethod(STRING_LITERAL("__asBool__"), {}, variables)->asBool(variables);
+}
+
+String lotus::ClassValue::asString(Variables& variables) {
+    return callMethod(STRING_LITERAL("__asString__"), {}, variables)->asString(variables);
+}
+
+Value lotus::ClassValue::add(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__add__"), { other }, variables);
+}
+
+Value lotus::ClassValue::substract(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__substract__"), { other }, variables);
+}
+
+Value lotus::ClassValue::multiply(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__multiply__"), { other }, variables);
+}
+
+Value lotus::ClassValue::divide(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__divide__"), { other }, variables);
+}
+
+Value lotus::ClassValue::power(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__power__"), { other }, variables);
+}
+
+Value lotus::ClassValue::divideModule(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__divideModule__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseAnd(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseAnd__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseOr(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseOr__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseXor(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseXor__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseNot(Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseNot__"), {}, variables);
+}
+
+Value lotus::ClassValue::bitwiseLeftShift(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseLeftShift__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseRightShift(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseRightShift__"), { other }, variables);
+}
+
+Value lotus::ClassValue::greater(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__greater__"), { other }, variables);
+}
+
+Value lotus::ClassValue::less(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__less__"), { other }, variables);
+}
+
+Value lotus::ClassValue::greaterEqual(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__greaterEqual__"), { other }, variables);
+}
+
+Value lotus::ClassValue::lessEqual(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__lessEqual__"), { other }, variables);
+}
+
+Value lotus::ClassValue::equality(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__equality__"), { other }, variables);
+}
+
+Value lotus::ClassValue::inequality(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__inequality__"), { other }, variables);
+}
+
+Value lotus::ClassValue::logicalOr(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__logicalOr__"), { other }, variables);
+}
+
+Value lotus::ClassValue::logicalAnd(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__logicalAnd__"), { other }, variables);
+}
+
+Value lotus::ClassValue::addSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__addSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::substractSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__substractSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::multiplySet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__multiplySet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::divideSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__divideSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::powerSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__powerSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::divideModuleSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__divideModuleSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseAndSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseAndSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseOrSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseOrSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseXorSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseXorSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseNotSet(Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseNotSet__"), {}, variables);
+}
+
+Value lotus::ClassValue::bitwiseLeftShiftSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseLeftShiftSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::bitwiseRightShiftSet(const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__bitwiseRightShiftSet__"), { other }, variables);
+}
+
+Value lotus::ClassValue::unaryPlus(Variables& variables) {
+    return callMethod(STRING_LITERAL("__unaryPlus__"), {}, variables);
+}
+
+Value lotus::ClassValue::unaryMinus(Variables& variables) {
+    return callMethod(STRING_LITERAL("__unaryMinus__"), {}, variables);
+}
+
+Value lotus::ClassValue::unaryNot(Variables& variables) {
+    return callMethod(STRING_LITERAL("__unaryNot__"), {}, variables);
+}
+
+Value lotus::ClassValue::prefixIncrement(Variables& variables) {
+    return callMethod(STRING_LITERAL("__prefixIncrement__"), {}, variables);
+}
+
+Value lotus::ClassValue::postfixIncrement(Variables& variables) {
+    return callMethod(STRING_LITERAL("__postfixIncrement__"), {}, variables);
+}
+
+Value lotus::ClassValue::prefixDecrement(Variables& variables) {
+    return callMethod(STRING_LITERAL("__prefixDecrement__"), {}, variables);
+}
+
+Value lotus::ClassValue::postfixDecrement(Variables& variables) {
+    return callMethod(STRING_LITERAL("__postfixDecrement__"), {}, variables);
+}
+
+Value lotus::ClassValue::size(Variables& variables) {
+    return callMethod(STRING_LITERAL("__size__"), {}, variables);
+}
+
+Value lotus::ClassValue::getOfIndex(const Value& index, Variables& variables) {
+    return callMethod(STRING_LITERAL("__getOfIndex__"), {index}, variables);
+}
+
+Value lotus::ClassValue::setOfIndex(const Value& index, const Value& other, Variables& variables) {
+    return callMethod(STRING_LITERAL("__setOfIndex__"), { index, other }, variables);
+}
+
 Value lotus::ClassValue::sizeInRam() {
     return INT(sizeof(ClassValue));
 }
 
-MethodMemberInfo lotus::ClassValue::getMethod(const String& name, size_t argsCount, ClassValue& value) {
+MethodMemberInfo lotus::ClassValue::getMethod(const String& name, size_t argsCount, Ptr<ClassValue>& value) {
     if (methods.find(name) != methods.end()) {
-        value = *this;
+        value = MAKE_PTR<ClassValue>(*this);
         Ptr<MethodMemberInfo> variadic = nullptr;
         for (auto& method : methods[name]) {
             if (method.value.hasVariadic() && argsCount >= method.value.getArgsCount() - 1) variadic = MAKE_PTR<MethodMemberInfo>(method);
@@ -46,7 +230,7 @@ MethodMemberInfo lotus::ClassValue::getMethod(const String& name, size_t argsCou
 
     for (auto& parent : parents) {
         try {
-            ClassValue parentValue;
+            Ptr<ClassValue> parentValue = MAKE_PTR<ClassValue>();
             auto methodInfo = parent->getMethod(name, argsCount, parentValue);
 
             value = parentValue;
@@ -107,7 +291,7 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
 
     Ptr<ClassValue> value = MAKE_PTR<ClassValue>();
 
-    auto methodInfo = getMethod(name, args.size(), *value);
+    auto methodInfo = getMethod(name, args.size(), value);
     if (methodInfo.accessModifier == AccessModifierType::PRIVATE) {
         throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
     }

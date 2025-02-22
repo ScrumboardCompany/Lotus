@@ -12,7 +12,7 @@ Expression lotus::Parser::ternary() {
 
 			consume(TokenType::COLON);
 
-			result = MAKE_PTR<TernaryExpression>(result, expr1, logicalOr());
+			result = MAKE_PTR<TernaryExpression>(result, expr1, logicalOr(), module.variables);
 			continue;
 		}
 		break;

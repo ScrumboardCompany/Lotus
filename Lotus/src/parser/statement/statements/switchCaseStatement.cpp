@@ -12,7 +12,7 @@ void lotus::SwitchCaseStatement::execute() {
     bool caseMatched = false;
 
     for (auto& Case : cases) {
-        if (caseMatched || valueToCheck->equality(Case.first->eval())->asBool()) {
+        if (caseMatched || valueToCheck->equality(Case.first->eval(), variables)->asBool(variables)) {
             caseMatched = true;
             variables.enterScope();
 

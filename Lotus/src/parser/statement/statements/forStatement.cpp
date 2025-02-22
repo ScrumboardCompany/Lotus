@@ -18,7 +18,7 @@ void lotus::ForStatement::execute() {
         for (auto& action : actionPart) action->eval();
         };
 
-    while (callAllExpressionsAndReturnLastValue(conditionPart)->asBool()) {
+    while (callAllExpressionsAndReturnLastValue(conditionPart)->asBool(variables)) {
 
         try {
             body->execute();

@@ -7,6 +7,8 @@
 
 namespace lotus {
 
+	class Variables;
+
 	enum class ArithmeticOperationType {
 		ADD,
 		SUBSTRACT,
@@ -18,11 +20,12 @@ namespace lotus {
 
 	class ArithmeticExpression : public IExpression {
 		Expression expression1, expression2;
+		Variables& variables;
 
 		ArithmeticOperationType operation;
 
 	public:
-		ArithmeticExpression(const Expression& expression1, const Expression& expression2, const ArithmeticOperationType& operation);
+		ArithmeticExpression(const Expression& expression1, const Expression& expression2, const ArithmeticOperationType& operation, Variables& variables);
 
 		Value eval() override;
 	};

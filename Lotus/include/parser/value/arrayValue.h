@@ -14,15 +14,16 @@ namespace lotus {
 
 		ArrayValue(std::vector<Value> elements);
 
-		String asString() override;
+		String asString(Variables& variables) override;
 
-		Value add(const Value& other) override;
+		Value add(const Value& other, Variables& variables) override;
 
-		Value addSet(const Value& other) override;
+		Value addSet(const Value& other, Variables& variables) override;
 
 		void foreach(const String& name, const Statement& body, Variables& variables) override;
-		Value& index(const Value& index) override;
-		Value size() override;
+		Value getOfIndex(const Value& index, Variables& variables) override;
+		Value setOfIndex(const Value& index, const Value& other, Variables& variables) override;
+		Value size(Variables& variables) override;
 		Value sizeInRam() override;
 	};
 

@@ -6,12 +6,11 @@
 #include "structures/variables.h"
 #include "structures/statics.h"
 #include "utils/lotusError.h"
-#include "parser/value/stringCharReference.h"
 
 using namespace lotus;
 
-lotus::SetExpression::SetExpression(const Expression& expression1, const Expression& expression2, const SetOperationType& operation)
-	: expression1(expression1), expression2(expression2), operation(operation) {}
+lotus::SetExpression::SetExpression(const Expression& expression1, const Expression& expression2, const SetOperationType& operation, Variables& variables)
+	: expression1(expression1), expression2(expression2), operation(operation), variables(variables) {}
 
 Value lotus::SetExpression::eval() {
 
@@ -22,13 +21,29 @@ Value lotus::SetExpression::eval() {
         case lotus::SetOperationType::SET:
             return target = newValue;
         case lotus::SetOperationType::ADDSET:
-            return target->addSet(newValue);
+            return target->addSet(newValue, variables);
         case lotus::SetOperationType::SUBSTRACTSET:
-            return target->substractSet(newValue);
+            return target->substractSet(newValue, variables);
         case lotus::SetOperationType::MULTIPLYSET:
-            return target->multiplySet(newValue);
+            return target->multiplySet(newValue, variables);
         case lotus::SetOperationType::DIVIDESET:
-            return target->divideSet(newValue);
+            return target->divideSet(newValue, variables);
+        case lotus::SetOperationType::POWERSET:
+            return target->powerSet(newValue, variables);
+        case lotus::SetOperationType::DIVIDEMODULESET:
+            return target->divideModuleSet(newValue, variables);
+        case lotus::SetOperationType::BITWISEANDSET:
+            return target->bitwiseAndSet(newValue, variables);
+        case lotus::SetOperationType::BITWISEORSET:
+            return target->bitwiseOrSet(newValue, variables);
+        case lotus::SetOperationType::BITWISEXORSET:
+            return target->bitwiseXorSet(newValue, variables);
+        case lotus::SetOperationType::BITWISENOTSET:
+            return target->bitwiseNotSet(variables);
+        case lotus::SetOperationType::BITWISELEFTSHIFTSET:
+            return target->bitwiseLeftShiftSet(newValue, variables);
+        case lotus::SetOperationType::BITIWSERIGHTSHIFTSET:
+            return target->bitwiseRightShiftSet(newValue, variables);
         default:
             throw LotusException(STRING_LITERAL("Undefined set operation"));
         }
@@ -43,21 +58,9 @@ Value lotus::SetExpression::eval() {
         Value container = indexExpr->expression->eval();
         Value index = indexExpr->index->eval();
 
-        Value& element = container->index(index);
+        Value element = container->getOfIndex(indexExpr->index->eval(), variables);
 
-        if (operation == lotus::SetOperationType::SET) {
-            if (auto stringElement = std::dynamic_pointer_cast<StringCharReference>(element)) {
-                stringElement->set(newValue);
-            }
-            else {
-                element = newValue;
-            }
-        }
-        else {
-            return applyOperation(element);
-        }
-
-        return container;
+        return container->setOfIndex(indexExpr->index->eval(), applyOperation(element), variables);
     }
 
     if (auto fieldExpr = std::dynamic_pointer_cast<FieldExpression>(expression1)) {

@@ -7,6 +7,8 @@
 
 namespace lotus {
 
+	class Variables;
+
 	enum class BitwiseOperationType {
 		AND,
 		OR,
@@ -18,11 +20,12 @@ namespace lotus {
 
 	class BitwiseExpression : public IExpression {
 		Expression expression1, expression2;
+		Variables& variables;
 
 		BitwiseOperationType operation;
 
 	public:
-		BitwiseExpression(const Expression& expression1, const Expression& expression2, const BitwiseOperationType& operation);
+		BitwiseExpression(const Expression& expression1, const Expression& expression2, const BitwiseOperationType& operation, Variables& variables);
 
 		Value eval() override;
 	};

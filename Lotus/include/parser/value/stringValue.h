@@ -7,40 +7,36 @@
 
 namespace lotus {
 
-	class StringCharReference;
-
 	class StringValue : public IValue {
 		String value;
-		Value tempRef;
-
-		friend class StringCharReference;
 
 	public:
 
 		StringValue(const String& value);
 
-		int asInt() override;
-		double asDouble() override;
-		bool asBool() override;
-		String asString() override;
+		int asInt(Variables& variables) override;
+		double asDouble(Variables& variables) override;
+		bool asBool(Variables& variables) override;
+		String asString(Variables& variables) override;
 
-		Value add(const Value& other) override;
-		Value multiply(const Value& other) override;
+		Value add(const Value& other, Variables& variables) override;
+		Value multiply(const Value& other, Variables& variables) override;
 
-		Value greater(const Value& other) override;
-		Value less(const Value& other) override;
-		Value greaterEqual(const Value& other) override;
-		Value lessEqual(const Value& other) override;
-		Value equality(const Value& other) override;
-		Value inequality(const Value& other) override;
-		Value logicalOr(const Value& other) override;
-		Value logicalAnd(const Value& other) override;
+		Value greater(const Value& other, Variables& variables) override;
+		Value less(const Value& other, Variables& variables) override;
+		Value greaterEqual(const Value& other, Variables& variables) override;
+		Value lessEqual(const Value& other, Variables& variables) override;
+		Value equality(const Value& other, Variables& variables) override;
+		Value inequality(const Value& other, Variables& variables) override;
+		Value logicalOr(const Value& other, Variables& variables) override;
+		Value logicalAnd(const Value& other, Variables& variables) override;
 
-		Value addSet(const Value& other) override;
-		Value multiplySet(const Value& other) override;
+		Value addSet(const Value& other, Variables& variables) override;
+		Value multiplySet(const Value& other, Variables& variables) override;
 
-		Value& index(const Value& index) override;
-		Value size() override;
+		Value getOfIndex(const Value& index, Variables& variables) override;
+		Value setOfIndex(const Value& index, const Value& other, Variables& variables) override;
+		Value size(Variables& variables) override;
 		Value sizeInRam() override;
 	};
 

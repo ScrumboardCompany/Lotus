@@ -12,18 +12,18 @@ lotus::ObjectValue::ObjectValue(const StringMap<Value>& fields) : fields(fields)
     type = STRING_LITERAL("object");
 }
 
-String lotus::ObjectValue::asString() {
+String lotus::ObjectValue::asString(Variables& variables) {
     String result = STRING_LITERAL("{\n");
 
     for (auto& el : fields) {
-        result += STRING_LITERAL("\t") + el.first + STRING_LITERAL(" = ") + el.second->asString() + STRING_LITERAL(";\n");
+        result += STRING_LITERAL("\t") + el.first + STRING_LITERAL(" = ") + el.second->asString(variables) + STRING_LITERAL(";\n");
     }
 
     result += STRING_LITERAL("}");
     return result;
 }
 
-Value lotus::ObjectValue::add(const Value& other) {
+Value lotus::ObjectValue::add(const Value& other, Variables& variables) {
     if (other->getType() == STRING_LITERAL("object")) {
         StringMap<Value> newFields = fields;
 
@@ -41,8 +41,8 @@ Value lotus::ObjectValue::add(const Value& other) {
     throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
 }
 
-Value lotus::ObjectValue::addSet(const Value& other) {
-    if (auto arr = std::dynamic_pointer_cast<ObjectValue>(add(other))) {
+Value lotus::ObjectValue::addSet(const Value& other, Variables& variables) {
+    if (auto arr = std::dynamic_pointer_cast<ObjectValue>(add(other, variables))) {
         fields = arr->fields;
     }
     return OBJECT(fields);
@@ -71,12 +71,20 @@ void lotus::ObjectValue::foreach(const String& name, const Statement& body, Vari
     }
 }
 
-Value& lotus::ObjectValue::index(const Value& index) {
-    if (index->getType() == STRING_LITERAL("string")) return fields[index->asString()];
+Value lotus::ObjectValue::getOfIndex(const Value& index, Variables& variables) {
+    if (index->getType() == STRING_LITERAL("string")) return fields[index->asString(variables)];
     throwOverloadError(STRING_LITERAL("index"), getType(), index->getType());
 }
 
-Value lotus::ObjectValue::size() {
+Value lotus::ObjectValue::setOfIndex(const Value& index, const Value& other, Variables& variables) {
+    if (index->getType() == STRING_LITERAL("string")) {
+        fields[index->asString(variables)] = other;
+        return fields[index->asString(variables)];
+    };
+    throwOverloadError(STRING_LITERAL("index"), getType(), index->getType());
+}
+
+Value lotus::ObjectValue::size(Variables& variables) {
     return INT(fields.size());
 }
 
