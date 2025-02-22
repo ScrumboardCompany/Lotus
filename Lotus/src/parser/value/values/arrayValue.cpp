@@ -50,7 +50,7 @@ Value lotus::ArrayValue::addSet(const Value& other) {
 
 void lotus::ArrayValue::foreach(const String& name, const Statement& body, Variables& variables) {
 
-    for (int i = 0; i < elements.size(); i++) {
+    for (size_t i = 0; i < elements.size(); i++) {
         variables.set(name, elements[i]);
         try {
             body->execute();

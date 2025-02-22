@@ -5,6 +5,8 @@
 #include "parser/function/function.h"
 #include "structures/variables.h"
 
+#include <iostream>
+
 using namespace lotus;
 
 bool lotus::ClassValue::hasField(const String& name) {

@@ -8,6 +8,7 @@
 
 namespace lotus {
 
+	class Classes;
 	class Functions;
 	class Function;
 
@@ -15,13 +16,14 @@ namespace lotus {
 		String name;
 		RawFields_t fields;
 		Methods_t methods;
+		Classes& classes;
 		Functions& functions;
 		Variables& variables;
 		std::vector<String> parents;
 
 	public:
 
-		ClassStatement(Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods, const std::vector<String>& parents);
+		ClassStatement(Classes& classes, Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods, const std::vector<String>& parents);
 		void execute() override;
 	};
 

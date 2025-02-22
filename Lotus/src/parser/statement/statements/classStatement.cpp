@@ -1,92 +1,40 @@
 #include "parser/statement/classStatement.h"
-#include "parser/statement/cppFunctionStatement.h"
 #include "parser/value/classValue.h"
 #include "structures/functions.h"
 #include "structures/variables.h"
+#include "structures/class.h"
+#include "structures/classes.h"
 
 using namespace lotus;
 
-lotus::ClassStatement::ClassStatement(Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods, const std::vector<String>& parents)
-	: functions(functions), variables(variables), name(name), fields(fields), methods(methods), parents(parents) {
+lotus::ClassStatement::ClassStatement(Classes& classes, Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods, const std::vector<String>& parents)
+	: classes(classes), functions(functions), variables(variables), name(name), fields(fields), methods(methods), parents(parents) {
 }
 
 void lotus::ClassStatement::execute() {
+	Ptr<Class> newClass = MAKE_PTR<Class>();
 
-	if (methods.find(name) != methods.end()) {
-		for (auto& method : methods[name]) {
-			Function function(MAKE_PTR<CppFunctionStatement>([&]() {
-				ClassValue value;
-				for (auto& field : fields) {
+	for (auto& field : fields) {
 
-					FieldMemberInfo memberInfo;
-					memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
-					memberInfo.accessModifier = field.second.second.accessModifier;
+		FieldMemberInfo memberInfo;
+		memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
+		memberInfo.accessModifier = field.second.second.accessModifier;
 
-					value.fields.emplace(field.first, memberInfo);
-				}
+		newClass->addField(field.first, memberInfo);
+	}
 
-				for (auto& method : methods) {
-					for (size_t i = 0; i < method.second.size(); i++) {
-						value.declareMethod(method.first, method.second[i]);
-					}
-				}
-				value.type = name;
-
-				std::vector<ClassValue> parentClasses;
-				for (auto& parent : parents) {
-					if (auto parentClass = std::dynamic_pointer_cast<ClassValue>(functions.call(parent, {}, variables))) {
-						value.parents.push_back(parentClass);
-					}
-				}
-
-				std::vector<Value> argsValues;
-				for (auto& arg : method.value.args) {
-					argsValues.push_back(variables.get(arg.name));
-				}
-				value.callMethod(name, argsValues, variables);
-
-				RETURN_VALUE(MAKE_PTR<ClassValue>(value));
-				}), method.value.args);
-
-			functions.declare(name, function);
+	for (auto& method : methods) {
+		for (size_t i = 0; i < method.second.size(); i++) {
+			newClass->addMethod(method.first, method.second[i]);
 		}
 	}
-	else {
-		Function function(MAKE_PTR<CppFunctionStatement>([&]() {
-			ClassValue value;
-			for (auto& field : fields) {
+	newClass->setName(name);
 
-				FieldMemberInfo memberInfo;
-				memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
-				memberInfo.accessModifier = field.second.second.accessModifier;
-
-				value.fields.emplace(field.first, memberInfo);
-			}
-
-			for (auto& field : value.fields) {
-				if (auto fieldClass = std::dynamic_pointer_cast<ClassValue>(field.second.value)) {
-					fieldClass->callMethod(fieldClass->getType(), {}, variables);
-				}
-			}
-
-			for (auto& method : methods) {
-				for (size_t i = 0; i < method.second.size(); i++) {
-					value.declareMethod(method.first, method.second[i]);
-				}
-			}
-
-			value.type = name;
-
-			std::vector<ClassValue> parentClasses;
-			for (auto& parent : parents) {
-				if (auto parentClass = std::dynamic_pointer_cast<ClassValue>(functions.call(parent, {}, variables))) {
-					value.parents.push_back(parentClass);
-				}
-			}
-
-			RETURN_VALUE(MAKE_PTR<ClassValue>(value));
-			}), {});
-
-		functions.declare(name, function);
+	std::vector<ClassValue> parentClasses;
+	for (auto& parent : parents) {
+		newClass->value.parents.push_back(MAKE_PTR<ClassValue>(classes.get(parent)->value));		
 	}
+
+	classes.declare(name, newClass);
+	classes.registerClass(name, functions, variables);
 }
