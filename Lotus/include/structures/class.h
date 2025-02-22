@@ -1,14 +1,21 @@
 #pragma once
 
-#ifndef _STATIC_
-#define _STATIC_
+#ifndef _CLASS_
+#define _CLASS_
 
-#include "structures/classStructures.h"
-#include "parser/value/classValue.h"
+#include "structures/static.h"
 
 namespace lotus {
 
-	struct Static {
+	class Classes;
+	class Functions;
+
+	struct Class {
+
+		Class() = default;
+
+		void setName(const String& name);
+		void setName(const char* name);
 
 		void addField(const String& name, const FieldMemberInfo& memberInfo);
 		void addMethod(const String& name, const MethodMemberInfo& memberInfo);
@@ -22,7 +29,13 @@ namespace lotus {
 
 	protected:
 		ClassValue value;
+	private:
+		friend class ClassStatement;
+		friend class Classes;
+
+		void registerClass(Functions& functions, Variables& variables);
+		Function makeDefaultConstructor();
 	};
 }
 
-#endif // _STATICS_
+#endif // _CLASS_

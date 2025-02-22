@@ -12,6 +12,7 @@ namespace lotus {
 	class ClassValue : public IValue {
 		friend class ClassStatement;
 		friend class ObjectExpression;
+		friend struct Class;
 
 		MethodMemberInfo getMethod(const String& name, size_t argsCount, Ptr<ClassValue>& value);
 
