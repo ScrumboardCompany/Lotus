@@ -1,18 +1,20 @@
 #pragma once
 
-#ifndef _ARRAYVALUE_
-#define _ARRAYVALUE_
+#ifndef _OBJECTVALUE_
+#define _OBJECTVALUE_
 
 #include "parser/value/value.h"
 
 namespace lotus {
 
-	class ArrayValue : public IValue {
-		std::vector<Value> elements;
+	class ObjectValue : public IValue {
+		StringMap<Value> fields;
 
 	public:
 
-		ArrayValue(std::vector<Value> elements);
+		ObjectValue(const StringMap<Value>& fields);
+
+		Value& getField(const String& name) override;
 
 		String asString() override;
 
@@ -28,4 +30,4 @@ namespace lotus {
 
 }
 
-#endif // _ARRAYVALUE_
+#endif // _OBJECTVALUE_

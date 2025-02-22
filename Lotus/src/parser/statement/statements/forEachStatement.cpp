@@ -14,22 +14,7 @@ void lotus::ForEachStatement::execute() {
 
     variables.declare(name);
 
-    Value evaled = expression->eval();
-
-    for (int i = 0; i < evaled->size()->asInt(); i++) {
-        variables.set(name, evaled->index(INT(i)));
-		try {
-			body->execute();
-		}
-		catch (const ContinueStatement&) {
-			continue;
-		}
-		catch (const BreakStatement&) {
-			break;
-		}
-
-		//evaled->index(INT(i)) = variables.get(name);
-    }
+    expression->eval()->foreach(name, body, variables);
 
     variables.exitScope();
 }

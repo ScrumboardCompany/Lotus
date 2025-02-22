@@ -83,7 +83,7 @@ namespace lotus {
 
 		std::pair<RawFields_t, Methods_t> handleFieldsMethods();
 
-		StringMap<Expression> handleFields();
+		StringMap<Expression> handleObject();
 
 		Expression expression();
 

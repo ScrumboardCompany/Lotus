@@ -67,7 +67,7 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 	return std::make_pair(fields, methods);
 }
 
-StringMap<Expression> lotus::Parser::handleFields() {
+StringMap<Expression> lotus::Parser::handleObject() {
 	StringMap<Expression> fields;
 
 	consume(TokenType::LBRACE);

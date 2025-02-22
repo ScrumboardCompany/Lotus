@@ -2,6 +2,8 @@
 #include "parser/value/intValue.h"
 #include "utils/lotusError.h"
 #include "parser/function/function.h"
+#include "parser/statement/continueStatement.h"
+#include "parser/statement/breakStatement.h"
 
 using namespace lotus;
 
@@ -44,6 +46,24 @@ Value lotus::ArrayValue::addSet(const Value& other) {
         elements = arr->elements;
     }
     return ARRAY(elements);
+}
+
+void lotus::ArrayValue::foreach(const String& name, const Statement& body, Variables& variables) {
+
+    for (int i = 0; i < elements.size(); i++) {
+        variables.set(name, elements[i]);
+        try {
+            body->execute();
+        }
+        catch (const ContinueStatement&) {
+            continue;
+        }
+        catch (const BreakStatement&) {
+            break;
+        }
+
+    }
+
 }
 
 Value& lotus::ArrayValue::index(const Value& index) {

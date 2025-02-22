@@ -162,6 +162,10 @@ Value lotus::IValue::postfixDecrement() {
     throwOverloadError(STRING_LITERAL("postfixDecrement"), getType());
 }
 
+void lotus::IValue::foreach(const String& name, const Statement& body, Variables& variables) {
+    throwOverloadError(STRING_LITERAL("foreach"), getType());
+}
+
 Value& lotus::IValue::index(const Value& index) {
     throwOverloadError(STRING_LITERAL("index"), getType());
 }

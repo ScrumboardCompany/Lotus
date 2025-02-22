@@ -103,7 +103,7 @@ Expression lotus::Parser::primary() {
 		return result;
 	}
 	if (get(0).type == TokenType::LBRACE) {
-		return MAKE_PTR<ObjectExpression>(handleFields());
+		return MAKE_PTR<ObjectExpression>(handleObject());
 	}
 
 	throw LotusException(STRING_LITERAL("Undefined expression"));

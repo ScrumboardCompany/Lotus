@@ -11,6 +11,7 @@
 #define STRING MAKE_PTR<StringValue>
 #define UNDEFINED MAKE_PTR<UndefinedValue>
 #define ARRAY MAKE_PTR<ArrayValue>
+#define OBJECT MAKE_PTR<ObjectValue>
 
 #define RETURN_VALUE(value) throw Value(value)
 

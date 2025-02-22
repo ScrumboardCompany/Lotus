@@ -5,6 +5,7 @@
 
 #include "utils/lotusTypes.h"
 #include "utils/lotusDefines.h"
+#include "parser/statement/statement.h"
 
 namespace lotus {
 
@@ -60,6 +61,7 @@ namespace lotus {
 		virtual Value prefixDecrement();
 		virtual Value postfixDecrement();
 
+		virtual void foreach(const String& name, const Statement& body, Variables& variables);
 		virtual Value& index(const Value& index);
 		virtual Value size();
 		virtual Value sizeInRam() = 0;
