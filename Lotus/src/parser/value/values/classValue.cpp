@@ -7,69 +7,57 @@
 
 using namespace lotus;
 
-void lotus::ClassValue::collectInheritedMembers(ClassValue& thisValue) {
-    for (auto& parent : parents) {
-        parent.collectInheritedMembers(thisValue);
-
-        for (const auto& field : parent.fields) {
-            if (field.second.accessModifier == AccessModifierType::PUBLIC ||
-                field.second.accessModifier == AccessModifierType::PROTECTED) {
-                thisValue.declareField(field.first, field.second);
-            }
-        }
-
-        for (auto& method : parent.methods) {
-            for (auto& overload : method.second) {
-                if (overload.accessModifier == AccessModifierType::PUBLIC ||
-                    overload.accessModifier == AccessModifierType::PROTECTED) {
-                    thisValue.declareMethod(method.first, overload);
-                }
-            }
-        }
-    }
-}
-
 bool lotus::ClassValue::hasField(const String& name) {
-    for (auto& parent : parents) {
-        if (parent.hasField(name)) return true;
+    if (fields.find(name) != fields.end()) return true;
 
-        return fields.find(name) != fields.end();
+    for (auto& parent : parents) {
+        if (parent->hasField(name)) return true;
     }
-    return fields.find(name) != fields.end();
+    return false;
 }
 
 bool lotus::ClassValue::assignField(const String& name, const FieldMemberInfo& field) {
-    for (auto& parent : parents) {
-        if (parent.assignField(name, field)) return true;
-
-        if (fields.find(name) != fields.end()) {
-            fields[name].value = field.value;
-            return true;
-        }
-        else return false;
-    }
-    if (fields.find(name) != fields.end()) {
+   if (fields.find(name) != fields.end()) {
         fields[name].value = field.value;
         return true;
     }
-    else return false;
+    
+    for (auto& parent : parents) {
+        if (parent->assignField(name, field)) return true;
+    }
+
+    return false;
 }
 
 Value lotus::ClassValue::sizeInRam() {
     return INT(sizeof(ClassValue));
 }
 
-MethodMemberInfo lotus::ClassValue::getMethod(const String& name, size_t argsCount) {
+MethodMemberInfo lotus::ClassValue::getMethod(const String& name, size_t argsCount, ClassValue& value) {
     if (methods.find(name) != methods.end()) {
+        value = *this;
         Ptr<MethodMemberInfo> variadic = nullptr;
         for (auto& method : methods[name]) {
             if (method.value.hasVariadic() && argsCount >= method.value.getArgsCount() - 1) variadic = MAKE_PTR<MethodMemberInfo>(method);
             if (method.value.getArgsCount() == argsCount) return method;
         }
         if (variadic) return *variadic;
-        throw LotusException(STRING_LITERAL("No overload with ") + std::to_wstring(argsCount) +
-            STRING_LITERAL(" arguments for method \"") + name + STRING_LITERAL("\""));
     }
+
+    for (auto& parent : parents) {
+        try {
+            ClassValue parentValue;
+            auto methodInfo = parent->getMethod(name, argsCount, parentValue);
+
+            value = parentValue;
+
+            return methodInfo;
+        }
+        catch (const LotusException&) {
+            continue;
+        }
+    }
+
     throw LotusException(STRING_LITERAL("Undefined method \"") + name + STRING_LITERAL("\""));
 }
 
@@ -100,27 +88,35 @@ Value& lotus::ClassValue::getField(const String& name) {
         }
         return fields[name].value;
     }
+
+    for (auto& parent : parents) {
+        if (parent->hasField(name)) {
+            return parent->getField(name);
+        }
+    }
+
     throw LotusException(STRING_LITERAL("Field \"") + name + STRING_LITERAL("\" does not exist"));
 }
 
 Value ClassValue::callMethod(const String& name, const std::vector<Value>& args, Variables& variables) {
     if (fields.find(name) != fields.end()) {
         if (auto lambda = std::dynamic_pointer_cast<LambdaValue>(getField(name))) {
-            if (lambda->getArgsCount() == args.size()) return getField(name)->call(args, variables);
+            if (lambda->getArgsCount() == args.size()) return lambda->call(args, variables);
         }
     }
 
-    auto methodInfo = getMethod(name, args.size());
+    Ptr<ClassValue> value = MAKE_PTR<ClassValue>();
+
+    auto methodInfo = getMethod(name, args.size(), *value);
     if (methodInfo.accessModifier == AccessModifierType::PRIVATE) {
         throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
     }
 
     ClassValue thisValue;
-    thisValue.fields = fields;
-    thisValue.methods = methods;
-    thisValue.type = getType();
-
-    collectInheritedMembers(thisValue);
+    thisValue.fields = value->fields;
+    thisValue.methods = value->methods;
+    thisValue.parents = value->parents;
+    thisValue.type = value->getType();
 
     for (auto& field : thisValue.fields) {
         field.second.accessModifier = AccessModifierType::PUBLIC;
@@ -137,14 +133,11 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
 
     if (auto thisValueAfterMethod = std::dynamic_pointer_cast<ClassValue>(variables.get(STRING_LITERAL("this")))) {
 
-        for (auto& field : thisValueAfterMethod->fields) {
-            if (!assignField(field.first, field.second)) {
-                //throw LotusException(STRING_LITERAL("Elements of thisValue before and after calling method are different"));
-            }
-        }
+        value->fields = thisValueAfterMethod->fields;
+        value->methods = thisValueAfterMethod->methods;
+        value->parents = thisValueAfterMethod->parents;
     }
 
     variables.exitScope();
-    //variables.variables.erase(STRING_LITERAL("this"));
     return returnValue;
 }

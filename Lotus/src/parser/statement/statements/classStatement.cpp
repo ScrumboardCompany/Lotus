@@ -35,7 +35,7 @@ void lotus::ClassStatement::execute() {
 				std::vector<ClassValue> parentClasses;
 				for (auto& parent : parents) {
 					if (auto parentClass = std::dynamic_pointer_cast<ClassValue>(functions.call(parent, {}, variables))) {
-						value.parents.push_back(*parentClass);
+						value.parents.push_back(parentClass);
 					}
 				}
 
@@ -80,7 +80,7 @@ void lotus::ClassStatement::execute() {
 			std::vector<ClassValue> parentClasses;
 			for (auto& parent : parents) {
 				if (auto parentClass = std::dynamic_pointer_cast<ClassValue>(functions.call(parent, {}, variables))) {
-					value.parents.push_back(*parentClass);
+					value.parents.push_back(parentClass);
 				}
 			}
 

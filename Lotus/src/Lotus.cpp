@@ -32,10 +32,10 @@ int main() {
         }
     }
     catch (const lotus::LotusException& e) {
-        std::wcout << e.wwhat();
+        std::wcout << std::endl << e.wwhat() << std::endl;
     }
     catch (const std::exception& e) {
-        std::cout << e.what();
+        std::cout << std::endl << e.what() << std::endl;
     }
     catch (const lotus::ContinueStatement&) {
         throw lotus::LotusException(STRING_LITERAL("No continue processing found"));

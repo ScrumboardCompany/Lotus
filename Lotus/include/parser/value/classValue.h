@@ -13,11 +13,9 @@ namespace lotus {
 		friend class ClassStatement;
 		friend class ObjectExpression;
 
-		MethodMemberInfo getMethod(const String& name, size_t argsCount);
+		MethodMemberInfo getMethod(const String& name, size_t argsCount, ClassValue& value);
 
-		std::vector<ClassValue> parents;
-
-		void collectInheritedMembers(ClassValue& thisValue);
+		std::vector<Ptr<ClassValue>> parents;
 
 		bool hasField(const String& name);
 
