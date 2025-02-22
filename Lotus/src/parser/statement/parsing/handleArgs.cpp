@@ -12,8 +12,15 @@ std::vector<Argument> lotus::Parser::handleArgs() {
 	if (!match(TokenType::RPAREN)) {
 
 		while (true) {
-			args.push_back(consume(TokenType::WORD).text);
-			if (match(TokenType::STAR)) args.back().isVariadic = true;
+			String name = consume(TokenType::WORD).text;
+
+			for (auto& arg : args) {
+				if (name == arg.name) throw LotusException(STRING_LITERAL("Cannot have two arguments with same name \"") + name + STRING_LITERAL("\""));
+			}
+
+			args.push_back(name);
+
+			if (match(TokenType::DOTDOTDOT)) args.back().isVariadic = true;
 
 			if (!match(TokenType::COMMA)) {
 				break;
