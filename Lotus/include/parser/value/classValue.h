@@ -14,7 +14,7 @@ namespace lotus {
 		friend class ObjectExpression;
 		friend struct Class;
 
-		MethodMemberInfo getMethod(const String& name, size_t argsCount, Ptr<ClassValue>& value);
+		ClassValue& getMethod(const String& name, size_t argsCount, MethodMemberInfo& memberInfo);
 
 		std::vector<Ptr<ClassValue>> parents;
 

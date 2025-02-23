@@ -219,25 +219,26 @@ Value lotus::ClassValue::sizeInRam() {
     return INT(sizeof(ClassValue));
 }
 
-MethodMemberInfo lotus::ClassValue::getMethod(const String& name, size_t argsCount, Ptr<ClassValue>& value) {
+ClassValue& lotus::ClassValue::getMethod(const String& name, size_t argsCount, MethodMemberInfo& memberInfo) {
     if (methods.find(name) != methods.end()) {
-        value = MAKE_PTR<ClassValue>(*this);
         Ptr<MethodMemberInfo> variadic = nullptr;
         for (auto& method : methods[name]) {
             if (method.value.hasVariadic() && argsCount >= method.value.getArgsCount() - 1) variadic = MAKE_PTR<MethodMemberInfo>(method);
-            if (method.value.getArgsCount() == argsCount) return method;
+            if (method.value.getArgsCount() == argsCount) {
+                memberInfo = method;
+                break;
+            }
         }
-        if (variadic) return *variadic;
+        if (variadic) memberInfo = *variadic;
+        return *this;
     }
 
     for (auto& parent : parents) {
         try {
-            Ptr<ClassValue> parentValue = MAKE_PTR<ClassValue>();
-            auto methodInfo = parent->getMethod(name, argsCount, parentValue);
-
-            value = parentValue;
-
-            return methodInfo;
+            MethodMemberInfo parentMemberInfo;
+            ClassValue& parentClass = parent->getMethod(name, argsCount, parentMemberInfo);
+            memberInfo = parentMemberInfo;
+            return parentClass;
         }
         catch (const LotusException&) {
             continue;
@@ -291,18 +292,18 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
         }
     }
 
-    Ptr<ClassValue> value = MAKE_PTR<ClassValue>();
+    MethodMemberInfo methodInfo;
+    ClassValue& value = getMethod(name, args.size(), methodInfo);
 
-    auto methodInfo = getMethod(name, args.size(), value);
     if (methodInfo.accessModifier == AccessModifierType::PRIVATE) {
         throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
     }
 
     ClassValue thisValue;
-    thisValue.fields = value->fields;
-    thisValue.methods = value->methods;
-    thisValue.parents = value->parents;
-    thisValue.type = value->getType();
+    thisValue.fields = value.fields;
+    thisValue.methods = value.methods;
+    thisValue.parents = value.parents;
+    thisValue.type = value.getType();
 
     for (auto& field : thisValue.fields) {
         field.second.accessModifier = AccessModifierType::PUBLIC;
@@ -319,9 +320,9 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
 
     if (auto thisValueAfterMethod = std::dynamic_pointer_cast<ClassValue>(variables.get(STRING_LITERAL("this")))) {
 
-        value->fields = thisValueAfterMethod->fields;
-        value->methods = thisValueAfterMethod->methods;
-        value->parents = thisValueAfterMethod->parents;
+        value.fields = thisValueAfterMethod->fields;
+        value.methods = thisValueAfterMethod->methods;
+        value.parents = thisValueAfterMethod->parents;
     }
 
     variables.exitScope();

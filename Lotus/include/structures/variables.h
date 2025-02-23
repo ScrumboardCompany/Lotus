@@ -22,9 +22,9 @@ namespace lotus {
 			enterScope();
 		}
 
-		void forceDeclareOrSet(const String& name, const Value& value = UNDEFINED());
+		void forceSet(const String& name, const Value& value = UNDEFINED());
 
-		void forceDeclareOrSet(const char* name, const Value& value = UNDEFINED());
+		void forceSet(const char* name, const Value& value = UNDEFINED());
 
 		void declare(const String& name, const Value& value = UNDEFINED());
 

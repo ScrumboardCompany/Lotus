@@ -13,9 +13,9 @@ namespace lotus {
 
 	public:
 
-		void forceDeclareOrSet(const String& name, const Static& value);
+		void forceSet(const String& name, const Static& value);
 
-		void forceDeclareOrSet(const char* name, const Static& value);
+		void forceSet(const char* name, const Static& value);
 
 		void declare(const String& name, const Static& value);
 

@@ -3,7 +3,7 @@
 
 using namespace lotus;
 
-void Variables::forceDeclareOrSet(const String& name, const Value& value) {
+void Variables::forceSet(const String& name, const Value& value) {
 	if (scopes.empty()) {
 		variables[name] = value;
 	}
@@ -12,8 +12,8 @@ void Variables::forceDeclareOrSet(const String& name, const Value& value) {
 	}
 }
 
-void Variables::forceDeclareOrSet(const char* name, const Value& value) {
-	forceDeclareOrSet(STRING_VAR_LITERAL(name), value);
+void Variables::forceSet(const char* name, const Value& value) {
+	forceSet(STRING_VAR_LITERAL(name), value);
 }
 
 void Variables::declare(const String& name, const Value& value) {

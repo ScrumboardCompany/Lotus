@@ -13,7 +13,7 @@ public:                                                                         
 private:                                                                                            \
     struct FlagRegistrar_##flagName {                                                               \
         FlagRegistrar_##flagName(StringMap<bool>& f) {                                              \
-            String key = STRING_LITERAL("AllowOverwrite");                                          \
+            String key = STRING_LITERAL(#flagName);                                                 \
             f[key] = (defaultValue);                                                                \
         }                                                                                           \
     } flagRegistrar_##flagName = FlagRegistrar_##flagName(flags);
@@ -31,7 +31,7 @@ namespace lotus {
 
         bool isExistsWithError(const String& key) const;
 
-        DECLARE_FLAG(AllowOverwrite, true);
+        DECLARE_FLAG(ImportEverythingWithSameName, true);
 	};
 }
 

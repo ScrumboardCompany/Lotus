@@ -10,6 +10,8 @@ namespace lotus {
 	
 	class Classes {
 		StringMap<Ptr<Class>> classes;
+
+		friend class ImportStatement;
 	public:
 		Classes() = default;
 

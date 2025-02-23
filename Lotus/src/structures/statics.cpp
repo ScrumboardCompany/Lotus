@@ -3,12 +3,12 @@
 
 using namespace lotus;
 
-void lotus::Statics::forceDeclareOrSet(const String& name, const Static& value) {
+void lotus::Statics::forceSet(const String& name, const Static& value) {
 	statics[name] = value;
 }
 
-void lotus::Statics::forceDeclareOrSet(const char* name, const Static& value) {
-	forceDeclareOrSet(STRING_VAR_LITERAL(name), value);
+void lotus::Statics::forceSet(const char* name, const Static& value) {
+	forceSet(STRING_VAR_LITERAL(name), value);
 }
 
 void lotus::Statics::declare(const String& name, const Static& value) {

@@ -4,6 +4,7 @@
 #include "lexer/lexer.h"
 #include "structures/variables.h"
 #include "utils/lotusError.h"
+#include "structures/classes.h"
 
 using namespace lotus;
 
@@ -11,100 +12,85 @@ lotus::ImportStatement::ImportStatement(const String& key, const String& filePat
     : key(key), filePath(filePath), currentModule(currentModule), modules(modules), flags(flags) {}
 
 void lotus::ImportStatement::execute() {
-
     size_t find = filePath.find_last_of(CHAR_LITERAL('/'));
-    String file;
-
-    if (find != String::npos) {
-        file = filePath.substr(find + 1, file.size() - find);
-    }
-    else {
-        file = filePath;
-    }
+    String file = (find != String::npos) ? filePath.substr(find + 1) : filePath;
 
     Module module;
 
     if (file.find(CHAR_LITERAL('.')) != String::npos) {
-
-        lotus::String content = lotus::wreadContent(filePath);
-
+        String content = lotus::wreadContent(filePath);
         Lexer lexer(content);
         auto tokens = lexer.tokenize();
-
         parser = MAKE_PTR<Parser>(tokens);
-
         auto statements = parser->parse();
-
         for (auto& statement : statements) {
-            if (statement) {
-                statement->execute();
-            }
+            if (statement) statement->execute();
         }
-
         module = parser->getModule();
     }
     else {
         if (modules.find(file) == modules.end()) {
             throw LotusException(STRING_LITERAL("Module: ") + file + STRING_LITERAL(" not found"));
         }
-
         module = modules[file];
     }
 
-    bool allowOverwrite = flags.getAllowOverwrite();
+    bool importEverythingWithSameName = flags.getImportEverythingWithSameName();
+    bool importAll = (key == STRING_LITERAL("*"));
 
-    if (key == STRING_LITERAL("*") /* check needed to import all */) {
-        for (auto& variable : module.variables.variables) {
-
-            if (allowOverwrite) {
-                currentModule.variables.forceDeclareOrSet(variable.first, variable.second);
+    if (importAll) {
+        for (auto& cls : module.classes.classes) {
+            if (!currentModule.classes.isExists(cls.first)) {
+                currentModule.classes.declare(cls.first, cls.second);
+                currentModule.classes.registerClass(cls.first, currentModule.functions, currentModule.variables);
             }
-            else currentModule.variables.declare(variable.first, variable.second);
         }
-
-        for (auto& function : module.functions.functions) {
-
-            if (allowOverwrite) {
-                for (auto& functionSecond : function.second) {
-                    currentModule.functions.forceSet(function.first, functionSecond);
+        for (auto& stat : module.statics.statics) {
+            if (!currentModule.statics.isExists(stat.first))
+                currentModule.statics.forceSet(stat.first, stat.second);
+        }
+        for (auto& func : module.functions.functions) {
+            if (!currentModule.functions.isExists(func.first) && !module.classes.isExists(func.first)) {
+                for (auto& f : func.second) {
+                    currentModule.functions.forceSet(func.first, f);
                 }
-                //currentModule.functions.forceSet(function.first, function.second);
-            }
-            else {
-                for (auto& functionSecond : function.second) {
-                    currentModule.functions.declare(function.first, functionSecond);
-                }
-                //currentModule.functions.declare(function.first, function.second);
             }
         }
-
-        for (auto& Static : module.statics.statics) {
-
-            if (allowOverwrite) {
-                currentModule.statics.forceDeclareOrSet(Static.first, Static.second);
-            }
-            else currentModule.statics.declare(Static.first, Static.second);
+        if (!module.variables.scopes.empty())
+        for (auto& var : module.variables.scopes[0]) {
+            if (!currentModule.variables.isExists(var.first))
+                currentModule.variables.forceSet(var.first, var.second);
         }
-    }
-    else if (module.statics.isExists(key)) {
-
-        if (allowOverwrite) {
-            currentModule.statics.forceDeclareOrSet(key, module.statics.get(key));
-        }
-        else currentModule.statics.declare(key, module.statics.get(key));
-    }
-    else if (module.variables.isExists(key)) {
-
-        if (allowOverwrite) {
-            currentModule.variables.forceDeclareOrSet(key, module.variables.get(key));
-        }
-        else currentModule.variables.declare(key, module.variables.get(key));
-    }
-    else if (module.functions.isExists(key)) {
-        currentModule.functions.declare(key, module.functions.get(key));
     }
     else {
-        throw LotusException(STRING_LITERAL("\"") + key + STRING_LITERAL("\"") + 
+        bool found = false;
+        if (module.classes.isExists(key)) {
+            currentModule.classes.declare(key, module.classes.get(key));
+            currentModule.classes.registerClass(key, currentModule.functions, currentModule.variables);
+            found = true;
+        }
+        if (module.statics.isExists(key)) {
+            if (importEverythingWithSameName || !found) {
+                currentModule.statics.forceSet(key, module.statics.get(key));
+                found = true;
+            }
+        }
+        if (module.functions.isExists(key)) {
+            if ((importEverythingWithSameName || !found) && !module.classes.isExists(key)) {
+                for (auto& f : module.functions.functions[key]) {
+                    currentModule.functions.declare(key, f);
+                }
+                found = true;
+            }
+        }
+        if (module.variables.isExists(key)) {
+            if (importEverythingWithSameName || !found) {
+                currentModule.variables.forceSet(key, module.variables.get(key));
+                found = true;
+            }
+        }
+
+        if (!found) throw LotusException(STRING_LITERAL("\"") + key + STRING_LITERAL("\"") +
             String(STRING_LITERAL(" not found in ")) + STRING_LITERAL("\"") + filePath + STRING_LITERAL("\""));
     }
 }
