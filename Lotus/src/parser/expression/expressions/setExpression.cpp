@@ -1,7 +1,7 @@
 #include "parser/expression/setExpression.h"
 #include "parser/expression/indexExpression.h"
 #include "parser/expression/fieldExpression.h"
-#include "parser/expression/variableExpression.h"
+#include "parser/expression/wordExpression.h"
 #include "parser/expression/staticFieldExpression.h"
 #include "structures/module.h"
 #include "utils/lotusError.h"
@@ -48,7 +48,7 @@ Value lotus::SetExpression::eval(Module& module) {
         }
         };
 
-    if (auto varExpr = std::dynamic_pointer_cast<VariableExpression>(expression1)) {
+    if (auto varExpr = std::dynamic_pointer_cast<WordExpression>(expression1)) {
         Value& varRef = module.variables.get(varExpr->name);
         return applyOperation(varRef);
     }

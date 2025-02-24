@@ -12,6 +12,7 @@
 #define UNDEFINED MAKE_PTR<UndefinedValue>
 #define ARRAY MAKE_PTR<ArrayValue>
 #define OBJECT MAKE_PTR<ObjectValue>
+#define LAMBDA MAKE_PTR<LambdaValue>
 
 #define RETURN_VALUE(value) throw Value(value)
 

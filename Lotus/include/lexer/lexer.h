@@ -62,6 +62,7 @@ namespace lotus {
 			{STRING_LITERAL("?"), TokenType::QUESTION},
 			{STRING_LITERAL("::"), TokenType::COLONCOLON},
 			{STRING_LITERAL("..."), TokenType::DOTDOTDOT},
+			{STRING_LITERAL("=>"), TokenType::EQUALGREATER},
 		};
 
 		StringMap<TokenType> keywords = {
@@ -112,6 +113,8 @@ namespace lotus {
 		void tokenizeComment();
 
 		void tokenizeMultiComment();
+
+		void tokenizeHex();
 
 		Char peek(const size_t relativePosition) const;
 

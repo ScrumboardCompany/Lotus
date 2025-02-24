@@ -83,7 +83,8 @@ namespace lotus {
 		void declareMethod(const String& name, const MethodMemberInfo& memberInfo);
 
 		Value& getField(const String& name) override;
-		Value callMethod(const String& name, const std::vector<Value>& args, Module& module) override;
+		Value callMethod(const String& name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {}) override;
+		Value call(const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {}) override;
 
 		Value sizeInRam() override;
 

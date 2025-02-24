@@ -3,7 +3,7 @@
 #include "parser/expression/intExpression.h"
 #include "parser/expression/floatExpression.h"
 #include "parser/expression/stringExpression.h"
-#include "parser/expression/variableExpression.h"
+#include "parser/expression/wordExpression.h"
 #include "parser/expression/undefinedExpression.h"
 #include "parser/expression/boolExpression.h"
 #include "parser/expression/arrayExpression.h"
@@ -19,6 +19,9 @@ Expression lotus::Parser::primary() {
 	
 	const Token CurrentToken = get(0);
 
+	if (match(TokenType::HEX)) {
+		return MAKE_PTR<IntExpression>(std::stoi(CurrentToken.text, nullptr, 16));
+	}
 	if (match(TokenType::INT_TYPE)) {
 		return MAKE_PTR<IntExpression>(std::stoi(CurrentToken.text));
 	}
@@ -33,21 +36,21 @@ Expression lotus::Parser::primary() {
 			String name = consume(TokenType::WORD).text;
 
 			if (match(TokenType::LPAREN)) {
-				std::vector<Expression> args;
+				std::pair<std::vector<Expression>, StringMap<Expression>> args;
 
 				if (!match(TokenType::RPAREN)) {
-					args = handleExpressions();
+					args = handleTakenArgs();
 
 					consume(TokenType::RPAREN);
 				}
 
-				return MAKE_PTR<StaticMethodExpression>(CurrentToken.text, name, args);
+				return MAKE_PTR<StaticMethodExpression>(CurrentToken.text, name, args.first, args.second);
 			}
 			else {
 				return MAKE_PTR<StaticFieldExpression>(CurrentToken.text, name);
 			}
 		}
-		else return MAKE_PTR<VariableExpression>(CurrentToken.text);
+		else return MAKE_PTR<WordExpression>(CurrentToken.text);
 	}
 	if (match(TokenType::UNDEFINED_)) {
 		return MAKE_PTR<UndefinedExpression>();

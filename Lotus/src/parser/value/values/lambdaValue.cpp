@@ -15,8 +15,8 @@ size_t LambdaValue::getArgsCount() const {
 	return function.getArgsCount();
 }
 
-Value lotus::LambdaValue::call(const std::vector<Value>& args, Module& module) {
-	return function.call(args, module);
+Value lotus::LambdaValue::call(const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs) {
+	return function.call(args, specifiedArgs, module);
 }
 
 Value lotus::LambdaValue::sizeInRam() {

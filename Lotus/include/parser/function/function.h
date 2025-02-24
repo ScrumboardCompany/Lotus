@@ -23,6 +23,7 @@ namespace lotus {
 		Function() = default;
 		~Function() = default;
 		Value call(const std::vector<Value>& callArgs, Module& module);
+		Value call(const std::vector<Value>& callArgs, const StringMap<Value>& specifiedArgs, Module& module);
 		size_t getArgsCount() const;
 		bool hasVariadic() const;
 	};

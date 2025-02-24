@@ -15,9 +15,10 @@ namespace lotus {
 		String staticName;
 		String method;
 		std::vector<Expression> args;
+		StringMap<Expression> specifiedArgs;
 
 	public:
-		StaticMethodExpression(const String& staticName, const String& method, const std::vector<Expression>& args);
+		StaticMethodExpression(const String& staticName, const String& method, const std::vector<Expression>& args, const StringMap<Expression>& specifiedArgs);
 
 		Value eval(Module& module) override;
 	};

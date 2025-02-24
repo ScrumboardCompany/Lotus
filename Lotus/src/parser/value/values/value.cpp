@@ -30,11 +30,11 @@ Value& lotus::IValue::getField(const String& name) {
     throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Field \"") + name + STRING_LITERAL("\" does not exist"));
 }
 
-Value lotus::IValue::callMethod(const String& name, const std::vector<Value>& args, Module&) {
+Value lotus::IValue::callMethod(const String& name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs) {
     throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Method \"") + name + STRING_LITERAL("\" does not exist"));
 }
 
-Value lotus::IValue::call(const std::vector<Value>&, Module&) {
+Value lotus::IValue::call(const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs) {
     throwOverloadError(STRING_LITERAL("call"), getType());
 }
 

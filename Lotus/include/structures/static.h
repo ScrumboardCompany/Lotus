@@ -17,8 +17,8 @@ namespace lotus {
 
 		Value& getField(const String& name);
 		Value& getField(const char* name);
-		Value callMethod(const String& name, const std::vector<Value>& args, Module& module);
-		Value callMethod(const char* name, const std::vector<Value>& args, Module& module);
+		Value callMethod(const String& name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {});
+		Value callMethod(const char* name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {});
 
 	protected:
 		ClassValue value;

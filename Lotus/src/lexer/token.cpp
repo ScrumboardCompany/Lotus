@@ -6,13 +6,15 @@ using namespace lotus;
 String lotus::Token::type_to_string() const {
 	switch (type) {
 	case lotus::TokenType::INT_TYPE:
-		return STRING_LITERAL("int type");
+		return STRING_LITERAL("int");
 	case lotus::TokenType::FLOAT_TYPE:
-		return STRING_LITERAL("float type");
+		return STRING_LITERAL("float");
 	case lotus::TokenType::STRING_TYPE:
-		return STRING_LITERAL("string type");
+		return STRING_LITERAL("string");
 	case lotus::TokenType::WORD:
 		return STRING_LITERAL("word");
+	case lotus::TokenType::HEX:
+		return STRING_LITERAL("hex");
 	case lotus::TokenType::PLUS:
 		return STRING_LITERAL("+");
 	case lotus::TokenType::MINUS:
@@ -39,10 +41,70 @@ String lotus::Token::type_to_string() const {
 		return STRING_LITERAL("||");
 	case lotus::TokenType::AMPAMP:
 		return STRING_LITERAL("&&");
+	case lotus::TokenType::STARSTAR:
+		return STRING_LITERAL("**");
+	case lotus::TokenType::SLASHSLASH:
+		return STRING_LITERAL("//");
 	case lotus::TokenType::NOT:
 		return STRING_LITERAL("!");
 	case lotus::TokenType::COMMA:
 		return STRING_LITERAL(",");
+	case lotus::TokenType::LESSLESS:
+		return STRING_LITERAL("<<");
+	case lotus::TokenType::GREATERGREATER:
+		return STRING_LITERAL(">>");
+	case lotus::TokenType::LESSLESSLESS:
+		return STRING_LITERAL("<<<");
+	case lotus::TokenType::PLUSEQUAL:
+		return STRING_LITERAL("+=");
+	case lotus::TokenType::MINUSQUAL:
+		return STRING_LITERAL("-=");
+	case lotus::TokenType::STARQUAL:
+		return STRING_LITERAL("*=");
+	case lotus::TokenType::SLASHQUAL:
+		return STRING_LITERAL("/=");
+	case lotus::TokenType::STARSTAREQUAL:
+		return STRING_LITERAL("**=");
+	case lotus::TokenType::SLASHSLASHEQUAL:
+		return STRING_LITERAL("//=");
+	case lotus::TokenType::GREATERGREATEREQUAL:
+		return STRING_LITERAL(">>=");
+	case lotus::TokenType::LESSLESSEQUAL:
+		return STRING_LITERAL("<<=");
+	case lotus::TokenType::AMPEQUAL:
+		return STRING_LITERAL("&=");
+	case lotus::TokenType::BAREQUAL:
+		return STRING_LITERAL("|=");
+	case lotus::TokenType::CARETEQUAL:
+		return STRING_LITERAL("^=");
+	case lotus::TokenType::TILDAEQUAL:
+		return STRING_LITERAL("~=");
+	case lotus::TokenType::PLUSPLUS:
+		return STRING_LITERAL("++");
+	case lotus::TokenType::MINUSMINUS:
+		return STRING_LITERAL("--");
+	case lotus::TokenType::AMP:
+		return STRING_LITERAL("&");
+	case lotus::TokenType::BAR:
+		return STRING_LITERAL("|");
+	case lotus::TokenType::TILDA:
+		return STRING_LITERAL("~");
+	case lotus::TokenType::CARET:
+		return STRING_LITERAL("^");
+	case lotus::TokenType::DOT:
+		return STRING_LITERAL(".");
+	case lotus::TokenType::QUESTION:
+		return STRING_LITERAL("?");
+	case lotus::TokenType::SEMICOLON:
+		return STRING_LITERAL(";");
+	case lotus::TokenType::COLON:
+		return STRING_LITERAL(":");
+	case lotus::TokenType::COLONCOLON:
+		return STRING_LITERAL("::");
+	case lotus::TokenType::DOTDOTDOT:
+		return STRING_LITERAL("...");
+	case lotus::TokenType::EQUALGREATER:
+		return STRING_LITERAL("=>");
 	case lotus::TokenType::LET:
 		return STRING_LITERAL("let");
 	case lotus::TokenType::IF:
@@ -51,14 +113,40 @@ String lotus::Token::type_to_string() const {
 		return STRING_LITERAL("else");
 	case lotus::TokenType::WHILE:
 		return STRING_LITERAL("while");
-	case lotus::TokenType::UNDEFINED_:
-		return STRING_LITERAL("undefined");
 	case lotus::TokenType::TRUE:
 		return STRING_LITERAL("true");
 	case lotus::TokenType::FALSE:
 		return STRING_LITERAL("false");
 	case lotus::TokenType::FOR:
 		return STRING_LITERAL("for");
+	case lotus::TokenType::FOREACH:
+		return STRING_LITERAL("foreach");
+	case lotus::TokenType::FLAG:
+		return STRING_LITERAL("flag");
+	case lotus::TokenType::CONTINUE:
+		return STRING_LITERAL("continue");
+	case lotus::TokenType::BREAK:
+		return STRING_LITERAL("break");
+	case lotus::TokenType::RETURN:
+		return STRING_LITERAL("return");
+	case lotus::TokenType::DEF:
+		return STRING_LITERAL("def");
+	case lotus::TokenType::CLASS:
+		return STRING_LITERAL("class");
+	case lotus::TokenType::SWITCH:
+		return STRING_LITERAL("switch");
+	case lotus::TokenType::CASE:
+		return STRING_LITERAL("case");
+	case lotus::TokenType::DEFAULT:
+		return STRING_LITERAL("default");
+	case lotus::TokenType::PUBLIC:
+		return STRING_LITERAL("public");
+	case lotus::TokenType::PRIVATE:
+		return STRING_LITERAL("private");
+	case lotus::TokenType::PROTECTED:
+		return STRING_LITERAL("protected");
+	case lotus::TokenType::STATIC:
+		return STRING_LITERAL("static");
 	case lotus::TokenType::LPAREN:
 		return STRING_LITERAL("(");
 	case lotus::TokenType::RPAREN:
@@ -67,10 +155,13 @@ String lotus::Token::type_to_string() const {
 		return STRING_LITERAL("{");
 	case lotus::TokenType::RBRACE:
 		return STRING_LITERAL("}");
-	case lotus::TokenType::SEMICOLON:
-		return STRING_LITERAL(";");
+	case lotus::TokenType::LBRACKET:
+		return STRING_LITERAL("[");
+	case lotus::TokenType::RBRACKET:
+		return STRING_LITERAL("]");
 	case lotus::TokenType::END_OF_FILE:
+		return STRING_LITERAL("end of file");
 	default:
-		return STRING_LITERAL("END_OF_FILE");
+		return STRING_LITERAL("Undefined token");
 	}
 }

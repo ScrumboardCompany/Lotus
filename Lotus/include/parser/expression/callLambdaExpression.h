@@ -11,10 +11,11 @@ namespace lotus {
 
 	class CallLambdaExpression : public IExpression {
 		std::vector<Expression> args;
+		StringMap<Expression> specifiedArgs;
 		Expression function;
 
 	public:
-		CallLambdaExpression(const std::vector<Expression>& args, const Expression& function);
+		CallLambdaExpression(const std::vector<Expression>& args, const StringMap<Expression>& specifiedArgs, const Expression& function);
 
 		Value eval(Module& module) override;
 	};

@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 
 #ifndef _PARSER_
 #define _PARSER_
@@ -78,6 +79,8 @@ namespace lotus {
 		Statement handleStaticStatement();
 
 		std::vector<Expression> handleExpressions();
+
+		std::pair<std::vector<Expression>, StringMap<Expression>> handleTakenArgs();
 
 		std::vector<Argument> handleArgs();
 

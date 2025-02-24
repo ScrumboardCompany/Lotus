@@ -13,29 +13,29 @@ Expression lotus::Parser::callFunction() {
 
 			consume(TokenType::LPAREN);
 
-			std::vector<Expression> args;
+			std::pair<std::vector<Expression>, StringMap<Expression>> args;
 
 			if (!match(TokenType::RPAREN)) {
-				args = handleExpressions();
+				args = handleTakenArgs();
 
 				consume(TokenType::RPAREN);
 			}
 
-			return MAKE_PTR<FunctionExpression>(name, args);
+			return MAKE_PTR<FunctionExpression>(name, args.first, args.second);
 		}
 		else {
 			result = unaryPostfix();
 
 			if (match(TokenType::LPAREN)) {
-				std::vector<Expression> args;
+				std::pair<std::vector<Expression>, StringMap<Expression>> args;
 
 				if (!match(TokenType::RPAREN)) {
-					args = handleExpressions();
+					args = handleTakenArgs();
 
 					consume(TokenType::RPAREN);
 				}
 
-				result = MAKE_PTR<CallLambdaExpression>(args, result);
+				result = MAKE_PTR<CallLambdaExpression>(args.first, args.second, result);
 				continue;
 			}
 		}

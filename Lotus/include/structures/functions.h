@@ -39,6 +39,10 @@ namespace lotus {
 
 		Value call(const char* name, const std::vector<Value>& args, Module& module);
 
+		Value call(const String& name, const std::vector<Value>& args, const StringMap<Value>& specifiedArgs, Module& module);
+
+		Value call(const char* name, const std::vector<Value>& args, const StringMap<Value>& specifiedArgs, Module& module);
+
 		bool isExists(const String& name);
 
 		bool isExists(const char* name);

@@ -79,6 +79,14 @@ Value lotus::Functions::call(const char* name, const std::vector<Value>& args, M
 	return call(STRING_VAR_LITERAL(name), args, module);
 }
 
+Value lotus::Functions::call(const String& name, const std::vector<Value>& args, const StringMap<Value>& specifiedArgs, Module& module) {
+	return get(name, (args.size() + specifiedArgs.size())).call(args, specifiedArgs, module);
+}
+
+Value lotus::Functions::call(const char* name, const std::vector<Value>& args, const StringMap<Value>& specifiedArgs, Module& module) {
+	return call(STRING_VAR_LITERAL(name), args, specifiedArgs, module);
+}
+
 bool Functions::isExists(const String& name) {
 	return functions.find(name) != functions.end();
 }

@@ -10,7 +10,8 @@ std::list<Token> lotus::Lexer::tokenize() {
     while (pos < input.length()) {
         Char current = peek(0);
 
-        if (std::iswdigit(current)) tokenizeNumber();
+        if (current == CHAR_LITERAL('0') && peek(1) == CHAR_LITERAL('x')) tokenizeHex();
+        else if (std::iswdigit(current)) tokenizeNumber();
         else if (isWordChar(current, false)) tokenizeWord();
         else if (current == CHAR_LITERAL('\"')) tokenizeText();
         else if (current == CHAR_LITERAL('/') && peek(1) == CHAR_LITERAL('*')) tokenizeMultiComment();
@@ -148,6 +149,18 @@ void lotus::Lexer::tokenizeMultiComment() {
     }
     next();
     next();
+}
+
+void lotus::Lexer::tokenizeHex() {
+    next();
+    next();
+    String buffer;
+    Char current = peek(0);
+    while (std::iswdigit(current) || String(STRING_LITERAL("abcdef")).find(std::towlower(current)) != String::npos) {
+        buffer.push_back(current);
+        current = next();
+    }
+    addToken(TokenType::HEX, buffer);
 }
 
 Char lotus::Lexer::peek(const size_t relativePosition) const {

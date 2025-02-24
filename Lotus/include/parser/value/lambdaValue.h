@@ -13,13 +13,15 @@ namespace lotus {
 	class LambdaValue : public IValue {
 		Function function;
 
+		friend class FunctionExpression;
+
 	public:
 
 		LambdaValue(const Function& function);
 
 		size_t getArgsCount() const;
 
-		Value call(const std::vector<Value>& args, Module& module) override;
+		Value call(const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {}) override;
 
 		Value sizeInRam() override;
 	};

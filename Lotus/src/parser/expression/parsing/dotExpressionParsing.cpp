@@ -13,15 +13,15 @@ Expression lotus::Parser::dot() {
 
             if (match(TokenType::LPAREN)) {
 
-                std::vector<Expression> args;
+                std::pair<std::vector<Expression>, StringMap<Expression>> args;
 
                 if (!match(TokenType::RPAREN)) {
-                    args = handleExpressions();
+                    args = handleTakenArgs();
 
                     consume(TokenType::RPAREN);
                 }
 
-                result = MAKE_PTR<MethodExpression>(result, name, args);
+                result = MAKE_PTR<MethodExpression>(result, name, args.first, args.second);
             }
             else result = MAKE_PTR<FieldExpression>(result, name);
             continue;

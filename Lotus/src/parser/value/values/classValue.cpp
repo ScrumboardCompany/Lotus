@@ -4,7 +4,6 @@
 #include "utils/lotusError.h"
 #include "parser/function/function.h"
 #include "structures/module.h"
-#include "structures/module.h"
 
 using namespace lotus;
 
@@ -284,15 +283,15 @@ Value& lotus::ClassValue::getField(const String& name) {
     throw LotusException(STRING_LITERAL("Field \"") + name + STRING_LITERAL("\" does not exist"));
 }
 
-Value ClassValue::callMethod(const String& name, const std::vector<Value>& args, Module& module) {
+Value ClassValue::callMethod(const String& name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs) {
     if (fields.find(name) != fields.end()) {
         if (auto lambda = std::dynamic_pointer_cast<LambdaValue>(getField(name))) {
-            if (lambda->getArgsCount() == args.size()) return lambda->call(args, module);
+            if (lambda->getArgsCount() == args.size() + specifiedArgs.size()) return lambda->call(args, module, specifiedArgs);
         }
     }
 
     MethodMemberInfo methodInfo;
-    ClassValue& value = getMethod(name, args.size(), methodInfo);
+    ClassValue& value = getMethod(name, args.size() + specifiedArgs.size(), methodInfo);
 
     if (methodInfo.accessModifier == AccessModifierType::PRIVATE) {
         throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
@@ -315,7 +314,7 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
 
     module.variables.enterScope();
     module.variables.declare(STRING_LITERAL("this"), MAKE_PTR<ClassValue>(thisValue));
-    Value returnValue = methodInfo.value.call(args, module);
+    Value returnValue = methodInfo.value.call(args, specifiedArgs, module);
 
     if (auto thisValueAfterMethod = std::dynamic_pointer_cast<ClassValue>(module.variables.get(STRING_LITERAL("this")))) {
 
@@ -326,4 +325,8 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
 
     module.variables.exitScope();
     return returnValue;
+}
+
+Value lotus::ClassValue::call(const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs) {
+    return callMethod(STRING_LITERAL("__call__"), args, module, specifiedArgs);
 }

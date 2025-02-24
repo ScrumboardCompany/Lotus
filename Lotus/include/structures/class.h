@@ -17,8 +17,6 @@ namespace lotus {
 		void setName(const String& name);
 		void setName(const char* name);
 
-	protected:
-		ClassValue value;
 	private:
 		friend class ClassStatement;
 		friend class Classes;

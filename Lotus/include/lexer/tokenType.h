@@ -10,6 +10,7 @@ namespace lotus {
 		FLOAT_TYPE,
 		STRING_TYPE,
 		WORD,
+		HEX,
 
 		PLUS,
 		MINUS,
@@ -55,6 +56,7 @@ namespace lotus {
 		COLON,
 		COLONCOLON,
 		DOTDOTDOT,
+		EQUALGREATER,
 
 		LET,
 		IF,
