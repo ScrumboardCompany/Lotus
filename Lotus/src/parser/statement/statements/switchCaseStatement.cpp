@@ -1,35 +1,35 @@
 #include "parser/statement/switchCaseStatement.h"
 #include "parser/statement/breakStatement.h"
-#include "structures/variables.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::SwitchCaseStatement::SwitchCaseStatement(const Expression& exprToCheck, const std::vector<std::pair<Expression, Statement>>& cases, const Statement& defaultBody, Variables& variables)
-	: exprToCheck(exprToCheck), cases(cases), defaultBody(defaultBody), variables(variables) {}
+lotus::SwitchCaseStatement::SwitchCaseStatement(const Expression& exprToCheck, const std::vector<std::pair<Expression, Statement>>& cases, const Statement& defaultBody)
+	: exprToCheck(exprToCheck), cases(cases), defaultBody(defaultBody) {}
 
-void lotus::SwitchCaseStatement::execute() {
-    Value valueToCheck = exprToCheck->eval();
+void lotus::SwitchCaseStatement::execute(Module& module) {
+    Value valueToCheck = exprToCheck->eval(module);
     bool caseMatched = false;
 
     for (auto& Case : cases) {
-        if (caseMatched || valueToCheck->equality(Case.first->eval(), variables)->asBool(variables)) {
+        if (caseMatched || valueToCheck->equality(Case.first->eval(module), module)->asBool(module)) {
             caseMatched = true;
-            variables.enterScope();
+            module.variables.enterScope();
 
             try {
-                Case.second->execute();
-                variables.exitScope();
+                Case.second->execute(module);
+                module.variables.exitScope();
             }
             catch (const BreakStatement&) {
-                variables.exitScope();
+                module.variables.exitScope();
                 return;
             }
         }
     }
 
     if (!caseMatched && defaultBody) {
-        variables.enterScope();
-        defaultBody->execute();
-        variables.exitScope();
+        module.variables.enterScope();
+        defaultBody->execute(module);
+        module.variables.exitScope();
     }
 }

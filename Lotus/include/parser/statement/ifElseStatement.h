@@ -13,12 +13,11 @@ namespace lotus {
 		std::vector<Expression> conditionPart;
 		Statement ifBody;
 		Statement elseBody;
-		Variables& variables;
 
 	public:
 
-		IfElseStatement(const std::vector<Expression>& conditionPart, const Statement& ifBody, const Statement& elseBody, Variables& variables);
-		void execute() override;
+		IfElseStatement(const std::vector<Expression>& conditionPart, const Statement& ifBody, const Statement& elseBody);
+		void execute(Module& module) override;
 	};
 
 }

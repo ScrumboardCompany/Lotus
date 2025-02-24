@@ -13,14 +13,13 @@ namespace lotus {
 
 		String staticName;
 		String field;
-		Statics& statics;
 
 		friend class SetExpression;
 
 	public:
-		StaticFieldExpression(const String& staticName, const String& field, Statics& statics);
+		StaticFieldExpression(const String& staticName, const String& field);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

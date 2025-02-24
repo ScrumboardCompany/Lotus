@@ -15,7 +15,6 @@ namespace lotus {
 		
 		String key;
 		String filePath;
-		Module& currentModule;
 		StringMap<Module>& modules;
 		const Flags& flags;
 
@@ -23,8 +22,8 @@ namespace lotus {
 
 	public:
 
-		ImportStatement(const String& key, const String& filePath, Module& module, StringMap<Module>& currentModule, const Flags& flags);
-		void execute() override;
+		ImportStatement(const String& key, const String& filePath, StringMap<Module>& modules, const Flags& flags);
+		void execute(Module& currentModule) override;
 	};
 
 }

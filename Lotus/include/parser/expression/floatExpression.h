@@ -13,7 +13,7 @@ namespace lotus {
 	public:
 		FloatExpression(double value);
 
-		Value eval() override;
+		Value eval(Module&) override;
 	};
 }
 

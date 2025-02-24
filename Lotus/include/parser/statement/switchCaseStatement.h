@@ -14,12 +14,10 @@ namespace lotus {
 		std::vector<std::pair<Expression, Statement>> cases;
 		Statement defaultBody;
 
-		Variables& variables;
-
 	public:
 
-		SwitchCaseStatement(const Expression& exprToCheck, const std::vector<std::pair<Expression, Statement>>& cases, const Statement& defaultBody, Variables& variables);
-		void execute() override;
+		SwitchCaseStatement(const Expression& exprToCheck, const std::vector<std::pair<Expression, Statement>>& cases, const Statement& defaultBody);
+		void execute(Module& module) override;
 	};
 
 }

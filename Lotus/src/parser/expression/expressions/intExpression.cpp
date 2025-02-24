@@ -5,6 +5,6 @@ using namespace lotus;
 
 lotus::IntExpression::IntExpression(int value) : value(value) {}
 
-Value lotus::IntExpression::eval() {
+Value lotus::IntExpression::eval(Module&) {
 	return INT(value);
 }

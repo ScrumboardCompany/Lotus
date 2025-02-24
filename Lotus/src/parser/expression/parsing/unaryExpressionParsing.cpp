@@ -10,11 +10,11 @@ Expression lotus::Parser::unaryNot() {
 
     while (true) {
         if (match(TokenType::NOT)) {
-            result = MAKE_PTR<UnaryExpression>(unaryPlusMinus(), UnaryOperationType::LOGICALNOT, module.variables);
+            result = MAKE_PTR<UnaryExpression>(unaryPlusMinus(), UnaryOperationType::LOGICALNOT);
             continue;
         }
         if (match(TokenType::TILDA)) {
-            result = MAKE_PTR<UnaryExpression>(unaryPlusMinus(), UnaryOperationType::BITWISENOT, module.variables);
+            result = MAKE_PTR<UnaryExpression>(unaryPlusMinus(), UnaryOperationType::BITWISENOT);
             continue;
         }
         break;
@@ -28,11 +28,11 @@ Expression lotus::Parser::unaryPlusMinus() {
     
     while (true) {
         if (match(TokenType::PLUS)) {
-            result = MAKE_PTR<UnaryExpression>(unaryPrefix(), UnaryOperationType::PLUS, module.variables);
+            result = MAKE_PTR<UnaryExpression>(unaryPrefix(), UnaryOperationType::PLUS);
             continue;
         }
         if (match(TokenType::MINUS)) {
-            result = MAKE_PTR<UnaryExpression>(unaryPrefix(), UnaryOperationType::MINUS, module.variables);
+            result = MAKE_PTR<UnaryExpression>(unaryPrefix(), UnaryOperationType::MINUS);
             continue;
         }
         break;
@@ -43,10 +43,10 @@ Expression lotus::Parser::unaryPlusMinus() {
 
 Expression lotus::Parser::unaryPrefix() {
     if (match(TokenType::PLUSPLUS)) {
-        return MAKE_PTR<UnaryExpression>(dot(), UnaryOperationType::PREFIXINCREMENT, module.variables);
+        return MAKE_PTR<UnaryExpression>(dot(), UnaryOperationType::PREFIXINCREMENT);
     }
     else if (match(TokenType::MINUSMINUS)) {
-        return MAKE_PTR<UnaryExpression>(dot(), UnaryOperationType::PREFIXDECREMENT, module.variables);
+        return MAKE_PTR<UnaryExpression>(dot(), UnaryOperationType::PREFIXDECREMENT);
     }
 
     return dot();
@@ -56,10 +56,10 @@ Expression lotus::Parser::unaryPostfix() {
     Expression result = primary();
 
     if (match(TokenType::PLUSPLUS)) {
-        result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXINCREMENT, module.variables);
+        result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXINCREMENT);
     } 
     else if (match(TokenType::MINUSMINUS)) {
-        result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXDECREMENT, module.variables);
+        result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXDECREMENT);
     }
 
     return result;

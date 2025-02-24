@@ -14,12 +14,11 @@ namespace lotus {
 		Expression expr;
 		String method;
 		std::vector<Expression> args;
-		Variables& variables;
 
 	public:
-		MethodExpression(const Expression& expr, const String& method, const std::vector<Expression>& args, Variables& variables);
+		MethodExpression(const Expression& expr, const String& method, const std::vector<Expression>& args);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

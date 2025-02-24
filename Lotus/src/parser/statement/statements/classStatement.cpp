@@ -1,23 +1,20 @@
 #include "parser/statement/classStatement.h"
 #include "parser/value/classValue.h"
-#include "structures/functions.h"
-#include "structures/variables.h"
-#include "structures/class.h"
-#include "structures/classes.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::ClassStatement::ClassStatement(Classes& classes, Functions& functions, Variables& variables, const String& name, RawFields_t& fields, const Methods_t& methods, const std::vector<String>& parents)
-	: classes(classes), functions(functions), variables(variables), name(name), fields(fields), methods(methods), parents(parents) {
+lotus::ClassStatement::ClassStatement(const String& name, RawFields_t& fields, const Methods_t& methods, const std::vector<String>& parents)
+	: name(name), fields(fields), methods(methods), parents(parents) {
 }
 
-void lotus::ClassStatement::execute() {
+void lotus::ClassStatement::execute(Module& module) {
 	Ptr<Class> newClass = MAKE_PTR<Class>();
 
 	for (auto& field : fields) {
 
 		FieldMemberInfo memberInfo;
-		memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
+		memberInfo.value = field.second.first ? field.second.first->eval(module) : UNDEFINED();
 		memberInfo.accessModifier = field.second.second.accessModifier;
 
 		newClass->addField(field.first, memberInfo);
@@ -32,9 +29,9 @@ void lotus::ClassStatement::execute() {
 
 	std::vector<ClassValue> parentClasses;
 	for (auto& parent : parents) {
-		newClass->value.parents.push_back(MAKE_PTR<ClassValue>(classes.get(parent)->value));		
+		newClass->value.parents.push_back(MAKE_PTR<ClassValue>(module.classes.get(parent)->value));
 	}
 
-	classes.declare(name, newClass);
-	classes.registerClass(name, functions, variables);
+	module.classes.declare(name, newClass);
+	module.classes.registerClass(name, module);
 }

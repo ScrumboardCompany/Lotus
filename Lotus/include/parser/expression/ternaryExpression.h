@@ -15,12 +15,10 @@ namespace lotus {
 		Expression expr1;
 		Expression expr2;
 
-		Variables& variables;
-
 	public:
-		TernaryExpression(const Expression& condition, const Expression& expr1, const Expression& expr2, Variables& variables);
+		TernaryExpression(const Expression& condition, const Expression& expr1, const Expression& expr2);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

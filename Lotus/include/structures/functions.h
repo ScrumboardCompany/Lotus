@@ -35,9 +35,9 @@ namespace lotus {
 
 		Function get(const char* name, size_t argsCount = 0);
 
-		Value call(const String& name, const std::vector<Value>& args, Variables& variables);
+		Value call(const String& name, const std::vector<Value>& args, Module& module);
 
-		Value call(const char* name, const std::vector<Value>& args, Variables& variables);
+		Value call(const char* name, const std::vector<Value>& args, Module& module);
 
 		bool isExists(const String& name);
 

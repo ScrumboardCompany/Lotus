@@ -8,5 +8,5 @@ Statement lotus::Parser::handleStaticStatement() {
 
 	auto staticInfo = handleFieldsMethods();
 
-	return MAKE_PTR<StaticStatement>(module.statics, name, staticInfo.first, staticInfo.second);
+	return MAKE_PTR<StaticStatement>(name, staticInfo.first, staticInfo.second);
 }

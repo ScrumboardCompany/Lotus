@@ -3,6 +3,6 @@
 
 using namespace lotus;
 
-Value lotus::UndefinedExpression::eval() {
+Value lotus::UndefinedExpression::eval(Module&) {
 	return UNDEFINED();
 }

@@ -13,7 +13,7 @@ namespace lotus {
 	public:
 		BoolExpression(bool value);
 
-		Value eval() override;
+		Value eval(Module&) override;
 	};
 }
 

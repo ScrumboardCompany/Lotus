@@ -10,14 +10,13 @@ namespace lotus {
 
 	class VariableExpression : public IExpression {
 		String name;
-		Variables& variables;
 
 		friend class SetExpression;
 
 	public:
-		VariableExpression(const String& name, Variables& variables);
+		VariableExpression(const String& name);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

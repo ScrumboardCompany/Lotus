@@ -12,14 +12,13 @@ namespace lotus {
 	class IndexExpression : public IExpression {
 		Expression expression;
 		Expression index;
-		Variables& variables;
 
 		friend class SetExpression;
 
 	public:
-		IndexExpression(const Expression& expression, const Expression& index, Variables& variables);
+		IndexExpression(const Expression& expression, const Expression& index);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

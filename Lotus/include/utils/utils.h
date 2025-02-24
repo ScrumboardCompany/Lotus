@@ -8,7 +8,9 @@
 
 namespace lotus {
 
-	Value callAllExpressionsAndReturnLastValue(const std::vector<Expression>& expressions);
+	struct Module;
+
+	Value callAllExpressionsAndReturnLastValue(const std::vector<Expression>& expressions, Module& module);
 
 	std::wstring wreadContent(const std::wstring& filePath);
 }

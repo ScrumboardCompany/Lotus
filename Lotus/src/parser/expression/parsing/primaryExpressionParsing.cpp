@@ -41,13 +41,13 @@ Expression lotus::Parser::primary() {
 					consume(TokenType::RPAREN);
 				}
 
-				return MAKE_PTR<StaticMethodExpression>(CurrentToken.text, name, args, module.variables, module.statics);
+				return MAKE_PTR<StaticMethodExpression>(CurrentToken.text, name, args);
 			}
 			else {
-				return MAKE_PTR<StaticFieldExpression>(CurrentToken.text, name, module.statics);
+				return MAKE_PTR<StaticFieldExpression>(CurrentToken.text, name);
 			}
 		}
-		else return MAKE_PTR<VariableExpression>(CurrentToken.text, module.variables);
+		else return MAKE_PTR<VariableExpression>(CurrentToken.text);
 	}
 	if (match(TokenType::UNDEFINED_)) {
 		return MAKE_PTR<UndefinedExpression>();
@@ -68,7 +68,7 @@ Expression lotus::Parser::primary() {
 
 		Function function(body, args);
 
-		return MAKE_PTR<LambdaExpression>(module.variables, function);
+		return MAKE_PTR<LambdaExpression>(function);
 	}
 	if (match(TokenType::LBRACKET)) {
 

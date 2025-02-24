@@ -12,13 +12,12 @@ namespace lotus {
 
 	class DefStatement : public IStatement {
 		String name;
-		Functions& functions;
 		Function function;
 
 	public:
 
-		DefStatement(const String& name, Functions& functions, const Function& function);
-		void execute() override;
+		DefStatement(const String& name, const Function& function);
+		void execute(Module& module) override;
 	};
 
 }

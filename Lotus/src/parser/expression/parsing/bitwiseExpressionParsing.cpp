@@ -8,15 +8,15 @@ Expression lotus::Parser::bitwise() {
 
 	while (true) {
 		if (match(TokenType::AMP)) {
-			result = MAKE_PTR<BitwiseExpression>(result, bitwiseShifts(), BitwiseOperationType::AND, module.variables);
+			result = MAKE_PTR<BitwiseExpression>(result, bitwiseShifts(), BitwiseOperationType::AND);
 			continue;
 		}
 		if (match(TokenType::BAR)) {
-			result = MAKE_PTR<BitwiseExpression>(result, bitwiseShifts(), BitwiseOperationType::OR, module.variables);
+			result = MAKE_PTR<BitwiseExpression>(result, bitwiseShifts(), BitwiseOperationType::OR);
 			continue;
 		}
 		if (match(TokenType::CARET)) {
-			result = MAKE_PTR<BitwiseExpression>(result, bitwiseShifts(), BitwiseOperationType::XOR, module.variables);
+			result = MAKE_PTR<BitwiseExpression>(result, bitwiseShifts(), BitwiseOperationType::XOR);
 			continue;
 		}
 		break;
@@ -29,11 +29,11 @@ Expression Parser::bitwiseShifts() {
 
 	while (true) {
 		if (match(TokenType::LESSLESS)) {
-			result = MAKE_PTR<BitwiseExpression>(result, additive(), BitwiseOperationType::LEFTSHIFT, module.variables);
+			result = MAKE_PTR<BitwiseExpression>(result, additive(), BitwiseOperationType::LEFTSHIFT);
 			continue;
 		}
 		if (match(TokenType::GREATERGREATER)) {
-			result = MAKE_PTR<BitwiseExpression>(result, additive(), BitwiseOperationType::RIGHTSHIFT, module.variables);
+			result = MAKE_PTR<BitwiseExpression>(result, additive(), BitwiseOperationType::RIGHTSHIFT);
 			continue;
 		}
 		break;

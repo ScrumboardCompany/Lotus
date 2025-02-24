@@ -19,14 +19,13 @@ namespace lotus {
 
 	class BitwiseExpression : public IExpression {
 		Expression expression1, expression2;
-		Variables& variables;
 
 		BitwiseOperationType operation;
 
 	public:
-		BitwiseExpression(const Expression& expression1, const Expression& expression2, const BitwiseOperationType& operation, Variables& variables);
+		BitwiseExpression(const Expression& expression1, const Expression& expression2, const BitwiseOperationType& operation);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

@@ -1,10 +1,10 @@
 #include "parser/expression/variableExpression.h"
-#include "structures/variables.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::VariableExpression::VariableExpression(const String& name, Variables& variables) : name(name), variables(variables) {}
+lotus::VariableExpression::VariableExpression(const String& name) : name(name) {}
 
-Value lotus::VariableExpression::eval() {
-	return variables.get(name);
+Value lotus::VariableExpression::eval(Module& module) {
+	return module.variables.get(name);
 }

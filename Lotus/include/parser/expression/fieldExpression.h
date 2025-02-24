@@ -17,7 +17,7 @@ namespace lotus {
 	public:
 		FieldExpression(const Expression& expr, const String& field);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

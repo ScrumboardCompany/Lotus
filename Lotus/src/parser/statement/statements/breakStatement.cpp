@@ -5,6 +5,6 @@ using namespace lotus;
 
 lotus::BreakStatement::BreakStatement() {}
 
-void lotus::BreakStatement::execute() {
+void lotus::BreakStatement::execute(Module&) {
 	throw *this;
 }

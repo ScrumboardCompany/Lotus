@@ -5,6 +5,6 @@ using namespace lotus;
 
 lotus::FloatExpression::FloatExpression(double value) : value(value) {}
 
-Value lotus::FloatExpression::eval() {
+Value lotus::FloatExpression::eval(Module&) {
 	return FLOAT(value);
 }

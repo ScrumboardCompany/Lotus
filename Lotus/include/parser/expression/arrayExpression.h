@@ -13,7 +13,7 @@ namespace lotus {
 	public:
 		ArrayExpression(const std::vector<Expression>& elements);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

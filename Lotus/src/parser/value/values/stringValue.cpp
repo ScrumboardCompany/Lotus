@@ -3,6 +3,7 @@
 #include "parser/value/intValue.h"
 #include "utils/lotusError.h"
 #include "parser/function/function.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
@@ -10,30 +11,30 @@ StringValue::StringValue(const String& value) : value(value) {
     type = STRING_LITERAL("string");
 }
 
-int lotus::StringValue::asInt(Variables& variables) {
+int lotus::StringValue::asInt(Module& module) {
     return std::stoi(value);
 }
 
-double lotus::StringValue::asDouble(Variables& variables) {
+double lotus::StringValue::asDouble(Module& module) {
     return std::stod(value);
 }
 
-bool lotus::StringValue::asBool(Variables& variables) {
+bool lotus::StringValue::asBool(Module& module) {
     return value.length() != 0;
 }
 
-String lotus::StringValue::asString(Variables& variables) {
+String lotus::StringValue::asString(Module& module) {
     return value;
 }
 
-Value lotus::StringValue::add(const Value& other, Variables& variables) {
-    return STRING(value + other->asString(variables));
+Value lotus::StringValue::add(const Value& other, Module& module) {
+    return STRING(value + other->asString(module));
 }
 
-Value lotus::StringValue::multiply(const Value& other, Variables& variables) {
+Value lotus::StringValue::multiply(const Value& other, Module& module) {
     if (other->getType() == STRING_LITERAL("int")) {
         String result;
-        for (int i = 0; i < other->asInt(variables); i++) {
+        for (int i = 0; i < other->asInt(module); i++) {
             result += value;
         }
         return STRING(result);
@@ -41,71 +42,71 @@ Value lotus::StringValue::multiply(const Value& other, Variables& variables) {
     throwOverloadError(STRING_LITERAL("multiply"), getType(), other->getType());
 }
 
-Value lotus::StringValue::greater(const Value& other, Variables& variables) {
-    return BOOL(value > other->asString(variables));
+Value lotus::StringValue::greater(const Value& other, Module& module) {
+    return BOOL(value > other->asString(module));
 }
 
-Value lotus::StringValue::less(const Value& other, Variables& variables) {
-    return BOOL(value < other->asString(variables));
+Value lotus::StringValue::less(const Value& other, Module& module) {
+    return BOOL(value < other->asString(module));
 }
 
-Value lotus::StringValue::greaterEqual(const Value& other, Variables& variables) {
-    return BOOL(value >= other->asString(variables));
+Value lotus::StringValue::greaterEqual(const Value& other, Module& module) {
+    return BOOL(value >= other->asString(module));
 }
 
-Value lotus::StringValue::lessEqual(const Value& other, Variables& variables) {
-    return BOOL(value <= other->asString(variables));
+Value lotus::StringValue::lessEqual(const Value& other, Module& module) {
+    return BOOL(value <= other->asString(module));
 }
 
-Value lotus::StringValue::equality(const Value& other, Variables& variables) {
-    return BOOL(value == other->asString(variables));
+Value lotus::StringValue::equality(const Value& other, Module& module) {
+    return BOOL(value == other->asString(module));
 }
 
-Value lotus::StringValue::inequality(const Value& other, Variables& variables) {
-    return BOOL(value != other->asString(variables));
+Value lotus::StringValue::inequality(const Value& other, Module& module) {
+    return BOOL(value != other->asString(module));
 }
 
-Value lotus::StringValue::logicalOr(const Value& other, Variables& variables) {
-    return BOOL(asBool(variables) || other->asBool(variables));
+Value lotus::StringValue::logicalOr(const Value& other, Module& module) {
+    return BOOL(asBool(module) || other->asBool(module));
 }
 
-Value lotus::StringValue::logicalAnd(const Value& other, Variables& variables) {
-    return BOOL(asBool(variables) && other->asBool(variables));
+Value lotus::StringValue::logicalAnd(const Value& other, Module& module) {
+    return BOOL(asBool(module) && other->asBool(module));
 }
 
-Value lotus::StringValue::addSet(const Value& other, Variables& variables) {
-    value = add(other, variables)->asString(variables);
+Value lotus::StringValue::addSet(const Value& other, Module& module) {
+    value = add(other, module)->asString(module);
     return STRING(value);
 }
 
-Value lotus::StringValue::multiplySet(const Value& other, Variables& variables) {
-    value = multiply(other, variables)->asString(variables);
+Value lotus::StringValue::multiplySet(const Value& other, Module& module) {
+    value = multiply(other, module)->asString(module);
     return STRING(value);
 }
 
-Value lotus::StringValue::getOfIndex(const Value& index, Variables& variables) {
+Value lotus::StringValue::getOfIndex(const Value& index, Module& module) {
     if (index->getType() == STRING_LITERAL("int")) {
-        checkThrowIndexError(index, value.size(), variables);
-        return STRING(String(1, value[index->asInt(variables)]));
+        checkThrowIndexError(index, value.size(), module);
+        return STRING(String(1, value[index->asInt(module)]));
     }
     throwOverloadError(STRING_LITERAL("getOfIndex"), getType(), index->getType());
 }
 
-Value lotus::StringValue::setOfIndex(const Value& index, const Value& other, Variables& variables) {
+Value lotus::StringValue::setOfIndex(const Value& index, const Value& other, Module& module) {
     if (index->getType() == STRING_LITERAL("int")) {
-        checkThrowIndexError(index, value.size(), variables);
-        String otherAsString = other->asString(variables);
+        checkThrowIndexError(index, value.size(), module);
+        String otherAsString = other->asString(module);
         if (otherAsString.empty()) {
-            value[index->asInt(variables)] = '\0';
+            value[index->asInt(module)] = '\0';
         } else {
-            value[index->asInt(variables)] = otherAsString[0];
+            value[index->asInt(module)] = otherAsString[0];
         }
-        return STRING(String(1, value[index->asInt(variables)]));
+        return STRING(String(1, value[index->asInt(module)]));
     }
     throwOverloadError(STRING_LITERAL("setOfIndex"), getType(), index->getType());
 }
 
-Value lotus::StringValue::size(Variables& variables) {
+Value lotus::StringValue::size(Module& module) {
     return INT(value.size());
 }
 

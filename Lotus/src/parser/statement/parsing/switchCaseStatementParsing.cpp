@@ -28,5 +28,5 @@ Statement lotus::Parser::handleSwitchCaseStatement() {
 		}
 	}
 
-	return MAKE_PTR<SwitchCaseStatement>(exprToCheck, cases, defaultBody, module.variables);
+	return MAKE_PTR<SwitchCaseStatement>(exprToCheck, cases, defaultBody);
 }

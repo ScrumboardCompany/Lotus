@@ -4,6 +4,7 @@
 #include "parser/function/function.h"
 #include "parser/statement/continueStatement.h"
 #include "parser/statement/breakStatement.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
@@ -11,11 +12,11 @@ lotus::ArrayValue::ArrayValue(std::vector<Value> elements) : elements(elements) 
     type = STRING_LITERAL("array");
 }
 
-String lotus::ArrayValue::asString(Variables& variables) {
+String lotus::ArrayValue::asString(Module& module) {
     String result;
 
     for (size_t i = 0; i < elements.size(); i++) {
-        result += elements[i]->asString(variables);
+        result += elements[i]->asString(module);
         if (i < elements.size() - 1) {
             result += STRING_LITERAL(", ");
         }
@@ -23,7 +24,7 @@ String lotus::ArrayValue::asString(Variables& variables) {
     return result;
 }
 
-Value lotus::ArrayValue::add(const Value& other, Variables& variables) {
+Value lotus::ArrayValue::add(const Value& other, Module& module) {
     if (other->getType() == STRING_LITERAL("array")) {
         std::vector<Value> newElements = elements;
 
@@ -41,19 +42,19 @@ Value lotus::ArrayValue::add(const Value& other, Variables& variables) {
     throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
 }
 
-Value lotus::ArrayValue::addSet(const Value& other, Variables& variables) {
-    if (auto arr = std::dynamic_pointer_cast<ArrayValue>(add(other, variables))) {
+Value lotus::ArrayValue::addSet(const Value& other, Module& module) {
+    if (auto arr = std::dynamic_pointer_cast<ArrayValue>(add(other, module))) {
         elements = arr->elements;
     }
     return ARRAY(elements);
 }
 
-void lotus::ArrayValue::foreach(const String& name, const Statement& body, Variables& variables) {
+void lotus::ArrayValue::foreach(const String& name, const Statement& body, Module& module) {
 
     for (size_t i = 0; i < elements.size(); i++) {
-        variables.set(name, elements[i]);
+        module.variables.set(name, elements[i]);
         try {
-            body->execute();
+            body->execute(module);
         }
         catch (const ContinueStatement&) {
             continue;
@@ -66,24 +67,24 @@ void lotus::ArrayValue::foreach(const String& name, const Statement& body, Varia
 
 }
 
-Value lotus::ArrayValue::getOfIndex(const Value& index, Variables& variables) {
+Value lotus::ArrayValue::getOfIndex(const Value& index, Module& module) {
     if (index->getType() == STRING_LITERAL("int")) {
-        checkThrowIndexError(index, elements.size(), variables);
-        return elements[index->asInt(variables)];
+        checkThrowIndexError(index, elements.size(), module);
+        return elements[index->asInt(module)];
     }
     throwOverloadError(STRING_LITERAL("getOfIndex"), getType(), index->getType());
 }
 
-Value lotus::ArrayValue::setOfIndex(const Value& index, const Value& other, Variables& variables) {
+Value lotus::ArrayValue::setOfIndex(const Value& index, const Value& other, Module& module) {
     if (index->getType() == STRING_LITERAL("int")) {
-        checkThrowIndexError(index, elements.size(), variables);
-        elements[index->asInt(variables)] = other;
-        return elements[index->asInt(variables)];
+        checkThrowIndexError(index, elements.size(), module);
+        elements[index->asInt(module)] = other;
+        return elements[index->asInt(module)];
     }
     throwOverloadError(STRING_LITERAL("setOfIndex"), getType(), index->getType());
 }
 
-Value lotus::ArrayValue::size(Variables& variables) {
+Value lotus::ArrayValue::size(Module& module) {
     return INT(elements.size());
 }
 

@@ -4,6 +4,6 @@ using namespace lotus;
 
 lotus::ExpressionStatement::ExpressionStatement(const Expression& expression) : expression(expression) {}
 
-void lotus::ExpressionStatement::execute() {
-	expression->eval();
+void lotus::ExpressionStatement::execute(Module& module) {
+	expression->eval(module);
 }

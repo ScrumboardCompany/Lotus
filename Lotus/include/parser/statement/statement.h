@@ -7,9 +7,11 @@
 
 namespace lotus {
 
+	struct Module;
+
 	class IStatement {
 	public:
-		virtual void execute() = 0;
+		virtual void execute(Module& module) = 0;
 		virtual ~IStatement() = default;
 	};
 

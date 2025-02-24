@@ -8,9 +8,11 @@
 
 namespace lotus {
 
+	struct Module;
+
 	class IExpression {
 	public:
-		virtual Value eval() = 0;
+		virtual Value eval(Module& module) = 0;
 
 		virtual ~IExpression() = default;
 	};

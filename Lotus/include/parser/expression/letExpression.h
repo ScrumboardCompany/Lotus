@@ -13,12 +13,11 @@ namespace lotus {
 
 		String name;
 		Expression expression;
-		Variables& variables;
 
 	public:
-		LetExpression(const String& name, const Expression& expression, Variables& variables);
+		LetExpression(const String& name, const Expression& expression);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

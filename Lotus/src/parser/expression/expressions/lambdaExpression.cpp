@@ -6,10 +6,10 @@
 
 using namespace lotus;
 
-lotus::LambdaExpression::LambdaExpression(Variables& variables, const Function& function)
-	: variables(variables), function(function) {
+lotus::LambdaExpression::LambdaExpression(const Function& function)
+	: function(function) {
 }
 
-Value lotus::LambdaExpression::eval() {
-	return MAKE_PTR<LambdaValue>(function, variables);
+Value lotus::LambdaExpression::eval(Module&) {
+	return MAKE_PTR<LambdaValue>(function);
 }

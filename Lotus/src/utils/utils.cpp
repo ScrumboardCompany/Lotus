@@ -10,11 +10,11 @@
 
 using namespace lotus;
 
-Value lotus::callAllExpressionsAndReturnLastValue(const std::vector<Expression>& expressions) {
+Value lotus::callAllExpressionsAndReturnLastValue(const std::vector<Expression>& expressions, Module& module) {
     if (expressions.empty()) return UNDEFINED();
     Value lastExpression;
     for (auto& expr : expressions) {
-        lastExpression = expr->eval();
+        lastExpression = expr->eval(module);
     }
     return lastExpression;
 }

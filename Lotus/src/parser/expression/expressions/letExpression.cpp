@@ -1,17 +1,17 @@
 #include "parser/expression/letExpression.h"
-#include "structures/variables.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::LetExpression::LetExpression(const String& name, const Expression& expression, Variables& variables)
-	: name(name), expression(expression), variables(variables) {}
+lotus::LetExpression::LetExpression(const String& name, const Expression& expression)
+	: name(name), expression(expression) {}
 
-Value lotus::LetExpression::eval() {
+Value lotus::LetExpression::eval(Module& module) {
 	if (expression) {
-		variables.declare(name, expression->eval());
+		module.variables.declare(name, expression->eval(module));
 	}
 	else {
-		variables.declare(name);
+		module.variables.declare(name);
 	}
-	return variables.get(name);
+	return module.variables.get(name);
 }

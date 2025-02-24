@@ -10,69 +10,69 @@
 namespace lotus {
 
 	class Function;
-	class Variables;
+	struct Module;
 
 	class IValue {
 	public:
 
-		virtual int asInt(Variables& variables);
-		virtual double asDouble(Variables& variables);
-		virtual bool asBool(Variables& variables);
-		virtual String asString(Variables& variables);
+		virtual int asInt(Module& module);
+		virtual double asDouble(Module& module);
+		virtual bool asBool(Module& module);
+		virtual String asString(Module& module);
 
 		String getType() const;
 		virtual Value& getField(const String& name);
-		virtual Value callMethod(const String& name, const std::vector<Value>& args, Variables& variables);
-		virtual Value call(const std::vector<Value>& args, Variables& variables);
+		virtual Value callMethod(const String& name, const std::vector<Value>& args, Module& module);
+		virtual Value call(const std::vector<Value>& args, Module& module);
 
-		virtual Value add(const Value& other, Variables& variables);
-		virtual Value substract(const Value& other, Variables& variables);
-		virtual Value multiply(const Value& other, Variables& variables);
-		virtual Value divide(const Value& other, Variables& variables);
-		virtual Value power(const Value& other, Variables& variables);
-		virtual Value divideModule(const Value& other, Variables& variables);
+		virtual Value add(const Value& other, Module& module);
+		virtual Value substract(const Value& other, Module& module);
+		virtual Value multiply(const Value& other, Module& module);
+		virtual Value divide(const Value& other, Module& module);
+		virtual Value power(const Value& other, Module& module);
+		virtual Value divideModule(const Value& other, Module& module);
 
-		virtual Value bitwiseAnd(const Value& other, Variables& variables);
-		virtual Value bitwiseOr(const Value& other, Variables& variables);
-		virtual Value bitwiseXor(const Value& other, Variables& variables);
-		virtual Value bitwiseNot(Variables& variables);
-		virtual Value bitwiseLeftShift(const Value& other, Variables& variables);
-		virtual Value bitwiseRightShift(const Value& other, Variables& variables);
+		virtual Value bitwiseAnd(const Value& other, Module& module);
+		virtual Value bitwiseOr(const Value& other, Module& module);
+		virtual Value bitwiseXor(const Value& other, Module& module);
+		virtual Value bitwiseNot(Module& module);
+		virtual Value bitwiseLeftShift(const Value& other, Module& module);
+		virtual Value bitwiseRightShift(const Value& other, Module& module);
 
-		virtual Value greater(const Value& other, Variables& variables);
-		virtual Value less(const Value& other, Variables& variables);
-		virtual Value greaterEqual(const Value& other, Variables& variables);
-		virtual Value lessEqual(const Value& other, Variables& variables);
-		virtual Value equality(const Value& other, Variables& variables);
-		virtual Value inequality(const Value& other, Variables& variables);
-		virtual Value logicalOr(const Value& other, Variables& variables);
-		virtual Value logicalAnd(const Value& other, Variables& variables);
+		virtual Value greater(const Value& other, Module& module);
+		virtual Value less(const Value& other, Module& module);
+		virtual Value greaterEqual(const Value& other, Module& module);
+		virtual Value lessEqual(const Value& other, Module& module);
+		virtual Value equality(const Value& other, Module& module);
+		virtual Value inequality(const Value& other, Module& module);
+		virtual Value logicalOr(const Value& other, Module& module);
+		virtual Value logicalAnd(const Value& other, Module& module);
 
-		virtual Value addSet(const Value& other, Variables& variables);
-		virtual Value substractSet(const Value& other, Variables& variables);
-		virtual Value multiplySet(const Value& other, Variables& variables);
-		virtual Value divideSet(const Value& other, Variables& variables);
-		virtual Value powerSet(const Value& other, Variables& variables);
-		virtual Value divideModuleSet(const Value& other, Variables& variables);
-		virtual Value bitwiseAndSet(const Value& other, Variables& variables);
-		virtual Value bitwiseOrSet(const Value& other, Variables& variables);
-		virtual Value bitwiseXorSet(const Value& other, Variables& variables);
-		virtual Value bitwiseNotSet(Variables& variables);
-		virtual Value bitwiseLeftShiftSet(const Value& other, Variables& variables);
-		virtual Value bitwiseRightShiftSet(const Value& other, Variables& variables);
+		virtual Value addSet(const Value& other, Module& module);
+		virtual Value substractSet(const Value& other, Module& module);
+		virtual Value multiplySet(const Value& other, Module& module);
+		virtual Value divideSet(const Value& other, Module& module);
+		virtual Value powerSet(const Value& other, Module& module);
+		virtual Value divideModuleSet(const Value& other, Module& module);
+		virtual Value bitwiseAndSet(const Value& other, Module& module);
+		virtual Value bitwiseOrSet(const Value& other, Module& module);
+		virtual Value bitwiseXorSet(const Value& other, Module& module);
+		virtual Value bitwiseNotSet(Module& module);
+		virtual Value bitwiseLeftShiftSet(const Value& other, Module& module);
+		virtual Value bitwiseRightShiftSet(const Value& other, Module& module);
 
-		virtual Value unaryPlus(Variables& variables);
-		virtual Value unaryMinus(Variables& variables);
-		virtual Value unaryNot(Variables& variables);
-		virtual Value prefixIncrement(Variables& variables);
-		virtual Value postfixIncrement(Variables& variables);
-		virtual Value prefixDecrement(Variables& variables);
-		virtual Value postfixDecrement(Variables& variables);
+		virtual Value unaryPlus(Module& module);
+		virtual Value unaryMinus(Module& module);
+		virtual Value unaryNot(Module& module);
+		virtual Value prefixIncrement(Module& module);
+		virtual Value postfixIncrement(Module& module);
+		virtual Value prefixDecrement(Module& module);
+		virtual Value postfixDecrement(Module& module);
 
-		virtual void foreach(const String& name, const Statement& body, Variables& variables);
-		virtual Value getOfIndex(const Value& index, Variables& variables);
-		virtual Value setOfIndex(const Value& index, const Value& other, Variables& variables);
-		virtual Value size(Variables& variables);
+		virtual void foreach(const String& name, const Statement& body, Module& module);
+		virtual Value getOfIndex(const Value& index, Module& module);
+		virtual Value setOfIndex(const Value& index, const Value& other, Module& module);
+		virtual Value size(Module& module);
 		virtual Value sizeInRam() = 0;
 
 		virtual ~IValue() = default;

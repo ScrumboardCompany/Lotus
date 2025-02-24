@@ -6,7 +6,6 @@
 #include "utils/lotusTypes.h"
 #include "utils/lotusDefines.h"
 #include "parser/statement/statement.h"
-#include "structures/variables.h"
 #include "structures/argument.h"
 
 namespace lotus {
@@ -23,7 +22,7 @@ namespace lotus {
 
 		Function() = default;
 		~Function() = default;
-		Value call(const std::vector<Value>& callArgs, Variables& variables);
+		Value call(const std::vector<Value>& callArgs, Module& module);
 		size_t getArgsCount() const;
 		bool hasVariadic() const;
 	};

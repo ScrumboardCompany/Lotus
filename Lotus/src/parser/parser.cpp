@@ -27,7 +27,7 @@ std::vector<Statement> lotus::Parser::parse() {
 	return statements;
 }
 
-Module lotus::Parser::getModule() const {
+Module& lotus::Parser::getModule() {
 	return module;
 }
 

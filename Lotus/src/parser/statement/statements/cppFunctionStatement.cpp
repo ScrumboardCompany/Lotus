@@ -5,6 +5,6 @@ using namespace lotus;
 lotus::CppFunctionStatement::CppFunctionStatement(const std::function<void()>& body)
 	: body(body) {}
 
-void lotus::CppFunctionStatement::execute() {
+void lotus::CppFunctionStatement::execute(Module&) {
 	body();
 }

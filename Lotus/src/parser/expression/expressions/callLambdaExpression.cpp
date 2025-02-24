@@ -3,17 +3,17 @@
 
 using namespace lotus;
 
-lotus::CallLambdaExpression::CallLambdaExpression(Variables& variables, const std::vector<Expression>& args, const Expression& function)
-	: variables(variables), args(args), function(function) {
+lotus::CallLambdaExpression::CallLambdaExpression(const std::vector<Expression>& args, const Expression& function)
+	: args(args), function(function) {
 }
 
-Value lotus::CallLambdaExpression::eval() {
+Value lotus::CallLambdaExpression::eval(Module& module) {
 
 	std::vector<Value> values;
 
 	for (auto& arg : args) {
-		values.push_back(arg->eval());
+		values.push_back(arg->eval(module));
 	}
 
-	return function->eval()->call(values, variables);
+	return function->eval(module)->call(values, module);
 }

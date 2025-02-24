@@ -1,11 +1,11 @@
 #include "parser/expression/staticFieldExpression.h"
-#include "structures/statics.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::StaticFieldExpression::StaticFieldExpression(const String& staticName, const String& field, Statics& statics)
-	: staticName(staticName), field(field), statics(statics) {}
+lotus::StaticFieldExpression::StaticFieldExpression(const String& staticName, const String& field)
+	: staticName(staticName), field(field) {}
 
-Value lotus::StaticFieldExpression::eval() {
-	return statics.get(staticName).getField(field);
+Value lotus::StaticFieldExpression::eval(Module& module) {
+	return module.statics.get(staticName).getField(field);
 }

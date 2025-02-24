@@ -5,6 +5,6 @@ using namespace lotus;
 
 lotus::ContinueStatement::ContinueStatement() {}
 
-void lotus::ContinueStatement::execute() {
+void lotus::ContinueStatement::execute(Module&) {
 	throw *this;
 }

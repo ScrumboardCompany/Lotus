@@ -4,6 +4,7 @@
 #include "parser/value/boolValue.h"
 #include "utils/lotusError.h"
 #include "parser/function/function.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
@@ -11,117 +12,117 @@ BoolValue::BoolValue(bool value) : value(value) {
     type = STRING_LITERAL("bool");
 }
 
-int lotus::BoolValue::asInt(Variables& variables) {
+int lotus::BoolValue::asInt(Module& module) {
     return static_cast<int>(value);
 }
 
-double lotus::BoolValue::asDouble(Variables& variables) {
+double lotus::BoolValue::asDouble(Module& module) {
     return static_cast<double>(value);
 }
 
-bool lotus::BoolValue::asBool(Variables& variables) {
+bool lotus::BoolValue::asBool(Module& module) {
     return value;
 }
 
-String lotus::BoolValue::asString(Variables& variables) {
+String lotus::BoolValue::asString(Module& module) {
     return value ? STRING_LITERAL("true") : STRING_LITERAL("false");
 }
 
-Value lotus::BoolValue::add(const Value& other, Variables& variables) {
-    return INT(asInt(variables))->add(other, variables);
+Value lotus::BoolValue::add(const Value& other, Module& module) {
+    return INT(asInt(module))->add(other, module);
 }
 
-Value lotus::BoolValue::substract(const Value& other, Variables& variables) {
-    return INT(asInt(variables))->substract(other, variables);
+Value lotus::BoolValue::substract(const Value& other, Module& module) {
+    return INT(asInt(module))->substract(other, module);
 }
 
-Value lotus::BoolValue::multiply(const Value& other, Variables& variables) {
-    return INT(asInt(variables))->multiply(other, variables);
+Value lotus::BoolValue::multiply(const Value& other, Module& module) {
+    return INT(asInt(module))->multiply(other, module);
 }
 
-Value lotus::BoolValue::divide(const Value& other, Variables& variables) {
-    return INT(asInt(variables))->divide(other, variables);
+Value lotus::BoolValue::divide(const Value& other, Module& module) {
+    return INT(asInt(module))->divide(other, module);
 }
 
-Value lotus::BoolValue::power(const Value& other, Variables& variables) {
-    return INT(asInt(variables))->power(other, variables);
+Value lotus::BoolValue::power(const Value& other, Module& module) {
+    return INT(asInt(module))->power(other, module);
 }
 
-Value lotus::BoolValue::divideModule(const Value& other, Variables& variables) {
-    return INT(asInt(variables))->divideModule(other, variables);
+Value lotus::BoolValue::divideModule(const Value& other, Module& module) {
+    return INT(asInt(module))->divideModule(other, module);
 }
 
-Value lotus::BoolValue::bitwiseAnd(const Value& other, Variables& variables) {
-    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) & other->asInt(variables));
+Value lotus::BoolValue::bitwiseAnd(const Value& other, Module& module) {
+    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) & other->asInt(module));
     throwOverloadError(STRING_LITERAL("bitwiseAnd"), getType(), other->getType());
 }
 
-Value lotus::BoolValue::bitwiseOr(const Value& other, Variables& variables) {
-    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) | other->asInt(variables));
+Value lotus::BoolValue::bitwiseOr(const Value& other, Module& module) {
+    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) | other->asInt(module));
     throwOverloadError(STRING_LITERAL("bitwiseOr"), getType(), other->getType());
 }
 
-Value lotus::BoolValue::bitwiseXor(const Value& other, Variables& variables) {
-    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) ^ other->asInt(variables));
+Value lotus::BoolValue::bitwiseXor(const Value& other, Module& module) {
+    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) ^ other->asInt(module));
     throwOverloadError(STRING_LITERAL("bitwiseXor"), getType(), other->getType());
 }
 
-Value lotus::BoolValue::bitwiseNot(Variables& variables) {
+Value lotus::BoolValue::bitwiseNot(Module& module) {
     return BOOL(~static_cast<int>(value));
 }
 
-Value lotus::BoolValue::bitwiseLeftShift(const Value& other, Variables& variables) {
-    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) << other->asInt(variables));
+Value lotus::BoolValue::bitwiseLeftShift(const Value& other, Module& module) {
+    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) << other->asInt(module));
     throwOverloadError(STRING_LITERAL("bitwiseLeftShift"), getType(), other->getType());
 }
 
-Value lotus::BoolValue::bitwiseRightShift(const Value& other, Variables& variables) {
-    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) >> other->asInt(variables));
+Value lotus::BoolValue::bitwiseRightShift(const Value& other, Module& module) {
+    if (other->getType() == STRING_LITERAL("int") || other->getType() == STRING_LITERAL("bool")) return INT(static_cast<int>(value) >> other->asInt(module));
     throwOverloadError(STRING_LITERAL("bitwiseRightShift"), getType(), other->getType());
 }
 
 
-Value lotus::BoolValue::greater(const Value& other, Variables& variables) {
-    return BOOL(asInt(variables))->greater(other, variables);
+Value lotus::BoolValue::greater(const Value& other, Module& module) {
+    return BOOL(asInt(module))->greater(other, module);
 }
 
-Value lotus::BoolValue::less(const Value& other, Variables& variables) {
-    return BOOL(asInt(variables))->less(other, variables);
+Value lotus::BoolValue::less(const Value& other, Module& module) {
+    return BOOL(asInt(module))->less(other, module);
 }
 
-Value lotus::BoolValue::greaterEqual(const Value& other, Variables& variables) {
-    return BOOL(asInt(variables))->greaterEqual(other, variables);
+Value lotus::BoolValue::greaterEqual(const Value& other, Module& module) {
+    return BOOL(asInt(module))->greaterEqual(other, module);
 }
 
-Value lotus::BoolValue::lessEqual(const Value& other, Variables& variables) {
-    return BOOL(asInt(variables))->lessEqual(other, variables);
+Value lotus::BoolValue::lessEqual(const Value& other, Module& module) {
+    return BOOL(asInt(module))->lessEqual(other, module);
 }
 
-Value lotus::BoolValue::equality(const Value& other, Variables& variables) {
-    return BOOL(asInt(variables))->equality(other, variables);
+Value lotus::BoolValue::equality(const Value& other, Module& module) {
+    return BOOL(asInt(module))->equality(other, module);
 }
 
-Value lotus::BoolValue::inequality(const Value& other, Variables& variables) {
-    return BOOL(asInt(variables))->inequality(other, variables);
+Value lotus::BoolValue::inequality(const Value& other, Module& module) {
+    return BOOL(asInt(module))->inequality(other, module);
 }
 
-Value lotus::BoolValue::logicalOr(const Value& other, Variables& variables) {
-    return BOOL(asInt(variables))->logicalOr(other, variables);
+Value lotus::BoolValue::logicalOr(const Value& other, Module& module) {
+    return BOOL(asInt(module))->logicalOr(other, module);
 }
 
-Value lotus::BoolValue::logicalAnd(const Value& other, Variables& variables) {
-    return BOOL(asInt(variables))->logicalAnd(other, variables);
+Value lotus::BoolValue::logicalAnd(const Value& other, Module& module) {
+    return BOOL(asInt(module))->logicalAnd(other, module);
 }
 
-Value lotus::BoolValue::unaryPlus(Variables& variables) {
-    return INT(asInt(variables))->unaryPlus(variables);
+Value lotus::BoolValue::unaryPlus(Module& module) {
+    return INT(asInt(module))->unaryPlus(module);
 }
 
-Value lotus::BoolValue::unaryMinus(Variables& variables) {
-    return INT(asInt(variables))->unaryMinus(variables);
+Value lotus::BoolValue::unaryMinus(Module& module) {
+    return INT(asInt(module))->unaryMinus(module);
 }
 
-Value lotus::BoolValue::unaryNot(Variables& variables) {
+Value lotus::BoolValue::unaryNot(Module& module) {
     return BOOL(!value);
 }
 

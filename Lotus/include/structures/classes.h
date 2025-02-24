@@ -8,6 +8,8 @@
 
 namespace lotus {
 	
+	struct Module;
+
 	class Classes {
 		StringMap<Ptr<Class>> classes;
 
@@ -35,9 +37,9 @@ namespace lotus {
 
 		bool isExists(const char* name);
 
-		void registerClass(const String& name, Functions& functions, Variables& variables);
+		void registerClass(const String& name,Module& module);
 
-		void registerClass(const char* name, Functions& functions, Variables& variables);
+		void registerClass(const char* name, Module& module);
 	};
 }
 

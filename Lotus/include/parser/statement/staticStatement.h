@@ -14,12 +14,11 @@ namespace lotus {
 		String name;
 		RawFields_t fields;
 		Methods_t methods;
-		Statics& statics;
 
 	public:
 
-		StaticStatement(Statics& statics, const String& name, RawFields_t& fields, const Methods_t& methods);
-		void execute() override;
+		StaticStatement(const String& name, RawFields_t& fields, const Methods_t& methods);
+		void execute(Module& module) override;
 	};
 
 }

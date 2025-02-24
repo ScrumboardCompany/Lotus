@@ -20,5 +20,5 @@ Statement lotus::Parser::handleClassStatement() {
 
 	auto classInfo = handleFieldsMethods();
 
-	return MAKE_PTR<ClassStatement>(module.classes, module.functions, module.variables, name, classInfo.first, classInfo.second, parents);
+	return MAKE_PTR<ClassStatement>(name, classInfo.first, classInfo.second, parents);
 }

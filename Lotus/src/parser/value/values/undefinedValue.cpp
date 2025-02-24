@@ -10,19 +10,19 @@ lotus::UndefinedValue::UndefinedValue() {
     type = STRING_LITERAL("undefined");
 }
 
-int lotus::UndefinedValue::asInt(Variables& variables) {
+int lotus::UndefinedValue::asInt(Module& module) {
     return -1;
 }
 
-double lotus::UndefinedValue::asDouble(Variables& variables) {
+double lotus::UndefinedValue::asDouble(Module& module) {
     return -1.0;
 }
 
-bool lotus::UndefinedValue::asBool(Variables& variables) {
+bool lotus::UndefinedValue::asBool(Module& module) {
     return false;
 }
 
-String lotus::UndefinedValue::asString(Variables& variables) {
+String lotus::UndefinedValue::asString(Module& module) {
     return STRING_LITERAL("undefined");
 }
 

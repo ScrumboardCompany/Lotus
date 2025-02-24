@@ -22,14 +22,13 @@ namespace lotus {
 
 	class LogicalExpression : public IExpression {
 		Expression expression1, expression2;
-		Variables& variables;
 
 		LogicalOperationType operation;
 
 	public:
-		LogicalExpression(const Expression& expression1, const Expression& expression2, const LogicalOperationType& operation, Variables& variables);
+		LogicalExpression(const Expression& expression1, const Expression& expression2, const LogicalOperationType& operation);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

@@ -10,22 +10,12 @@ namespace lotus {
 	class Classes;
 	class Functions;
 
-	struct Class {
+	struct Class : public Static {
 
 		Class() = default;
 
 		void setName(const String& name);
 		void setName(const char* name);
-
-		void addField(const String& name, const FieldMemberInfo& memberInfo);
-		void addMethod(const String& name, const MethodMemberInfo& memberInfo);
-		void addField(const char* name, const FieldMemberInfo& memberInfo);
-		void addMethod(const char* name, const MethodMemberInfo& memberInfo);
-
-		Value& getField(const String& name);
-		Value& getField(const char* name);
-		Value callMethod(const String& name, const std::vector<Value>& args, Variables& variables);
-		Value callMethod(const char* name, const std::vector<Value>& args, Variables& variables);
 
 	protected:
 		ClassValue value;
@@ -33,7 +23,7 @@ namespace lotus {
 		friend class ClassStatement;
 		friend class Classes;
 
-		void registerClass(Functions& functions, Variables& variables);
+		void registerClass(Module& module);
 		Function makeDefaultConstructor();
 	};
 }

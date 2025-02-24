@@ -15,7 +15,7 @@ namespace lotus {
 	public:
 		CppFunctionStatement(const std::function<void()>& body);
 
-		void execute() override;
+		void execute(Module&) override;
 	};
 }
 

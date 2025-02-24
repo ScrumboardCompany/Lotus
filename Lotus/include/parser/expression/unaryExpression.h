@@ -22,14 +22,13 @@ namespace lotus {
 
 	class UnaryExpression : public IExpression {
 		Expression expression;
-		Variables& variables;
 
 		UnaryOperationType operation;
 
 	public:
-		UnaryExpression(const Expression& expression, const UnaryOperationType& operation, Variables& variables);
+		UnaryExpression(const Expression& expression, const UnaryOperationType& operation);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

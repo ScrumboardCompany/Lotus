@@ -33,7 +33,7 @@ namespace lotus {
 
 		std::vector<Statement> parse();
 
-		Module getModule() const;
+		Module& getModule();
 
 	private:
 

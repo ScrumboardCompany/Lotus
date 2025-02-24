@@ -8,10 +8,10 @@
 
 using namespace lotus;
 
-lotus::ImportStatement::ImportStatement(const String& key, const String& filePath, Module& currentModule, StringMap<Module>& modules, const Flags& flags)
-    : key(key), filePath(filePath), currentModule(currentModule), modules(modules), flags(flags) {}
+lotus::ImportStatement::ImportStatement(const String& key, const String& filePath, StringMap<Module>& modules, const Flags& flags)
+    : key(key), filePath(filePath), modules(modules), flags(flags) {}
 
-void lotus::ImportStatement::execute() {
+void lotus::ImportStatement::execute(Module& currentModule) {
     size_t find = filePath.find_last_of(CHAR_LITERAL('/'));
     String file = (find != String::npos) ? filePath.substr(find + 1) : filePath;
 
@@ -24,7 +24,7 @@ void lotus::ImportStatement::execute() {
         parser = MAKE_PTR<Parser>(tokens);
         auto statements = parser->parse();
         for (auto& statement : statements) {
-            if (statement) statement->execute();
+            if (statement) statement->execute(parser->getModule());
         }
         module = parser->getModule();
     }
@@ -42,7 +42,7 @@ void lotus::ImportStatement::execute() {
         for (auto& cls : module.classes.classes) {
             if (!currentModule.classes.isExists(cls.first)) {
                 currentModule.classes.declare(cls.first, cls.second);
-                currentModule.classes.registerClass(cls.first, currentModule.functions, currentModule.variables);
+                currentModule.classes.registerClass(cls.first, currentModule);
             }
         }
         for (auto& stat : module.statics.statics) {
@@ -66,7 +66,7 @@ void lotus::ImportStatement::execute() {
         bool found = false;
         if (module.classes.isExists(key)) {
             currentModule.classes.declare(key, module.classes.get(key));
-            currentModule.classes.registerClass(key, currentModule.functions, currentModule.variables);
+            currentModule.classes.registerClass(key, currentModule);
             found = true;
         }
         if (module.statics.isExists(key)) {

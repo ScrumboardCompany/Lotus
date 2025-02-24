@@ -11,7 +11,7 @@ namespace lotus {
 	public:
 		UndefinedExpression() = default;
 
-		Value eval() override;
+		Value eval(Module&) override;
 	};
 }
 

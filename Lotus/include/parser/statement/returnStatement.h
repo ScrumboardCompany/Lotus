@@ -14,7 +14,7 @@ namespace lotus {
 
 		ReturnStatement(const Expression& expr);
 
-		void execute() override;
+		void execute(Module& module) override;
 	};
 
 }

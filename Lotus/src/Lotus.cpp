@@ -27,7 +27,7 @@ int main() {
 
         for (auto& statement : statements) {
             if (statement) {
-                statement->execute();
+                statement->execute(parser.getModule());
             }
         }
     }

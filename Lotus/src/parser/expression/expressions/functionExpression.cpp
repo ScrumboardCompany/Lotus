@@ -1,27 +1,26 @@
 #include "parser/expression/functionExpression.h"
 #include "parser/value/lambdaValue.h"
-#include "structures/variables.h"
-#include "structures/functions.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::FunctionExpression::FunctionExpression(const String& name, Functions& functions, Variables& variables, const std::vector<Expression>& args)
-	: name(name), functions(functions), variables(variables), args(args) {
+lotus::FunctionExpression::FunctionExpression(const String& name, const std::vector<Expression>& args)
+	: name(name), args(args) {
 }
 
-Value lotus::FunctionExpression::eval() {
+Value lotus::FunctionExpression::eval(Module& module) {
 	
 	std::vector<Value> values;
 
 	for (auto& arg : args) {
-		values.push_back(arg->eval());
+		values.push_back(arg->eval(module));
 	}
 
-	if (variables.isExists(name)) {
-		if (auto lambda = std::dynamic_pointer_cast<LambdaValue>(variables.get(name))) {
-			if(lambda->getArgsCount() == values.size()) return lambda->call(values, variables);
+	if (module.variables.isExists(name)) {
+		if (auto lambda = std::dynamic_pointer_cast<LambdaValue>(module.variables.get(name))) {
+			if(lambda->getArgsCount() == values.size()) return lambda->call(values, module);
 		}
 	}
 
-	return functions.call(name, values, variables);
+	return module.functions.call(name, values, module);
 }

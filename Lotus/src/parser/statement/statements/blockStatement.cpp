@@ -5,8 +5,10 @@ using namespace lotus;
 
 lotus::BlockStatement::BlockStatement(const std::vector<Statement>& statements) : statements(statements) {}
 
-void lotus::BlockStatement::execute() {
+void lotus::BlockStatement::execute(Module& module) {
 	for (auto& statement : statements) {
-		statement->execute();
+		if (statement) {
+			statement->execute(module);
+		}
 	}
 }

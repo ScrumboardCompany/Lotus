@@ -3,16 +3,16 @@
 
 using namespace lotus;
 
-lotus::MethodExpression::MethodExpression(const Expression& expr, const String& method, const std::vector<Expression>& args, Variables& variables)
-	: expr(expr), method(method), args(args), variables(variables) {}
+lotus::MethodExpression::MethodExpression(const Expression& expr, const String& method, const std::vector<Expression>& args)
+	: expr(expr), method(method), args(args) {}
 
-Value lotus::MethodExpression::eval() {
+Value lotus::MethodExpression::eval(Module& module) {
 
 	std::vector<Value> values;
 
 	for (auto& arg : args) {
-		values.push_back(arg->eval());
+		values.push_back(arg->eval(module));
 	}
 
-	return expr->eval()->callMethod(method, values, variables);
+	return expr->eval(module)->callMethod(method, values, module);
 }

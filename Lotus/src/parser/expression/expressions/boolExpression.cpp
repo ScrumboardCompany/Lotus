@@ -5,6 +5,6 @@ using namespace lotus;
 
 lotus::BoolExpression::BoolExpression(bool value) : value(value) {}
 
-Value lotus::BoolExpression::eval() {
+Value lotus::BoolExpression::eval(Module&) {
 	return BOOL(value);
 }

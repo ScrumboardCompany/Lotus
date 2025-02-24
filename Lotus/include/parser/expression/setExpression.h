@@ -30,14 +30,13 @@ namespace lotus {
 
 		Expression expression1;
 		Expression expression2;
-		Variables& variables;
 
 		SetOperationType operation;
 
 	public:
-		SetExpression(const Expression& expression1, const Expression& expression2, const SetOperationType& operation, Variables& variables);
+		SetExpression(const Expression& expression1, const Expression& expression2, const SetOperationType& operation);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

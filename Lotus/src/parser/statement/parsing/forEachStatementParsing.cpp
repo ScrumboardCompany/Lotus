@@ -16,5 +16,5 @@ Statement lotus::Parser::handleForEachStatement() {
 
 	Statement body = handleBlockStatement();
 
-	return MAKE_PTR<ForEachStatement>(expr, name, module.variables, body);
+	return MAKE_PTR<ForEachStatement>(expr, name, body);
 }

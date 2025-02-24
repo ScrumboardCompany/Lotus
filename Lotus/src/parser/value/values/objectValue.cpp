@@ -5,6 +5,7 @@
 #include "parser/statement/statement.h"
 #include "parser/statement/continueStatement.h"
 #include "parser/statement/breakStatement.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
@@ -12,18 +13,18 @@ lotus::ObjectValue::ObjectValue(const StringMap<Value>& fields) : fields(fields)
     type = STRING_LITERAL("object");
 }
 
-String lotus::ObjectValue::asString(Variables& variables) {
+String lotus::ObjectValue::asString(Module& module) {
     String result = STRING_LITERAL("{\n");
 
     for (auto& el : fields) {
-        result += STRING_LITERAL("\t") + el.first + STRING_LITERAL(" = ") + el.second->asString(variables) + STRING_LITERAL(";\n");
+        result += STRING_LITERAL("\t") + el.first + STRING_LITERAL(" = ") + el.second->asString(module) + STRING_LITERAL(";\n");
     }
 
     result += STRING_LITERAL("}");
     return result;
 }
 
-Value lotus::ObjectValue::add(const Value& other, Variables& variables) {
+Value lotus::ObjectValue::add(const Value& other, Module& module) {
     if (other->getType() == STRING_LITERAL("object")) {
         StringMap<Value> newFields = fields;
 
@@ -41,8 +42,8 @@ Value lotus::ObjectValue::add(const Value& other, Variables& variables) {
     throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
 }
 
-Value lotus::ObjectValue::addSet(const Value& other, Variables& variables) {
-    if (auto arr = std::dynamic_pointer_cast<ObjectValue>(add(other, variables))) {
+Value lotus::ObjectValue::addSet(const Value& other, Module& module) {
+    if (auto arr = std::dynamic_pointer_cast<ObjectValue>(add(other, module))) {
         fields = arr->fields;
     }
     return OBJECT(fields);
@@ -56,11 +57,11 @@ Value& lotus::ObjectValue::getField(const String& name) {
     throw LotusException(STRING_LITERAL("Field \"") + name + STRING_LITERAL("\" does not exist"));
 }
 
-void lotus::ObjectValue::foreach(const String& name, const Statement& body, Variables& variables) {
+void lotus::ObjectValue::foreach(const String& name, const Statement& body, Module& module) {
     for (auto& field : fields) {
-        variables.set(name, field.second);
+        module.variables.set(name, field.second);
         try {
-            body->execute();
+            body->execute(module);
         }
         catch (const ContinueStatement&) {
             continue;
@@ -71,20 +72,20 @@ void lotus::ObjectValue::foreach(const String& name, const Statement& body, Vari
     }
 }
 
-Value lotus::ObjectValue::getOfIndex(const Value& index, Variables& variables) {
-    if (index->getType() == STRING_LITERAL("string")) return fields[index->asString(variables)];
+Value lotus::ObjectValue::getOfIndex(const Value& index, Module& module) {
+    if (index->getType() == STRING_LITERAL("string")) return fields[index->asString(module)];
     throwOverloadError(STRING_LITERAL("index"), getType(), index->getType());
 }
 
-Value lotus::ObjectValue::setOfIndex(const Value& index, const Value& other, Variables& variables) {
+Value lotus::ObjectValue::setOfIndex(const Value& index, const Value& other, Module& module) {
     if (index->getType() == STRING_LITERAL("string")) {
-        fields[index->asString(variables)] = other;
-        return fields[index->asString(variables)];
+        fields[index->asString(module)] = other;
+        return fields[index->asString(module)];
     };
     throwOverloadError(STRING_LITERAL("index"), getType(), index->getType());
 }
 
-Value lotus::ObjectValue::size(Variables& variables) {
+Value lotus::ObjectValue::size(Module& module) {
     return INT(fields.size());
 }
 

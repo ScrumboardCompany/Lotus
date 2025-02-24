@@ -10,7 +10,7 @@ Expression lotus::Parser::index() {
 		if (match(TokenType::LBRACKET)) {
 			Expression index = expression();
 			consume(TokenType::RBRACKET);
-			result = MAKE_PTR<IndexExpression>(result, index, module.variables);
+			result = MAKE_PTR<IndexExpression>(result, index);
 			continue;
 		}
 		break;

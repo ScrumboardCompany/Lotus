@@ -7,6 +7,6 @@ lotus::FieldExpression::FieldExpression(const Expression& expr, const String& fi
 	: expr(expr), field(field) {
 }
 
-Value lotus::FieldExpression::eval() {
-	return expr->eval()->getField(field);
+Value lotus::FieldExpression::eval(Module& module) {
+	return expr->eval(module)->getField(field);
 }

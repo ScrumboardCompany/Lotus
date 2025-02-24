@@ -27,10 +27,10 @@ Value& lotus::Static::getField(const char* name) {
 	return getField(STRING_VAR_LITERAL(name));
 }
 
-Value lotus::Static::callMethod(const String& name, const std::vector<Value>& args, Variables& variables) {
-	return value.callMethod(name, args, variables);
+Value lotus::Static::callMethod(const String& name, const std::vector<Value>& args, Module& module) {
+	return value.callMethod(name, args, module);
 }
 
-Value lotus::Static::callMethod(const char* name, const std::vector<Value>& args, Variables& variables) {
-	return callMethod(STRING_VAR_LITERAL(name), args, variables);
+Value lotus::Static::callMethod(const char* name, const std::vector<Value>& args, Module& module) {
+	return callMethod(STRING_VAR_LITERAL(name), args, module);
 }

@@ -13,7 +13,7 @@ namespace lotus {
 	public:
 		IntExpression(int value);
 
-		Value eval() override;
+		Value eval(Module&) override;
 	};
 }
 

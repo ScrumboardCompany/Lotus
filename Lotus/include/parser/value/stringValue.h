@@ -14,29 +14,29 @@ namespace lotus {
 
 		StringValue(const String& value);
 
-		int asInt(Variables& variables) override;
-		double asDouble(Variables& variables) override;
-		bool asBool(Variables& variables) override;
-		String asString(Variables& variables) override;
+		int asInt(Module& module) override;
+		double asDouble(Module& module) override;
+		bool asBool(Module& module) override;
+		String asString(Module& module) override;
 
-		Value add(const Value& other, Variables& variables) override;
-		Value multiply(const Value& other, Variables& variables) override;
+		Value add(const Value& other, Module& module) override;
+		Value multiply(const Value& other, Module& module) override;
 
-		Value greater(const Value& other, Variables& variables) override;
-		Value less(const Value& other, Variables& variables) override;
-		Value greaterEqual(const Value& other, Variables& variables) override;
-		Value lessEqual(const Value& other, Variables& variables) override;
-		Value equality(const Value& other, Variables& variables) override;
-		Value inequality(const Value& other, Variables& variables) override;
-		Value logicalOr(const Value& other, Variables& variables) override;
-		Value logicalAnd(const Value& other, Variables& variables) override;
+		Value greater(const Value& other, Module& module) override;
+		Value less(const Value& other, Module& module) override;
+		Value greaterEqual(const Value& other, Module& module) override;
+		Value lessEqual(const Value& other, Module& module) override;
+		Value equality(const Value& other, Module& module) override;
+		Value inequality(const Value& other, Module& module) override;
+		Value logicalOr(const Value& other, Module& module) override;
+		Value logicalAnd(const Value& other, Module& module) override;
 
-		Value addSet(const Value& other, Variables& variables) override;
-		Value multiplySet(const Value& other, Variables& variables) override;
+		Value addSet(const Value& other, Module& module) override;
+		Value multiplySet(const Value& other, Module& module) override;
 
-		Value getOfIndex(const Value& index, Variables& variables) override;
-		Value setOfIndex(const Value& index, const Value& other, Variables& variables) override;
-		Value size(Variables& variables) override;
+		Value getOfIndex(const Value& index, Module& module) override;
+		Value setOfIndex(const Value& index, const Value& other, Module& module) override;
+		Value size(Module& module) override;
 		Value sizeInRam() override;
 	};
 

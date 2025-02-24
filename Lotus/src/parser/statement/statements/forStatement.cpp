@@ -2,34 +2,36 @@
 #include "parser/statement/continueStatement.h"
 #include "parser/statement/breakStatement.h"
 #include "utils/utils.h"
-#include "structures/variables.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::ForStatement::ForStatement(const std::vector<Expression>& declaringPart, const std::vector<Expression>& conditionPart, const std::vector<Expression>& actionPart, const Statement& body, Variables& variables)
-: declaringPart(declaringPart), conditionPart(conditionPart), actionPart(actionPart), body(body), variables(variables) {}
+lotus::ForStatement::ForStatement(const std::vector<Expression>& declaringPart, const std::vector<Expression>& conditionPart, const std::vector<Expression>& actionPart, const Statement& body)
+    : declaringPart(declaringPart), conditionPart(conditionPart), actionPart(actionPart), body(body) {}
 
-void lotus::ForStatement::execute() {
-    variables.enterScope();
+void lotus::ForStatement::execute(Module& module) {
+    module.variables.enterScope();
 
-    for (auto& declare : declaringPart) declare->eval();
+    for (auto& declare : declaringPart) declare->eval(module);
 
     auto performAction = [&]() {
-        for (auto& action : actionPart) action->eval();
+        for (auto& action : actionPart) action->eval(module);
         };
 
-    while (callAllExpressionsAndReturnLastValue(conditionPart)->asBool(variables)) {
+    while (callAllExpressionsAndReturnLastValue(conditionPart, module)->asBool(module)) {
 
         try {
-            body->execute();
+            body->execute(module);
             performAction();
-        } catch (const ContinueStatement&) {
+        }
+        catch (const ContinueStatement&) {
             performAction();
             continue;
-        } catch (const BreakStatement&) {
+        }
+        catch (const BreakStatement&) {
             break;
         }
     }
 
-    variables.exitScope();
+    module.variables.exitScope();
 }

@@ -10,13 +10,12 @@ namespace lotus {
 	class Variables;
 
 	class ObjectExpression : public IExpression {
-
 		StringMap<Expression> fields;
 
 	public:
 		ObjectExpression(const StringMap<Expression>& fields);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

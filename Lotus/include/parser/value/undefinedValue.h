@@ -12,10 +12,10 @@ namespace lotus {
 
 		UndefinedValue();
 
-		int asInt(Variables& variables) override;
-		double asDouble(Variables& variables) override;
-		bool asBool(Variables& variables) override;
-		String asString(Variables& variables) override;
+		int asInt(Module& module) override;
+		double asDouble(Module& module) override;
+		bool asBool(Module& module) override;
+		String asString(Module& module) override;
 
 		Value sizeInRam() override;
 	};

@@ -15,13 +15,11 @@ namespace lotus {
 		String staticName;
 		String method;
 		std::vector<Expression> args;
-		Variables& variables;
-		Statics& statics;
 
 	public:
-		StaticMethodExpression(const String& staticName, const String& method, const std::vector<Expression>& args, Variables& variables, Statics& statics);
+		StaticMethodExpression(const String& staticName, const String& method, const std::vector<Expression>& args);
 
-		Value eval() override;
+		Value eval(Module& module) override;
 	};
 }
 

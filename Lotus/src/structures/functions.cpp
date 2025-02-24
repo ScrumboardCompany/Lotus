@@ -71,12 +71,12 @@ Function lotus::Functions::get(const char* name, size_t argsCount) {
 	return get(STRING_VAR_LITERAL(name), argsCount);
 }
 
-Value lotus::Functions::call(const String& name, const std::vector<Value>& args, Variables& variables) {
-	return get(name, args.size()).call(args, variables);
+Value lotus::Functions::call(const String& name, const std::vector<Value>& args, Module& module) {
+	return get(name, args.size()).call(args, module);
 }
 
-Value lotus::Functions::call(const char* name, const std::vector<Value>& args, Variables& variables) {
-	return call(STRING_VAR_LITERAL(name), args, variables);
+Value lotus::Functions::call(const char* name, const std::vector<Value>& args, Module& module) {
+	return call(STRING_VAR_LITERAL(name), args, module);
 }
 
 bool Functions::isExists(const String& name) {

@@ -14,14 +14,12 @@ namespace lotus {
 	class ForEachStatement : public IStatement {
 		Expression expression;
 		String name;
-		Variables& variables;
-
 		Statement body;
 
 	public:
 
-		ForEachStatement(const Expression& expression, const String& name, Variables& variables, const Statement& body);
-		void execute() override;
+		ForEachStatement(const Expression& expression, const String& name, const Statement& body);
+		void execute(Module& module) override;
 	};
 
 }

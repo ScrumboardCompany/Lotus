@@ -21,7 +21,7 @@ Expression lotus::Parser::callFunction() {
 				consume(TokenType::RPAREN);
 			}
 
-			return MAKE_PTR<FunctionExpression>(name, module.functions, module.variables, args);
+			return MAKE_PTR<FunctionExpression>(name, args);
 		}
 		else {
 			result = unaryPostfix();
@@ -35,7 +35,7 @@ Expression lotus::Parser::callFunction() {
 					consume(TokenType::RPAREN);
 				}
 
-				result = MAKE_PTR<CallLambdaExpression>(module.variables, args, result);
+				result = MAKE_PTR<CallLambdaExpression>(args, result);
 				continue;
 			}
 		}

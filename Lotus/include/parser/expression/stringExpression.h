@@ -13,7 +13,7 @@ namespace lotus {
 	public:
 		StringExpression(const String& value);
 
-		Value eval() override;
+		Value eval(Module&) override;
 	};
 }
 

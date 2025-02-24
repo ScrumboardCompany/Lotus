@@ -21,7 +21,7 @@ Expression lotus::Parser::dot() {
                     consume(TokenType::RPAREN);
                 }
 
-                result = MAKE_PTR<MethodExpression>(result, name, args, module.variables);
+                result = MAKE_PTR<MethodExpression>(result, name, args);
             }
             else result = MAKE_PTR<FieldExpression>(result, name);
             continue;

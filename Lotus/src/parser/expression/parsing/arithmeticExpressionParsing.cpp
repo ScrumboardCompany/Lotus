@@ -7,11 +7,11 @@ Expression lotus::Parser::additive() {
 	Expression result = multiplicative();
 	while (true) {
 		if (match(TokenType::PLUS)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, multiplicative(), ArithmeticOperationType::ADD, module.variables);
+			result = MAKE_PTR<ArithmeticExpression>(result, multiplicative(), ArithmeticOperationType::ADD);
 			continue;
 		}
 		else if (match(TokenType::MINUS)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, multiplicative(), ArithmeticOperationType::SUBSTRACT, module.variables);
+			result = MAKE_PTR<ArithmeticExpression>(result, multiplicative(), ArithmeticOperationType::SUBSTRACT);
 			continue;
 		}
 		break;
@@ -23,14 +23,14 @@ Expression lotus::Parser::multiplicative() {
 	Expression result = exponential();
 	while (true) {
 		if (match(TokenType::STAR)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::MULTIPLY, module.variables);
+			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::MULTIPLY);
 			continue;
 		}
 		else if (match(TokenType::SLASH)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::DIVIDE, module.variables);
+			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::DIVIDE);
 			continue;
 		} else if (match(TokenType::SLASHSLASH)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::MODULE, module.variables);
+			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::MODULE);
 			continue;
 		}
 		break;
@@ -42,7 +42,7 @@ Expression lotus::Parser::exponential() {
 	Expression result = unaryNot();
 	while (true) {
 		if (match(TokenType::STARSTAR)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, unaryNot(), ArithmeticOperationType::POWER, module.variables);
+			result = MAKE_PTR<ArithmeticExpression>(result, unaryNot(), ArithmeticOperationType::POWER);
 			continue;
 		}
 		break;

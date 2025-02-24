@@ -1,17 +1,17 @@
 #include "parser/statement/staticStatement.h"
-#include "structures/statics.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::StaticStatement::StaticStatement(Statics& statics, const String& name, RawFields_t& fields, const Methods_t& methods)
-	: statics(statics), name(name), fields(fields), methods(methods) {}
+lotus::StaticStatement::StaticStatement(const String& name, RawFields_t& fields, const Methods_t& methods)
+	: name(name), fields(fields), methods(methods) {}
 
-void lotus::StaticStatement::execute() {
+void lotus::StaticStatement::execute(Module& module) {
 	Static value;
 	for (auto& field : fields) {
 
 		FieldMemberInfo memberInfo;
-		memberInfo.value = field.second.first ? field.second.first->eval() : UNDEFINED();
+		memberInfo.value = field.second.first ? field.second.first->eval(module) : UNDEFINED();
 		memberInfo.accessModifier = field.second.second.accessModifier;
 
 		value.addField(field.first, memberInfo);
@@ -23,5 +23,5 @@ void lotus::StaticStatement::execute() {
 		}
 	}
 
-	statics.declare(name, value);
+	module.statics.declare(name, value);
 }

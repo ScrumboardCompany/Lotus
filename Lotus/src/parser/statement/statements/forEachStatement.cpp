@@ -2,19 +2,20 @@
 #include "parser/statement/continueStatement.h"
 #include "parser/statement/breakStatement.h"
 #include "utils/utils.h"
-#include "structures/variables.h"
+#include "structures/module.h"
 #include "parser/value/intValue.h"
 
 using namespace lotus;
 
-lotus::ForEachStatement::ForEachStatement(const Expression& expression, const String& name, Variables& variables, const Statement& body) : expression(expression), name(name), variables(variables), body(body) {}
+lotus::ForEachStatement::ForEachStatement(const Expression& expression, const String& name, const Statement& body)
+    : expression(expression), name(name), body(body) {}
 
-void lotus::ForEachStatement::execute() {
-    variables.enterScope();
+void lotus::ForEachStatement::execute(Module& module) {
+    module.variables.enterScope();
 
-    variables.declare(name);
+    module.variables.declare(name);
 
-    expression->eval()->foreach(name, body, variables);
+    expression->eval(module)->foreach(name, body, module);
 
-    variables.exitScope();
+    module.variables.exitScope();
 }

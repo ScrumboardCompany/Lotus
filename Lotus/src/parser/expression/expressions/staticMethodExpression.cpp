@@ -1,18 +1,17 @@
 #include "parser/expression/staticMethodExpression.h"
-#include "structures/variables.h"
-#include "structures/statics.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
-lotus::StaticMethodExpression::StaticMethodExpression(const String& staticName, const String& method, const std::vector<Expression>& args, Variables& variables, Statics& statics)
-	: staticName(staticName), method(method), args(args), variables(variables), statics(statics) {}
+lotus::StaticMethodExpression::StaticMethodExpression(const String& staticName, const String& method, const std::vector<Expression>& args)
+	: staticName(staticName), method(method), args(args) {}
 
-Value lotus::StaticMethodExpression::eval() {
+Value lotus::StaticMethodExpression::eval(Module& module) {
 	std::vector<Value> values;
 
 	for (auto& arg : args) {
-		values.push_back(arg->eval());
+		values.push_back(arg->eval(module));
 	}
 
-	return statics.get(staticName).callMethod(method, values, variables);
+	return module.statics.get(staticName).callMethod(method, values, module);
 }

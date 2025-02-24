@@ -3,8 +3,9 @@
 
 using namespace lotus;
 
-lotus::IndexExpression::IndexExpression(const Expression& expression, const Expression& index, Variables& variables) : expression(expression), index(index), variables(variables) {}
+lotus::IndexExpression::IndexExpression(const Expression& expression, const Expression& index)
+	: expression(expression), index(index) {}
 
-Value lotus::IndexExpression::eval() {
-	return expression->eval()->getOfIndex(index->eval(), variables);
+Value lotus::IndexExpression::eval(Module& module) {
+	return expression->eval(module)->getOfIndex(index->eval(module), module);
 }

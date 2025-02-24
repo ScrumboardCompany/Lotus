@@ -12,7 +12,7 @@ namespace lotus {
 	public:
 
 		ContinueStatement();
-		void execute() override;
+		void execute(Module&) override;
 	};
 
 }
