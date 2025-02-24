@@ -7,7 +7,6 @@
 #include "parser/expression/undefinedExpression.h"
 #include "parser/expression/boolExpression.h"
 #include "parser/expression/arrayExpression.h"
-#include "parser/expression/functionExpression.h"
 #include "parser/expression/fieldExpression.h"
 #include "parser/expression/objectExpression.h"
 #include "parser/expression/lambdaExpression.h"
@@ -28,21 +27,6 @@ Expression lotus::Parser::primary() {
 	}
 	if (match(TokenType::STRING_TYPE)) {
 		return MAKE_PTR<StringExpression>(CurrentToken.text);
-	}
-	if (CurrentToken.type == TokenType::WORD && get(1).type == TokenType::LPAREN) {
-		match(TokenType::WORD);
-
-		match(TokenType::LPAREN);
-
-		std::vector<Expression> args;
-
-		if (!match(TokenType::RPAREN)) {
-			args = handleExpressions();
-
-			consume(TokenType::RPAREN);
-		}
-
-		return MAKE_PTR<FunctionExpression>(CurrentToken.text, module.functions, module.variables, args);
 	}
 	if (match(TokenType::WORD)) {
 		if (match(TokenType::COLONCOLON)) {

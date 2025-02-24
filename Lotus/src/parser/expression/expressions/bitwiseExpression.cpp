@@ -25,9 +25,6 @@ Value lotus::BitwiseExpression::eval() {
 	case lotus::BitwiseOperationType::XOR:
 		result = value1->bitwiseXor(value2, variables);
 		break;
-	case lotus::BitwiseOperationType::NOT:
-		result = value1->bitwiseNot(variables);
-		break;
 	case lotus::BitwiseOperationType::LEFTSHIFT:
 		result = value1->bitwiseLeftShift(value2, variables);
 		break;

@@ -12,7 +12,8 @@ namespace lotus {
 	enum class UnaryOperationType {
 		PLUS,
 		MINUS,
-		NOT,
+		LOGICALNOT,
+		BITWISENOT,
 		PREFIXINCREMENT,
 		POSTFIXINCREMENT,
 		PREFIXDECREMENT,

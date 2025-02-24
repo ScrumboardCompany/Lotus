@@ -151,42 +151,42 @@ Value lotus::IntValue::divideSet(const Value& other, Variables& variables) {
 }
 
 Value lotus::IntValue::powerSet(const Value& other, Variables& variables) {
-    value = powerSet(other, variables)->asInt(variables);
+    value = power(other, variables)->asInt(variables);
     return INT(value);
 }
 
 Value lotus::IntValue::divideModuleSet(const Value& other, Variables& variables) {
-    value = divideModuleSet(other, variables)->asInt(variables);
+    value = divideModule(other, variables)->asInt(variables);
     return INT(value);
 }
 
 Value lotus::IntValue::bitwiseAndSet(const Value& other, Variables& variables) {
-    value = bitwiseAndSet(other, variables)->asInt(variables);
+    value = bitwiseAnd(other, variables)->asInt(variables);
     return INT(value);
 }
 
 Value lotus::IntValue::bitwiseOrSet(const Value& other, Variables& variables) {
-    value = bitwiseOrSet(other, variables)->asInt(variables);
+    value = bitwiseOr(other, variables)->asInt(variables);
     return INT(value);
 }
 
 Value lotus::IntValue::bitwiseXorSet(const Value& other, Variables& variables) {
-    value = bitwiseXorSet(other, variables)->asInt(variables);
+    value = bitwiseXor(other, variables)->asInt(variables);
     return INT(value);
 }
 
 Value lotus::IntValue::bitwiseNotSet(Variables& variables) {
-    value = bitwiseNotSet(variables)->asInt(variables);
+    value = bitwiseNot(variables)->asInt(variables);
     return INT(value);
 }
 
 Value lotus::IntValue::bitwiseLeftShiftSet(const Value& other, Variables& variables) {
-    value = bitwiseLeftShiftSet(other, variables)->asInt(variables);
+    value = bitwiseLeftShift(other, variables)->asInt(variables);
     return INT(value);
 }
 
 Value lotus::IntValue::bitwiseRightShiftSet(const Value& other, Variables& variables) {
-    value = bitwiseRightShiftSet(other, variables)->asInt(variables);
+    value = bitwiseRightShift(other, variables)->asInt(variables);
     return INT(value);
 }
 

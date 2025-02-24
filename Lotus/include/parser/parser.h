@@ -87,6 +87,8 @@ namespace lotus {
 
 		Expression expression();
 
+		Expression assigment();
+
 		Expression ternary();
 
 		Expression logicalOr();
@@ -101,15 +103,25 @@ namespace lotus {
 
 		Expression bitwiseShifts();
 
-		Expression bitwiseNot();
-
 		Expression additive();
 
 		Expression multiplicative();
 
 		Expression exponential();
 
-		Expression unary();
+		Expression unaryNot();
+
+		Expression unaryPlusMinus();
+
+		Expression unaryPrefix();
+
+		Expression dot();
+
+		Expression index();
+
+		Expression callFunction();
+
+		Expression unaryPostfix();
 
 		Expression primary();
 

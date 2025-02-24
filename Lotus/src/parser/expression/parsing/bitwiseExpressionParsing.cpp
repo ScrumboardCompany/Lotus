@@ -25,40 +25,18 @@ Expression lotus::Parser::bitwise() {
 }
 
 Expression Parser::bitwiseShifts() {
-	Expression result = bitwiseNot();
+	Expression result = additive();
 
 	while (true) {
 		if (match(TokenType::LESSLESS)) {
-			result = MAKE_PTR<BitwiseExpression>(result, bitwiseNot(), BitwiseOperationType::LEFTSHIFT, module.variables);
+			result = MAKE_PTR<BitwiseExpression>(result, additive(), BitwiseOperationType::LEFTSHIFT, module.variables);
 			continue;
 		}
 		if (match(TokenType::GREATERGREATER)) {
-			result = MAKE_PTR<BitwiseExpression>(result, bitwiseNot(), BitwiseOperationType::RIGHTSHIFT, module.variables);
+			result = MAKE_PTR<BitwiseExpression>(result, additive(), BitwiseOperationType::RIGHTSHIFT, module.variables);
 			continue;
 		}
 		break;
 	}
-	return result;
-}
-
-Expression Parser::bitwiseNot() {
-
-	std::vector<BitwiseOperationType> operations;
-
-	while (true) {
-		if (match(TokenType::TILDA)) {
-			operations.push_back(BitwiseOperationType::NOT);
-		}
-		else {
-			break;
-		}
-	}
-
-	Expression result = additive();
-
-	for (auto it = operations.rbegin(); it != operations.rend(); ++it) {
-		result = MAKE_PTR<BitwiseExpression>(result, nullptr, *it, module.variables);
-	}
-
 	return result;
 }

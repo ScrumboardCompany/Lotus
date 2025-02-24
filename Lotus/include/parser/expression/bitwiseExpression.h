@@ -13,7 +13,6 @@ namespace lotus {
 		AND,
 		OR,
 		XOR,
-		NOT,
 		LEFTSHIFT,
 		RIGHTSHIFT
 	};

@@ -17,8 +17,11 @@ Value lotus::UnaryExpression::eval() {
 	case lotus::UnaryOperationType::MINUS:
 		result = expression->eval()->unaryMinus(variables);
 		break;
-	case lotus::UnaryOperationType::NOT:
+	case lotus::UnaryOperationType::LOGICALNOT:
 		result = expression->eval()->unaryNot(variables);
+		break;
+	case lotus::UnaryOperationType::BITWISENOT:
+		result = expression->eval()->bitwiseNot(variables);
 		break;
 	case lotus::UnaryOperationType::PREFIXINCREMENT:
 		result = expression->eval()->prefixIncrement(variables);
@@ -38,3 +41,4 @@ Value lotus::UnaryExpression::eval() {
 
 	return result;
 }
+
