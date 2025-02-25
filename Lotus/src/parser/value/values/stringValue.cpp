@@ -7,6 +7,8 @@
 
 using namespace lotus;
 
+lotus::StringValue::StringValue(const char* value) : StringValue(STRING_VAR_LITERAL(value)) {}
+
 StringValue::StringValue(const String& value) : value(value) {
     type = STRING_LITERAL("string");
 }

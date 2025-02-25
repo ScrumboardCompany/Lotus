@@ -21,9 +21,9 @@ namespace lotus {
 
 		void forceSet(const char* name, const Ptr<Class>& value);
 
-		void declare(const String& name, const Ptr<Class>& value);
+		Classes& declare(const String& name, const Ptr<Class>& value);
 
-		void declare(const char* name, const Ptr<Class>& value);
+		Classes& declare(const char* name, const Ptr<Class>& value);
 
 		void set(const String& name, const Ptr<Class>& value);
 
@@ -37,7 +37,7 @@ namespace lotus {
 
 		bool isExists(const char* name);
 
-		void registerClass(const String& name,Module& module);
+		void registerClass(const String& name, Module& module);
 
 		void registerClass(const char* name, Module& module);
 	};

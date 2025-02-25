@@ -12,6 +12,7 @@ namespace lotus {
 
 	public:
 
+		StringValue(const char* value);
 		StringValue(const String& value);
 
 		int asInt(Module& module) override;

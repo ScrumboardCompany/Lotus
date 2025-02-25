@@ -4,7 +4,7 @@
 #include "parser/value/floatValue.h"
 #include "parser/value/boolValue.h"
 #include "utils/lotusError.h"
-#include "structures/variables.h"
+#include "structures/module.h"
 #include <iostream>
 #include <thread>
 #include <string>
@@ -60,6 +60,26 @@ void lotus::Parser::loadModules() {
 	module.DEF("bool", {
 		RETURN_VALUE(BOOL(module.variables.get("arg")->asBool(module)));
 		}, "arg");
+
+	Class exceptionClass;
+
+	exceptionClass.addField("msg", FIELD(AccessModifierType::PRIVATE, STRING("")));
+	exceptionClass.addField("type", FIELD(AccessModifierType::PRIVATE, STRING("error")));
+
+	exceptionClass.addMethod("exception", METHOD(AccessModifierType::PUBLIC, {
+		module.GET("this")->getField("msg") = module.GET("msg");
+		}, "msg"));
+
+	exceptionClass.addMethod("exception", METHOD(AccessModifierType::PUBLIC, {
+		module.GET("this")->getField("msg") = module.GET("msg");
+		module.GET("this")->getField("type") = module.GET("type");
+		}, "msg", "type"));
+
+	exceptionClass.addMethod("message", METHOD(AccessModifierType::PUBLIC, {
+		RETURN_VALUE(module.variables.get("this")->getField("msg"));
+		}));
+
+	module.CLASS(module, "exception", exceptionClass);
 
 	loadMathModule();
 	loadTimeModule();
