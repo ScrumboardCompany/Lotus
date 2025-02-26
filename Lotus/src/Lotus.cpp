@@ -11,16 +11,18 @@
 #include "parser/statement/breakStatement.h"
 #include "utils/utils.h"
 
-int main() {
+int main(int argc, char* argv[]) {
     try {
-        lotus::String content = lotus::wreadContent(L"test.lts");
+        if (argc < 2) {
+            std::cerr << "Must specify a file to compile" << std::endl;
+            return 1;
+        }
+
+        lotus::String content = lotus::wreadContent(STRING_VAR_LITERAL(argv[1]));
 
         lotus::Lexer lexer(content);
         auto tokens = lexer.tokenize();
 
-        /*for (auto& token : tokens) {
-            std::wcout << token.type_to_string().c_str() << "[" << token.text << "] ";
-        }*/
         lotus::Parser parser(tokens);
 
         auto statements = parser.parse();

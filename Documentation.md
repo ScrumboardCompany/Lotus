@@ -125,7 +125,7 @@ public:
         ++this.count;
     }
     def get() {
-        return Counter::count; # In statics 2 item receipt records available but this variant cannot be used to access private fields
+        return Counter::count; # There are 2 ways to access elements in statics, but in case with private elements this option won't work
     }
 }
 
@@ -210,10 +210,50 @@ def a(b, c, d) {
 a(1, 2, b => 10);
 ```
 
+## Flags
+```
+flag FlagName true/false;
+```
+
+**Available flags**
+```Lotus
+ImportEverythingWithSameName # default true
+```
+
+### ImportEverythingWithSameName
+
+*Example 1*
+
+**file1.lts**
+```Lotus
+let A = 10;
+
+class A {};
+```
+**file2.lts**
+```Lotus
+flag ImportEverythingWithSameName false;
+A <<< "file1.lts" # class A will be imported
+```
+
+*Example 2*
+
+**file1.lts**
+```Lotus
+let A = 10;
+
+class A {};
+```
+**file2.lts**
+```Lotus
+flag ImportEverythingWithSameName true;
+A <<< "file1.lts" # class A and variable A will be imported
+```
+
 ## Standard functions
 ```Lotus
-print(args*); # Prints arguments
-println(args*); # Prints arguments with split "\n"
+print(args...); # Prints arguments
+println(args...); # Prints arguments with split "\n"
 input(); # Takes input and returns string
 typeof(arg); # Returns type of the argument
 size(arg); # Returns size of the array
