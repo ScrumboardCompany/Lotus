@@ -38,19 +38,19 @@ int main() {
         std::cout << std::endl << e.what() << std::endl;
     }
     catch (const lotus::ContinueStatement&) {
-        throw lotus::LotusException(STRING_LITERAL("No continue processing found"));
+        std::cout << std::endl << "No continue processing found" << std::endl;
     }
     catch (const lotus::BreakStatement&) {
-        throw lotus::LotusException(STRING_LITERAL("No break processing found"));
+        std::cout << std::endl << "No break processing found" << std::endl;
     }
     catch (const lotus::Value&) {
-        throw lotus::LotusException(STRING_LITERAL("No return processing found"));
+        std::cout << std::endl << "No return processing found" << std::endl;
     }
     catch (const lotus::ThrowValue&) {
-        throw lotus::LotusException(STRING_LITERAL("No exception processing found"));
+        std::cout << std::endl << "No exception processing found" << std::endl;
     }
     catch (...) {
-        throw lotus::LotusException(STRING_LITERAL("Unhandled exception"));
+        std::cout << std::endl << "Unhandled exception" << std::endl;
     }
 
     return 0;

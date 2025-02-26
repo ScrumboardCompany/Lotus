@@ -1,6 +1,16 @@
 # Documentation
 Documentation for Lotus language
 
+## Comments
+```Lotus
+# One line comment
+
+/*
+Multiline comment
+*/
+
+```
+
 ## Variable declaration
 ```Lotus
 let a = 10;
@@ -44,6 +54,20 @@ if (a > 10) {
     print("a is equal to 10");
 } else {
     print("a is less than 10");
+}
+```
+
+## Try catch
+```Lotus
+def function() {
+    throw(msg => "Exception", type => "Error");
+}
+
+try {
+    function();
+}
+catch(ex) {
+    println(ex.message(), ex.type());
 }
 ```
 
@@ -91,6 +115,25 @@ def a() {
 a();
 ```
 
+## Statics
+```Lotus
+static Counter {
+public:
+    count = 0;
+
+    def increase() {
+        ++this.count;
+    }
+    def get() {
+        return Counter::count; # In statics 2 item receipt records available but this variant cannot be used to access private fields
+    }
+}
+
+print(Counter::get());
+Counter::increase();
+print(Counter::get());
+```
+
 ## Classes
 ```Lotus
 class Person {
@@ -107,26 +150,70 @@ public:
 let John = Person(30, "John");
 print(John.age, John.name);
 ```
+> **IMPORTANT** In classes and statics the access modifier is `private` by default!
+> **IMPORTANT** Classes and statics can be named the same
+
+## Inheritance
+```Lotus
+class A {
+protected:
+    zero = 0;
+}
+class B : A {
+public:
+    def printZero() {
+        print(this.zero); # If zero were in the private section it would write an error
+    }
+}
+
+let b = B();
+b.printZero();
+```
+Multiple inheritance separated by commas is also available
+```Lotus
+class A {}
+
+class B {}
+
+class C : A, B {}
+```
 
 ## Import
 ```Lotus
 Math <<< "Math"
-* <<< "Time"
+* <<< "Time" # Import all from module
 
 print(Math::PI)
+
+# File import
+
+Function <<< "Path/To/Dot/Lts/File.lts"
+# or
+* <<< "Path/To/Dot/Lts/File.lts" # Import all from file
+
 ```
 
 ## Infinite arguments
 ```Lotus
-def a(args*) {
+def a(args...) {
     print(args);
 }
 ```
 **IMPORTANT**: The infinite argument must be the last argument in function
 
+## Specified arguments
+```Lotus
+def a(b, c, d) {
+    println(b, c, d);
+}
+
+a(1, 2, b => 10);
+```
+
 ## Standard functions
 ```Lotus
 print(args*); # Prints arguments
+println(args*); # Prints arguments with split "\n"
 input(); # Takes input and returns string
 typeof(arg); # Returns type of the argument
 size(arg); # Returns size of the array
@@ -135,6 +222,9 @@ int(arg); # Casts argument to integer
 float(arg); # Casts argument to float
 bool(arg); # Casts argument to bool
 string(arg); # Casts argument to string
+throw() # Throw default exception
+throw(msg) # Throw exception with msg
+throw(msg, type) # Throw exception with msg and type
 ```
 
 ## Math module
