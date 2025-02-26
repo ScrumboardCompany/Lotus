@@ -88,6 +88,8 @@ namespace lotus {
 			{STRING_LITERAL("private"), TokenType::PRIVATE},
 			{STRING_LITERAL("protected"), TokenType::PROTECTED},
 			{STRING_LITERAL("static"), TokenType::STATIC},
+			{STRING_LITERAL("try"), TokenType::TRY},
+			{STRING_LITERAL("catch"), TokenType::CATCH},
 		};
 
 		String input;

@@ -3,6 +3,8 @@
 #include "parser/value/value.h"
 #include "parser/value/intValue.h"
 #include "structures/module.h"
+#include "parser/value/stringValue.h"
+#include "utils/utils.h"
 
 using namespace lotus;
 
@@ -16,6 +18,6 @@ void lotus::throwOverloadError(const String& overload, const String& type1, cons
 
 void lotus::checkThrowIndexError(const Value& index, int size, Module& module) {
     if (index->asInt(module) < 0 || index->asInt(module) >= size) {
-        throw LotusException(INT(index->asInt(module))->asString(module) + STRING_LITERAL(" is invalid index"));
+        THROW(module, STRING(INT(index->asInt(module))->asString(module) + STRING_LITERAL(" is invalid index")));
     }
 }

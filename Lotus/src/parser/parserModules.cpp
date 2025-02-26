@@ -10,8 +10,21 @@
 #include <string>
 #include <locale>
 #include <codecvt>
+#include "utils/utils.h" // ThrowValue
 
 void lotus::Parser::loadModules() {
+
+	module.DEF("throw", {
+		THROW_EMPTY(module);
+		});
+
+	module.DEF("throw", {
+		THROW(module, module.GET("msg"));
+		}, "msg");
+
+	module.DEF("throw", {
+		THROW_WITH_TYPE(module, module.GET("msg"),  module.GET("type"));
+		}, "msg", "type");
 
 	module.DEF("print", {
 		Value args = module.variables.get("args");
@@ -63,20 +76,26 @@ void lotus::Parser::loadModules() {
 
 	Class exceptionClass;
 
-	exceptionClass.addField("msg", FIELD(AccessModifierType::PRIVATE, STRING("")));
-	exceptionClass.addField("type", FIELD(AccessModifierType::PRIVATE, STRING("error")));
+	exceptionClass.addField("__msg", FIELD(AccessModifierType::PRIVATE, STRING("")));
+	exceptionClass.addField("__type", FIELD(AccessModifierType::PRIVATE, STRING("error")));
+
+	exceptionClass.addMethod("exception", METHOD(AccessModifierType::PUBLIC, {}));
 
 	exceptionClass.addMethod("exception", METHOD(AccessModifierType::PUBLIC, {
-		module.GET("this")->getField("msg") = module.GET("msg");
+		module.GET("this")->getField("__msg") = module.GET("msg");
 		}, "msg"));
 
 	exceptionClass.addMethod("exception", METHOD(AccessModifierType::PUBLIC, {
-		module.GET("this")->getField("msg") = module.GET("msg");
-		module.GET("this")->getField("type") = module.GET("type");
+		module.GET("this")->getField("__msg") = module.GET("msg");
+		module.GET("this")->getField("__type") = module.GET("type");
 		}, "msg", "type"));
 
 	exceptionClass.addMethod("message", METHOD(AccessModifierType::PUBLIC, {
-		RETURN_VALUE(module.variables.get("this")->getField("msg"));
+		RETURN_VALUE(module.variables.get("this")->getField("__msg"));
+		}));
+
+	exceptionClass.addMethod("type", METHOD(AccessModifierType::PUBLIC, {
+		RETURN_VALUE(module.variables.get("this")->getField("__type"));
 		}));
 
 	module.CLASS(module, "exception", exceptionClass);

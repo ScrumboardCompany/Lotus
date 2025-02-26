@@ -78,6 +78,8 @@ namespace lotus {
 
 		Statement handleStaticStatement();
 
+		Statement handleTryCatch();
+
 		std::vector<Expression> handleExpressions();
 
 		std::pair<std::vector<Expression>, StringMap<Expression>> handleTakenArgs();

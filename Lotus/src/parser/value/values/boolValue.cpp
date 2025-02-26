@@ -83,35 +83,35 @@ Value lotus::BoolValue::bitwiseRightShift(const Value& other, Module& module) {
 
 
 Value lotus::BoolValue::greater(const Value& other, Module& module) {
-    return BOOL(asInt(module))->greater(other, module);
+    return INT(asInt(module))->greater(other, module);
 }
 
 Value lotus::BoolValue::less(const Value& other, Module& module) {
-    return BOOL(asInt(module))->less(other, module);
+    return INT(asInt(module))->less(other, module);
 }
 
 Value lotus::BoolValue::greaterEqual(const Value& other, Module& module) {
-    return BOOL(asInt(module))->greaterEqual(other, module);
+    return INT(asInt(module))->greaterEqual(other, module);
 }
 
 Value lotus::BoolValue::lessEqual(const Value& other, Module& module) {
-    return BOOL(asInt(module))->lessEqual(other, module);
+    return INT(asInt(module))->lessEqual(other, module);
 }
 
 Value lotus::BoolValue::equality(const Value& other, Module& module) {
-    return BOOL(asInt(module))->equality(other, module);
+    return INT(asInt(module))->equality(other, module);
 }
 
 Value lotus::BoolValue::inequality(const Value& other, Module& module) {
-    return BOOL(asInt(module))->inequality(other, module);
+    return INT(asInt(module))->inequality(other, module);
 }
 
 Value lotus::BoolValue::logicalOr(const Value& other, Module& module) {
-    return BOOL(asInt(module))->logicalOr(other, module);
+    return INT(asInt(module))->logicalOr(other, module);
 }
 
 Value lotus::BoolValue::logicalAnd(const Value& other, Module& module) {
-    return BOOL(asInt(module))->logicalAnd(other, module);
+    return INT(asInt(module))->logicalAnd(other, module);
 }
 
 Value lotus::BoolValue::unaryPlus(Module& module) {

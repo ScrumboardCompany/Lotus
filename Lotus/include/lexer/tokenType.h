@@ -80,6 +80,8 @@ namespace lotus {
 		PRIVATE,
 		PROTECTED,
 		STATIC,
+		TRY,
+		CATCH,
 
 		LPAREN,
 		RPAREN,

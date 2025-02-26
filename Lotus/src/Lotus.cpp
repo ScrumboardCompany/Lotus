@@ -46,6 +46,12 @@ int main() {
     catch (const lotus::Value&) {
         throw lotus::LotusException(STRING_LITERAL("No return processing found"));
     }
+    catch (const lotus::ThrowValue&) {
+        throw lotus::LotusException(STRING_LITERAL("No exception processing found"));
+    }
+    catch (...) {
+        throw lotus::LotusException(STRING_LITERAL("Unhandled exception"));
+    }
 
     return 0;
 }

@@ -86,6 +86,9 @@ Statement lotus::Parser::getNextStatement() {
 	else if (match(TokenType::SWITCH)) {
 		statement = handleSwitchCaseStatement();
 	}
+	else if (match(TokenType::TRY)) {
+		statement = handleTryCatch();
+	}
 	else statement = MAKE_PTR<ExpressionStatement>(expression());
 
 	while (match(TokenType::SEMICOLON));

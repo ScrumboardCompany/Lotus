@@ -20,7 +20,9 @@ namespace lotus {
 
 		bool hasField(const String& name);
 
-		bool assignField(const String& name, const FieldMemberInfo& field);
+		void protectedToPublicInParents(StringMap<AccessModifierType>& accessModifiers);
+
+		void publicToProtectedInParents(const StringMap<AccessModifierType>& accessModifiers, bool needThis = true);
 
 	public:
 

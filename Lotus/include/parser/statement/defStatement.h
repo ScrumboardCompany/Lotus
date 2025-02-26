@@ -8,8 +8,6 @@
 
 namespace lotus {
 
-	class Functions;
-
 	class DefStatement : public IStatement {
 		String name;
 		Function function;

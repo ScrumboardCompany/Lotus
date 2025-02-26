@@ -16,6 +16,10 @@
 
 #define RETURN_VALUE(value) throw Value(value)
 
+#define THROW(module, msg) throw ThrowValue(module.CALL(module, "exception", msg))
+#define THROW_WITH_TYPE(module, msg, type) throw ThrowValue(module.CALL(module, "exception", msg, type))
+#define THROW_EMPTY(module) throw ThrowValue(module.CALL(module, "exception"))
+
 #define MAKE_CPP_FUNCTION(body, ...) Function(MAKE_PTR<CppFunctionStatement>([&]() -> void body), {__VA_ARGS__}, int())
 
 #define STRING_LITERAL(str) []{ \

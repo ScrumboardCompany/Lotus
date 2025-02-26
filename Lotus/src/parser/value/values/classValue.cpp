@@ -16,17 +16,57 @@ bool lotus::ClassValue::hasField(const String& name) {
     return false;
 }
 
-bool lotus::ClassValue::assignField(const String& name, const FieldMemberInfo& field) {
-   if (fields.find(name) != fields.end()) {
-        fields[name].value = field.value;
-        return true;
-    }
-    
-    for (auto& parent : parents) {
-        if (parent->assignField(name, field)) return true;
+void lotus::ClassValue::protectedToPublicInParents(StringMap<AccessModifierType>& accessModifiers) {
+    for (auto& field : fields) {
+        if (field.second.accessModifier == AccessModifierType::PROTECTED) {
+            accessModifiers.emplace(field.first, AccessModifierType::PROTECTED);
+            field.second.accessModifier = AccessModifierType::PUBLIC;
+        }
     }
 
-    return false;
+    for (auto& methodVector : methods) {
+
+        for (size_t i = 0; i < methodVector.second.size(); ++i) { // methodVector.first + STRING_LITERAL("#") + std::to_wstring(i)
+            auto& method = methodVector.second[i];
+
+            if (method.accessModifier == AccessModifierType::PROTECTED) {
+                accessModifiers.emplace(methodVector.first + STRING_LITERAL("#") + std::to_wstring(i), AccessModifierType::PROTECTED);
+                method.accessModifier = AccessModifierType::PUBLIC;
+            }
+        }
+    }
+
+    for (auto& parent : parents) {
+        parent->protectedToPublicInParents(accessModifiers);
+    }
+}
+
+void lotus::ClassValue::publicToProtectedInParents(const StringMap<AccessModifierType>& accessModifiers, bool needThis) {
+
+    if (needThis) {
+        for (auto& field : fields) {
+
+            auto it = accessModifiers.find(field.first);
+            if (it != accessModifiers.end()) {
+                field.second.accessModifier = it->second;
+            }
+        }
+
+        for (auto& methodVector : methods) {
+            for (size_t i = 0; i < methodVector.second.size(); ++i) {
+                auto& method = methodVector.second[i];
+
+                auto it = accessModifiers.find(methodVector.first + STRING_LITERAL("#") + std::to_wstring(i));
+                if (it != accessModifiers.end()) {
+                    method.accessModifier = it->second;
+                }
+            }
+        }
+    }
+
+    for (auto& parent : parents) {
+        parent->publicToProtectedInParents(accessModifiers);
+    }
 }
 
 int lotus::ClassValue::asInt(Module& module) {
@@ -271,6 +311,9 @@ Value& lotus::ClassValue::getField(const String& name) {
         if (fields[name].accessModifier == AccessModifierType::PRIVATE) {
             throw LotusException(STRING_LITERAL("Request to private field: \"") + name + STRING_LITERAL("\""));
         }
+        else if (fields[name].accessModifier == AccessModifierType::PROTECTED) {
+            throw LotusException(STRING_LITERAL("Request to protected field: \"") + name + STRING_LITERAL("\""));
+        }
         return fields[name].value;
     }
 
@@ -292,9 +335,14 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
 
     MethodMemberInfo methodInfo;
     ClassValue& value = getMethod(name, args.size() + specifiedArgs.size(), methodInfo);
+    bool isParentClass = value.getType() != getType();
+
 
     if (methodInfo.accessModifier == AccessModifierType::PRIVATE) {
         throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));
+    }
+    else if (methodInfo.accessModifier == AccessModifierType::PROTECTED) {
+        throw LotusException(STRING_LITERAL("Request to protected method: \"") + name + STRING_LITERAL("\""));
     }
 
     ClassValue thisValue;
@@ -303,14 +351,27 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
     thisValue.parents = value.parents;
     thisValue.type = value.getType();
 
+    StringMap<AccessModifierType> accessModifiers;
+
     for (auto& field : thisValue.fields) {
-        field.second.accessModifier = AccessModifierType::PUBLIC;
+        accessModifiers.emplace(field.first, field.second.accessModifier);
+
+        if (!isParentClass || (field.second.accessModifier != AccessModifierType::PRIVATE))
+            field.second.accessModifier = AccessModifierType::PUBLIC;
     }
     for (auto& methodVector : thisValue.methods) {
-        for (auto& method : methodVector.second) {
-            method.accessModifier = AccessModifierType::PUBLIC;
+        
+        for (size_t i = 0; i < methodVector.second.size(); ++i) {
+            auto& method = methodVector.second[i];
+
+            accessModifiers.emplace(methodVector.first + STRING_LITERAL("#") + std::to_wstring(i), method.accessModifier);
+
+            if (!isParentClass || (method.accessModifier != AccessModifierType::PRIVATE))
+                method.accessModifier = AccessModifierType::PUBLIC;
         }
     }
+
+    protectedToPublicInParents(accessModifiers);
 
     module.variables.enterScope();
     module.variables.declare(STRING_LITERAL("this"), MAKE_PTR<ClassValue>(thisValue));
@@ -322,6 +383,27 @@ Value ClassValue::callMethod(const String& name, const std::vector<Value>& args,
         value.methods = thisValueAfterMethod->methods;
         value.parents = thisValueAfterMethod->parents;
     }
+
+    for (auto& field : value.fields) {
+
+        auto it = accessModifiers.find(field.first);
+        if (it != accessModifiers.end()) {
+            field.second.accessModifier = it->second;
+        }
+    }
+
+    for (auto& methodVector : value.methods) {
+        for (size_t i = 0; i < methodVector.second.size(); ++i) {
+            auto& method = methodVector.second[i];
+
+            auto it = accessModifiers.find(methodVector.first + STRING_LITERAL("#") + std::to_wstring(i));
+            if (it != accessModifiers.end()) {
+                method.accessModifier = it->second;
+            }
+        }
+    }
+    
+    publicToProtectedInParents(accessModifiers, false);
 
     module.variables.exitScope();
     return returnValue;
