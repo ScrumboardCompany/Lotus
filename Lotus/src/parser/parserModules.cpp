@@ -256,18 +256,18 @@ void lotus::Parser::loadTimeModule() {
 
 		String result;
 		
-		result += STRING_LITERAL("sec: ");
-		result += this_time->getField("sec")->asString(module);
-		result += STRING_LITERAL(", min: ");
-		result += this_time->getField("min")->asString(module);
-		result += STRING_LITERAL(", hour: ");
-		result += this_time->getField("hour")->asString(module);
-		result += STRING_LITERAL(", day: ");
 		result += this_time->getField("day")->asString(module);
-		result += STRING_LITERAL(", month: ");
+		result += STRING_LITERAL("/");
 		result += this_time->getField("month")->asString(module);
-		result += STRING_LITERAL(", year: ");
+		result += STRING_LITERAL("/");
 		result += this_time->getField("year")->asString(module);
+		result += STRING_LITERAL(" ");
+
+		result += this_time->getField("hour")->asString(module);
+		result += STRING_LITERAL(":");
+		result += this_time->getField("min")->asString(module);
+		result += STRING_LITERAL(":");
+		result += this_time->getField("sec")->asString(module);
 
 		RETURN_VALUE(STRING(result));
 		}));

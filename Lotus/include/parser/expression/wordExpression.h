@@ -11,6 +11,7 @@ namespace lotus {
 		String name;
 
 		friend class SetExpression;
+		friend class CallLambdaExpression;
 
 	public:
 		WordExpression(const String& name);

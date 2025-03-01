@@ -1,6 +1,8 @@
-# Lotus Programming Language
-
-Lotus is a lightweight and easy-to-understand programming language, developed by two developers as a practice project to gain a deeper understanding of language design and implementation.
+<div align="center">
+    <img src="icon.png" width="156px"/>
+    <p style="font-size: 32px; font-weight: 500; margin: 0;">Lotus</p>
+    <p style="font-size: 20px; font-weight: 500; margin-top: 5px;">Lightweight and easy-to-understand programming language, developed by two developers as a practice project to gain a deeper understanding of language design and implementation.</p>
+</div>
 
 ## Features
 - Simple and readable syntax
@@ -21,6 +23,5 @@ print("Hello, World!")
 
 ## Upcoming features
 We are actively working on improving Lotus. Some planned features include:
-- Classes inheritance
 - More standard libraries
 - Bug fixes

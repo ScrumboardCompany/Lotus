@@ -39,10 +39,10 @@ Expression lotus::Parser::multiplicative() {
 }
 
 Expression lotus::Parser::exponential() {
-	Expression result = unaryNot();
+	Expression result = unary();
 	while (true) {
 		if (match(TokenType::STARSTAR)) {
-			result = MAKE_PTR<ArithmeticExpression>(result, unaryNot(), ArithmeticOperationType::POWER);
+			result = MAKE_PTR<ArithmeticExpression>(result, exponential(), ArithmeticOperationType::POWER);
 			continue;
 		}
 		break;

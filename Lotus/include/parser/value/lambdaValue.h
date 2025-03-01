@@ -14,6 +14,7 @@ namespace lotus {
 		Function function;
 
 		friend class FunctionExpression;
+		friend class CallLambdaExpression;
 
 	public:
 

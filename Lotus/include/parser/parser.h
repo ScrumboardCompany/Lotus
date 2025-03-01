@@ -128,6 +128,8 @@ namespace lotus {
 
 		Expression unaryPostfix();
 
+		Expression unary();
+
 		Expression primary();
 
 		Token get(const size_t relativePosition);

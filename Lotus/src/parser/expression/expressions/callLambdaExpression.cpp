@@ -1,5 +1,7 @@
 #include "parser/expression/callLambdaExpression.h"
-#include "structures/variables.h"
+#include "parser/expression/wordExpression.h"
+#include "parser/value/lambdaValue.h"
+#include "structures/module.h"
 
 using namespace lotus;
 
@@ -18,6 +20,29 @@ Value lotus::CallLambdaExpression::eval(Module& module) {
 
 	for (auto& arg : specifiedArgs) {
 		specifiedValues.emplace(arg.first, arg.second->eval(module));
+	}
+
+	if (auto word = std::dynamic_pointer_cast<WordExpression>(function)) {
+		if (module.variables.isExists(word->name)) {
+			if (auto lambda = std::dynamic_pointer_cast<LambdaValue>(module.variables.get(word->name))) {
+				Ptr<Function> variadic = nullptr;
+
+				size_t argsCount = values.size() + specifiedValues.size();
+				if (lambda->function.hasVariadic() && argsCount >= lambda->function.getArgsCount() - 1) variadic = MAKE_PTR<Function>(lambda->function);
+				if (lambda->function.getArgsCount() == argsCount) return lambda->function.call(values, specifiedValues, module);
+
+				if (variadic) {
+					return variadic->call(values, specifiedValues, module);
+				}
+			}
+		}
+		else {
+			if (specifiedValues.empty()) {
+				return module.functions.call(word->name, values, module);
+			}
+
+			return module.functions.call(word->name, values, specifiedValues, module);
+		}
 	}
 
 	if (specifiedValues.empty()) {
