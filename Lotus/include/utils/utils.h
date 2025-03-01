@@ -14,6 +14,8 @@ namespace lotus {
 
 	std::wstring wreadContent(const std::wstring& filePath);
 
+	std::pair<int, int> evalDayOfYearAndDayOfWeek(int sec, int min, int hour, int day, int month, int year);
+
 	struct ThrowValue {
 		ThrowValue() = default;
 		ThrowValue(const Value& value) : value(value) {}

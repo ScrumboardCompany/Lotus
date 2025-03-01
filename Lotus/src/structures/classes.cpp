@@ -12,18 +12,16 @@ void lotus::Classes::forceSet(const char* name, const Ptr<Class>& value) {
 	forceSet(STRING_VAR_LITERAL(name), value);
 }
 
-Classes& lotus::Classes::declare(const String& name, const Ptr<Class>& value) {
+void lotus::Classes::declare(const String& name, const Ptr<Class>& value) {
 	if (isExists(name)) {
 		throw LotusException(STRING_LITERAL("Class \"") + name + STRING_LITERAL("\" already exists"));
 	}
 
 	forceSet(name, value);
-
-	return *this;
 }
 
-Classes& lotus::Classes::declare(const char* name, const Ptr<Class>& value) {
-	return declare(STRING_VAR_LITERAL(name), value);
+void lotus::Classes::declare(const char* name, const Ptr<Class>& value) {
+	declare(STRING_VAR_LITERAL(name), value);
 }
 
 void lotus::Classes::set(const String& name, const Ptr<Class>& value) {

@@ -16,7 +16,7 @@
 #define CALL(module, name, ...) functions.call(name, {__VA_ARGS__}, module)
 #define CALL_SPECIFY(module, name, args, specifiedArgs) functions.call(name, args, specifiedArgs, module)
 #define STATIC(name, value) statics.declare(STRING_LITERAL(name), value)
-#define CLASS(module, name, value) classes.declare(name, MAKE_PTR<Class>(value)).registerClass(name, module)
+#define CLASS(module, name, value) classes.declare(name, MAKE_PTR<Class>(value))
 #define METHOD(accessModifier, body, ...) MethodMemberInfo(MAKE_CPP_FUNCTION(body, __VA_ARGS__), accessModifier)
 #define FIELD(accessModifier, value) FieldMemberInfo(value, accessModifier)
 
