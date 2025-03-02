@@ -254,7 +254,7 @@ Value lotus::ClassValue::setOfIndex(const Value& index, const Value& other, Modu
 }
 
 Value lotus::ClassValue::sizeInRam() {
-    return INT(sizeof(ClassValue));
+    return INT(static_cast<int>(sizeof(ClassValue)));
 }
 
 ClassValue& lotus::ClassValue::getMethod(const String& name, size_t argsCount, MethodMemberInfo& memberInfo) {

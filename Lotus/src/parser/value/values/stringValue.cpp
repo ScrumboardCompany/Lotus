@@ -109,9 +109,9 @@ Value lotus::StringValue::setOfIndex(const Value& index, const Value& other, Mod
 }
 
 Value lotus::StringValue::size(Module& module) {
-    return INT(value.size());
+    return INT(static_cast<int>(value.size()));
 }
 
 Value lotus::StringValue::sizeInRam() {
-    return INT(sizeof(StringValue));
+    return INT(static_cast<int>(sizeof(StringValue)));
 }

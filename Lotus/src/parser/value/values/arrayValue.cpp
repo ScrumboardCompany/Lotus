@@ -85,9 +85,9 @@ Value lotus::ArrayValue::setOfIndex(const Value& index, const Value& other, Modu
 }
 
 Value lotus::ArrayValue::size(Module& module) {
-    return INT(elements.size());
+    return INT(static_cast<int>(elements.size()));
 }
 
 Value lotus::ArrayValue::sizeInRam() {
-    return INT(sizeof(ArrayValue));
+    return INT(static_cast<int>(sizeof(ArrayValue)));
 }

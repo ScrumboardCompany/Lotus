@@ -28,7 +28,7 @@ namespace lotus {
 
 	[[noreturn]] void throwOverloadError(const String& overload, const String& type1, const String& type2);
 
-	void checkThrowIndexError(const Value& index, int size, Module& module);
+	void checkThrowIndexError(const Value& index, size_t size, Module& module);
 }
 
 #endif // _LOTUSERROR_

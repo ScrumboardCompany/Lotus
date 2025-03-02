@@ -86,9 +86,9 @@ Value lotus::ObjectValue::setOfIndex(const Value& index, const Value& other, Mod
 }
 
 Value lotus::ObjectValue::size(Module& module) {
-    return INT(fields.size());
+    return INT(static_cast<int>(fields.size()));
 }
 
 Value lotus::ObjectValue::sizeInRam() {
-    return INT(sizeof(ObjectValue));
+    return INT(static_cast<int>(sizeof(ObjectValue)));
 }

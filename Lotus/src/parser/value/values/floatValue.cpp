@@ -145,5 +145,5 @@ Value lotus::FloatValue::postfixDecrement(Module& module) {
 }
 
 Value lotus::FloatValue::sizeInRam() {
-	return INT(sizeof(FloatValue));
+	return INT(static_cast<int>(sizeof(FloatValue)));
 }
