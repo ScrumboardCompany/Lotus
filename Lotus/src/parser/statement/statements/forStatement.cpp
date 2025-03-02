@@ -21,14 +21,17 @@ void lotus::ForStatement::execute(Module& module) {
     while (callAllExpressionsAndReturnLastValue(conditionPart, module)->asBool(module)) {
 
         try {
+            module.variables.enterScope();
             body->execute(module);
             performAction();
         }
         catch (const ContinueStatement&) {
+            module.variables.exitScope();
             performAction();
             continue;
         }
         catch (const BreakStatement&) {
+            module.variables.exitScope();
             break;
         }
     }

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef _LOTUS_ERROR_
-#define _LOTUS_ERROR_
+#ifndef _LOTUSERROR_
+#define _LOTUSERROR_
 
 #include "utils/lotusTypes.h"
 
@@ -31,4 +31,4 @@ namespace lotus {
 	void checkThrowIndexError(const Value& index, int size, Module& module);
 }
 
-#endif // _LOTUS_ERROR_
+#endif // _LOTUSERROR_

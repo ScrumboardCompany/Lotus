@@ -8,6 +8,8 @@ lotus::SwitchCaseStatement::SwitchCaseStatement(const Expression& exprToCheck, c
 	: exprToCheck(exprToCheck), cases(cases), defaultBody(defaultBody) {}
 
 void lotus::SwitchCaseStatement::execute(Module& module) {
+    module.variables.enterScope();
+
     Value valueToCheck = exprToCheck->eval(module);
     bool caseMatched = false;
 
@@ -22,6 +24,7 @@ void lotus::SwitchCaseStatement::execute(Module& module) {
             }
             catch (const BreakStatement&) {
                 module.variables.exitScope();
+                module.variables.exitScope();
                 return;
             }
         }
@@ -32,4 +35,6 @@ void lotus::SwitchCaseStatement::execute(Module& module) {
         defaultBody->execute(module);
         module.variables.exitScope();
     }
+
+    module.variables.exitScope();
 }

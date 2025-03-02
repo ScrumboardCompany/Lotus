@@ -270,20 +270,34 @@ throw(msg, type) # Throw exception with msg and type
 ## Math module
 **Constants**
 ```Lotus
-PI
-E
+Math::PI
+Math::E
 ```
 **Functions**
 ```Lotus
-absolute(value); # Returns absolute value of the value
-round(value); # Rounds the value
-min(value1, value2); # Returns the smaller of the two given values
-max(value1, value2); # Returns the bigger of the two given values
-sqrt(value); # Returns square root of the value
+Math::absolute(value); # Returns absolute value of the value
+Math::round(value); # Rounds the value
+Math::min(value1, value2); # Returns the smaller of the two given values
+Math::max(value1, value2); # Returns the bigger of the two given values
+Math::sqrt(value); # Returns square root of the value
 ```
 
 ## Time module
 **Functions**
 ```Lotus
-sleep(duration); # Stops the code execution for "duration" milliseconds
+# class Time
+/* Fields
+    sec,
+    min,
+    hour,
+    day,
+    month,
+    year,
+    isdst
+*/
+Time()
+Time(sec, min, hour, day, month, year, isdst)
+
+Time::now() # Returns current world time
+Time::sleep(duration); # Stops the code execution for "duration" milliseconds
 ```

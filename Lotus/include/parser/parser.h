@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #ifndef _PARSER_
 #define _PARSER_

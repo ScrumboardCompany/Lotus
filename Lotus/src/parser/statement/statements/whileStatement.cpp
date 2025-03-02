@@ -13,6 +13,7 @@ void lotus::WhileStatement::execute(Module& module) {
 	module.variables.enterScope();
 
 	while (callAllExpressionsAndReturnLastValue(conditionPart, module)->asBool(module)) {
+		module.variables.enterScope();
 		try {
 			body->execute(module);
 		}
@@ -22,6 +23,7 @@ void lotus::WhileStatement::execute(Module& module) {
 		catch (const BreakStatement&) {
 			break;
 		}
+		module.variables.exitScope();
 	}
 
 	module.variables.exitScope();
