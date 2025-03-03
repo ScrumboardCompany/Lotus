@@ -5,6 +5,7 @@
 </div>
 
 ## Features
+- Easy to understand [documentation](Documentation.md)
 - Simple and readable syntax
 - Written in C++ for performance
 - Designed for learning and experimentation

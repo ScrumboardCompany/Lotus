@@ -21,6 +21,8 @@ namespace lotus {
 		virtual String asString(Module& module);
 
 		String getType() const;
+		bool instanceOf(const String& type) const;
+		bool instanceOf(const char* type) const;
 		virtual Value& getField(const String& name);
 		virtual Value& getField(const char* name);
 		virtual Value callMethod(const String& name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {});

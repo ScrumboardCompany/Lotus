@@ -1,12 +1,6 @@
 #include "parser/parser.h"
 #include "utils/lotusError.h"
-#include "parser/expression/expresion.h"
 #include "parser/statement/expressionStatement.h"
-#include "parser/value/floatValue.h"
-#include "parser/statement/cppFunctionStatement.h"
-#include <iostream>
-
-#include <cmath>
 
 using namespace lotus;
 

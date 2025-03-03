@@ -57,14 +57,6 @@ std::pair<int, int> lotus::evalDayOfYearAndDayOfWeek(int sec, int min, int hour,
     return std::make_pair(day_of_year, day_of_week);
 }
 
-errno_t lotus::localtime(tm* _Tm, const time_t* _Time) {
-#ifdef _WIN32
-    return localtime_s(_Tm, _Time);
-#else
-    return localtime_r(_Time, _Tm);
-#endif
-}
-
 bool lotus::isValidDate(int day, int month, int year) {
     if (month < 1 || month > 12 || day < 1) return false;
 
@@ -132,4 +124,18 @@ std::tuple<int, int, int, int, int, int> lotus::fromTotalSeconds(int64_t total_s
     int sec = static_cast<int>(total_seconds % 60ll);
 
     return { sec, min, hour, day, month, year };
+}
+
+std::string lotus::wstring_to_string(const std::wstring& wstr) {
+    std::string str;
+    str.reserve(wstr.size());
+    for (wchar_t wc : wstr) {
+        if (wc <= 0x7F) {
+            str.push_back(static_cast<char>(wc));
+        }
+        else {
+            str.push_back('?');
+        }
+    }
+    return str;
 }

@@ -44,28 +44,17 @@ namespace lotus {
 		Statics statics;
 		Classes classes;
 
-		void LET(const String& name, const Value& value) {
-			variables.declare(name, value);
-		}
+		void LET(const String& name, const Value& value);
 
-		void LET(const char* name, const Value& value) {
-			LET(STRING_VAR_LITERAL(name), value);
-		}
+		void LET(const char* name, const Value& value);
 
-		void SET(const String& name, const Value& value) {
-			variables.set(name, value);
-		}
-		void SET(const char* name, const Value& value) {
-			SET(STRING_VAR_LITERAL(name), value);
-		}
+		void SET(const String& name, const Value& value);
 
-		Value& GET(const String& name) {
-			return variables.get(name);
-		}
+		void SET(const char* name, const Value& value);
 
-		Value& GET(const char* name) {
-			return GET(STRING_VAR_LITERAL(name));
-		}
+		Value& GET(const String& name);
+
+		Value& GET(const char* name);
 
 		template <typename... Args>
 		void DEF(const String& name, std::function<void()> body, Args&&... args) {
@@ -95,21 +84,20 @@ namespace lotus {
 			return CALL(STRING_VAR_LITERAL(name), args, specifiedArgs);
 		}
 
-		void STATIC(const String& name, const Static& value) {
-			statics.declare(name, value);
-		}
+		void STATIC(const String& name, const Static& value);
 
-		void STATIC(const char* name, const Static& value) {
-			STATIC(STRING_VAR_LITERAL(name), value);
-		}
+		void STATIC(const char* name, const Static& value);
 
-		void CLASS(const String& name, const Class& value) {
-			classes.declare(name, MAKE_PTR<Class>(value));
-		}
+		void CLASS(const String& name, const Class& value, bool doRegister = false);
 
-		void CLASS(const char* name, const Class& value) {
-			CLASS(STRING_VAR_LITERAL(name), value);
-		}
+		void CLASS(const char* name, const Class& value, bool doRegister = false);
+
+		[[noreturn]] void THROW();
+
+		[[noreturn]] void THROW(const Value& msg);
+
+		[[noreturn]] void THROW(const Value& msg, const Value& type);
+
 	};
 
 }

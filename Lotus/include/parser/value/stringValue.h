@@ -14,6 +14,7 @@ namespace lotus {
 
 		StringValue(const char* value);
 		StringValue(const String& value);
+		StringValue() = default;
 
 		int asInt(Module& module) override;
 		double asDouble(Module& module) override;

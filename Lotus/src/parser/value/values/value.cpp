@@ -26,6 +26,14 @@ String lotus::IValue::getType() const {
     return type;
 }
 
+bool lotus::IValue::instanceOf(const String& type) const {
+    return getType() == type;
+}
+
+bool lotus::IValue::instanceOf(const char* type) const {
+    return instanceOf(STRING_VAR_LITERAL(type));
+}
+
 Value& lotus::IValue::getField(const String& name) {
     throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Field \"") + name + STRING_LITERAL("\" does not exist"));
 }

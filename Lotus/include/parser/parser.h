@@ -4,6 +4,7 @@
 #define _PARSER_
 
 #include <vector>
+#include <list>
 #include "utils/lotusTypes.h"
 #include "lexer/token.h"
 #include "utils/lotusDefines.h"
@@ -39,9 +40,13 @@ namespace lotus {
 
 		void loadModules();
 
+		void loadStandardModule();
+
 		void loadMathModule();
 
 		void loadTimeModule();
+
+		void loadOsModule();
 
 		Statement getNextGlobalStatement();
 
@@ -112,20 +117,6 @@ namespace lotus {
 		Expression multiplicative();
 
 		Expression exponential();
-
-		Expression unaryNot();
-
-		Expression unaryPlusMinus();
-
-		Expression unaryPrefix();
-
-		Expression dot();
-
-		Expression index();
-
-		Expression callFunction();
-
-		Expression unaryPostfix();
 
 		Expression unary();
 

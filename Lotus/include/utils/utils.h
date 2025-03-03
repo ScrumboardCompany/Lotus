@@ -16,13 +16,13 @@ namespace lotus {
 
 	std::pair<int, int> evalDayOfYearAndDayOfWeek(int sec, int min, int hour, int day, int month, int year);
 
-	errno_t localtime(tm* _Tm, const time_t* _Time);
-
 	bool isValidDate(int day, int month, int year);
 
 	int64_t getTotalSeconds(Value time, Module& module);
 
 	std::tuple<int, int, int, int, int, int> fromTotalSeconds(int64_t total_seconds);
+
+	std::string wstring_to_string(const std::wstring& wstr);
 
 	struct ThrowValue {
 		ThrowValue() = default;

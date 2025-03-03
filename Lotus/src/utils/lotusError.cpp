@@ -18,6 +18,6 @@ void lotus::throwOverloadError(const String& overload, const String& type1, cons
 
 void lotus::checkThrowIndexError(const Value& index, size_t size, Module& module) {
     if (index->asInt(module) < 0 || static_cast<size_t>(index->asInt(module)) >= size) {
-        THROW(module, STRING(INT(index->asInt(module))->asString(module) + STRING_LITERAL(" is invalid index")));
+        module.THROW(STRING(INT(index->asInt(module))->asString(module) + STRING_LITERAL(" is invalid index")));
     }
 }

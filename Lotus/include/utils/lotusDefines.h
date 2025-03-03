@@ -14,11 +14,7 @@
 #define OBJECT MAKE_PTR<ObjectValue>
 #define LAMBDA MAKE_PTR<LambdaValue>
 
-#define RETURN_VALUE(value) throw Value(value)
-
-#define THROW(module, msg) throw ThrowValue(module.CALL("exception", msg))
-#define THROW_WITH_TYPE(module, msg, type) throw ThrowValue(module.CALL("exception", msg, type))
-#define THROW_EMPTY(module) throw ThrowValue(module.CALL("exception"))
+#define RETURN_VALUE(value) throw Value(value);
 
 #define STRING_LITERAL(str) []{ \
     if constexpr (std::is_same_v<lotus::String, std::string>) \

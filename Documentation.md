@@ -283,21 +283,63 @@ Math::sqrt(value); # Returns square root of the value
 ```
 
 ## Time module
-**Functions**
-```Lotus
-# class Time
-/* Fields
-    sec,
-    min,
-    hour,
-    day,
-    month,
-    year,
-    isdst
-*/
-Time()
-Time(sec, min, hour, day, month, year, isdst)
+**Structures**
+```
+Time # Class
+Time # Static
+```
 
-Time::now() # Returns current world time
+**Fields**
+```
+Time.sec
+Time.min
+Time.hour
+Time.day
+Time.month
+Time.year
+Time.day_of_week
+Time.day_of_year
+Time.isdst
+```
+
+**Functions**
+```
+Time();
+Time(sec, min, hour, day, month, year, day_of_week, day_of_year, isdst);
+
+Time::now(); # Returns current world time
 Time::sleep(duration); # Stops the code execution for "duration" milliseconds
+```
+
+## Os module
+**Structures**
+```
+File # Class
+File # Static
+Console # Static
+```
+
+**Functions**
+
+```
+File();
+File(path);
+
+File.path(); # Returns relative path
+File.fullPath(); # Returns absolute path
+File.fullName(); # Returns name and extension
+File.name(); # Returns name
+File.extension(); # Returns extension
+
+File.setPath(path); # Sets relative path
+File.read(); # Returns content of the file
+File.remove(); # Deletes the file
+File.write(content); # Rewrites content in the file
+File.append(content); # Appends content to the file
+File.rename(name); # Renames the file
+
+File::create(path); # Creates file in specified path and returns File class object
+File::isExists(path); # Returns if specified file exists
+
+Console::execute(command); # Executes specified command and returns result
 ```
