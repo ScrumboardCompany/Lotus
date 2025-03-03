@@ -13,20 +13,20 @@ IntValue::IntValue(int value) : value(value) {
     type = STRING_LITERAL("int");
 }
 
-int lotus::IntValue::asInt(Module& module) {
+int lotus::IntValue::asInt(Module&) {
 	return value;
 }
 
-double lotus::IntValue::asDouble(Module& module) {
+double lotus::IntValue::asDouble(Module&) {
 	return static_cast<double>(value);
 }
 
-bool lotus::IntValue::asBool(Module& module) {
+bool lotus::IntValue::asBool(Module&) {
     return static_cast<bool>(value);
 }
 
 
-String lotus::IntValue::asString(Module& module) {
+String lotus::IntValue::asString(Module&) {
     return std::to_wstring(value);
 }
 
@@ -84,7 +84,7 @@ Value lotus::IntValue::bitwiseXor(const Value& other, Module& module) {
     throwOverloadError(STRING_LITERAL("bitwiseXor"), getType(), other->getType());
 }
 
-Value lotus::IntValue::bitwiseNot(Module& module) {
+Value lotus::IntValue::bitwiseNot(Module&) {
     return INT(~value);
 }
 
@@ -191,36 +191,36 @@ Value lotus::IntValue::bitwiseRightShiftSet(const Value& other, Module& module) 
     return INT(value);
 }
 
-Value lotus::IntValue::unaryPlus(Module& module) {
+Value lotus::IntValue::unaryPlus(Module&) {
     return INT(+value);
 }
 
-Value lotus::IntValue::unaryMinus(Module& module) {
+Value lotus::IntValue::unaryMinus(Module&) {
     return INT(-value);
 }
 
-Value lotus::IntValue::unaryNot(Module& module) {
+Value lotus::IntValue::unaryNot(Module&) {
     return BOOL(!value);
 }
 
-Value lotus::IntValue::prefixIncrement(Module& module) {
+Value lotus::IntValue::prefixIncrement(Module&) {
     return INT(++value);
 }
 
-Value lotus::IntValue::postfixIncrement(Module& module) {
+Value lotus::IntValue::postfixIncrement(Module&) {
     return INT(value++);
 }
 
-Value lotus::IntValue::prefixDecrement(Module& module) {
+Value lotus::IntValue::prefixDecrement(Module&) {
     return INT(--value);
 }
 
-Value lotus::IntValue::postfixDecrement(Module& module) {
+Value lotus::IntValue::postfixDecrement(Module&) {
     return INT(value--);
 }
 
 
-Value lotus::IntValue::size(Module& module) {
+Value lotus::IntValue::size(Module&) {
     if (value == 0)
         return INT(1);
 

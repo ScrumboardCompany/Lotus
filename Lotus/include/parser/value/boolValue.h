@@ -14,10 +14,10 @@ namespace lotus {
 
 		BoolValue(bool value);
 
-		int asInt(Module& module) override;
-		double asDouble(Module& module) override;
-		bool asBool(Module& module) override;
-		String asString(Module& module) override;
+		int asInt(Module&) override;
+		double asDouble(Module&) override;
+		bool asBool(Module&) override;
+		String asString(Module&) override;
 
 		Value add(const Value& other, Module& module) override;
 		Value substract(const Value& other, Module& module) override;
@@ -29,7 +29,7 @@ namespace lotus {
 		Value bitwiseAnd(const Value& other, Module& module) override;
 		Value bitwiseOr(const Value& other, Module& module) override;
 		Value bitwiseXor(const Value& other, Module& module) override;
-		Value bitwiseNot(Module& module) override;
+		Value bitwiseNot(Module&) override;
 		Value bitwiseLeftShift(const Value& other, Module& module) override;
 		Value bitwiseRightShift(const Value& other, Module& module) override;
 
@@ -44,7 +44,7 @@ namespace lotus {
 
 		Value unaryPlus(Module& module) override;
 		Value unaryMinus(Module& module) override;
-		Value unaryNot(Module& module) override;
+		Value unaryNot(Module&) override;
 
 		Value sizeInRam() override;
 	};

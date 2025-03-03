@@ -16,10 +16,10 @@ namespace lotus {
 		StringValue(const String& value);
 		StringValue() = default;
 
-		int asInt(Module& module) override;
-		double asDouble(Module& module) override;
-		bool asBool(Module& module) override;
-		String asString(Module& module) override;
+		int asInt(Module&) override;
+		double asDouble(Module&) override;
+		bool asBool(Module&) override;
+		String asString(Module&) override;
 
 		Value add(const Value& other, Module& module) override;
 		Value multiply(const Value& other, Module& module) override;
@@ -38,7 +38,7 @@ namespace lotus {
 
 		Value getOfIndex(const Value& index, Module& module) override;
 		Value setOfIndex(const Value& index, const Value& other, Module& module) override;
-		Value size(Module& module) override;
+		Value size(Module&) override;
 		Value sizeInRam() override;
 	};
 

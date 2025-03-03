@@ -12,19 +12,19 @@ lotus::FloatValue::FloatValue(double value) : value(value) {
 	type = STRING_LITERAL("float");
 }
 
-int lotus::FloatValue::asInt(Module& module) {
+int lotus::FloatValue::asInt(Module&) {
 	return static_cast<int>(value);
 }
 
-double lotus::FloatValue::asDouble(Module& module) {
+double lotus::FloatValue::asDouble(Module&) {
 	return value;
 }
 
-bool lotus::FloatValue::asBool(Module& module) {
+bool lotus::FloatValue::asBool(Module&) {
 	return static_cast<bool>(value);
 }
 
-String lotus::FloatValue::asString(Module& module) {
+String lotus::FloatValue::asString(Module&) {
 	return std::to_wstring(value);
 }
 
@@ -50,7 +50,7 @@ Value lotus::FloatValue::power(const Value& other, Module& module) {
 	return FLOAT(pow(value, other->asDouble(module)));
 }
 
-Value lotus::FloatValue::divideModule(const Value& other, Module& module) {
+Value lotus::FloatValue::divideModule(const Value&, Module&) {
 	throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Can`t use module operator over float type"));
 }
 
@@ -116,31 +116,31 @@ Value lotus::FloatValue::divideModuleSet(const Value& other, Module& module) {
 	return FLOAT(value);
 }
 
-Value lotus::FloatValue::unaryPlus(Module& module) {
+Value lotus::FloatValue::unaryPlus(Module&) {
 	return FLOAT(+value);
 }
 
-Value lotus::FloatValue::unaryMinus(Module& module) {
+Value lotus::FloatValue::unaryMinus(Module&) {
 	return FLOAT(-value);
 }
 
-Value lotus::FloatValue::unaryNot(Module& module) {
+Value lotus::FloatValue::unaryNot(Module&) {
 	return BOOL(!value);
 }
 
-Value lotus::FloatValue::prefixIncrement(Module& module) {
+Value lotus::FloatValue::prefixIncrement(Module&) {
 	return FLOAT(++value);
 }
 
-Value lotus::FloatValue::postfixIncrement(Module& module) {
+Value lotus::FloatValue::postfixIncrement(Module&) {
 	return FLOAT(value++);
 }
 
-Value lotus::FloatValue::prefixDecrement(Module& module) {
+Value lotus::FloatValue::prefixDecrement(Module&) {
 	return FLOAT(--value);
 }
 
-Value lotus::FloatValue::postfixDecrement(Module& module) {
+Value lotus::FloatValue::postfixDecrement(Module&) {
 	return FLOAT(value--);
 }
 

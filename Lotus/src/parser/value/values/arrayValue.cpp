@@ -24,7 +24,7 @@ String lotus::ArrayValue::asString(Module& module) {
     return result;
 }
 
-Value lotus::ArrayValue::add(const Value& other, Module& module) {
+Value lotus::ArrayValue::add(const Value& other, Module&) {
     if (other->getType() == STRING_LITERAL("array")) {
         std::vector<Value> newElements = elements;
 
@@ -84,7 +84,7 @@ Value lotus::ArrayValue::setOfIndex(const Value& index, const Value& other, Modu
     throwOverloadError(STRING_LITERAL("setOfIndex"), getType(), index->getType());
 }
 
-Value lotus::ArrayValue::size(Module& module) {
+Value lotus::ArrayValue::size(Module&) {
     return INT(static_cast<int>(elements.size()));
 }
 

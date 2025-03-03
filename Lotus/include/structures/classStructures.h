@@ -24,7 +24,7 @@ namespace lotus {
 	struct FieldMemberInfo : public ClassMemberInfo {
 		FieldMemberInfo() = default;
 		FieldMemberInfo(const Value& value, const AccessModifierType& accessModifier) 
-			: value(value), ClassMemberInfo(accessModifier) {}
+			: ClassMemberInfo(accessModifier), value(value) {}
 
 		Value value;
 	};
@@ -32,7 +32,7 @@ namespace lotus {
 	struct MethodMemberInfo : public ClassMemberInfo {
 		MethodMemberInfo() = default;
 		MethodMemberInfo(const Function& value, const AccessModifierType& accessModifier)
-			: value(value), ClassMemberInfo(accessModifier) {}
+			: ClassMemberInfo(accessModifier), value(value) {}
 
 		Function value;
 	};

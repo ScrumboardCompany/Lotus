@@ -13,19 +13,19 @@ StringValue::StringValue(const String& value) : value(value) {
     type = STRING_LITERAL("string");
 }
 
-int lotus::StringValue::asInt(Module& module) {
+int lotus::StringValue::asInt(Module&) {
     return std::stoi(value);
 }
 
-double lotus::StringValue::asDouble(Module& module) {
+double lotus::StringValue::asDouble(Module&) {
     return std::stod(value);
 }
 
-bool lotus::StringValue::asBool(Module& module) {
+bool lotus::StringValue::asBool(Module&) {
     return value.length() != 0;
 }
 
-String lotus::StringValue::asString(Module& module) {
+String lotus::StringValue::asString(Module&) {
     return value;
 }
 
@@ -108,7 +108,7 @@ Value lotus::StringValue::setOfIndex(const Value& index, const Value& other, Mod
     throwOverloadError(STRING_LITERAL("setOfIndex"), getType(), index->getType());
 }
 
-Value lotus::StringValue::size(Module& module) {
+Value lotus::StringValue::size(Module&) {
     return INT(static_cast<int>(value.size()));
 }
 

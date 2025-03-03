@@ -14,17 +14,17 @@ namespace lotus {
 
 		FloatValue(double value);
 
-		int asInt(Module& module) override;
-		double asDouble(Module& module) override;
-		bool asBool(Module& module) override;
-		String asString(Module& module) override;
+		int asInt(Module&) override;
+		double asDouble(Module&) override;
+		bool asBool(Module&) override;
+		String asString(Module&) override;
 
 		Value add(const Value& other, Module& module) override;
 		Value substract(const Value& other, Module& module) override;
 		Value multiply(const Value& other, Module& module) override;
 		Value divide(const Value& other, Module& module) override;
 		Value power(const Value& other, Module& module) override;
-		Value divideModule(const Value& other, Module& module) override;
+		Value divideModule(const Value&, Module&) override;
 
 		Value greater(const Value& other, Module& module) override;
 		Value less(const Value& other, Module& module) override;
@@ -42,13 +42,13 @@ namespace lotus {
 		Value powerSet(const Value& other, Module& module) override;
 		Value divideModuleSet(const Value& other, Module& module) override;
 
-		Value unaryPlus(Module& module) override;
-		Value unaryMinus(Module& module) override;
-		Value unaryNot(Module& module) override;
-		Value prefixIncrement(Module& module) override;
-		Value postfixIncrement(Module& module) override;
-		Value prefixDecrement(Module& module) override;
-		Value postfixDecrement(Module& module) override;
+		Value unaryPlus(Module&) override;
+		Value unaryMinus(Module&) override;
+		Value unaryNot(Module&) override;
+		Value prefixIncrement(Module&) override;
+		Value postfixIncrement(Module&) override;
+		Value prefixDecrement(Module&) override;
+		Value postfixDecrement(Module&) override;
 
 		Value sizeInRam() override;
 	};

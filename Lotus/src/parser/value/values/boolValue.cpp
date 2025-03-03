@@ -12,19 +12,19 @@ BoolValue::BoolValue(bool value) : value(value) {
     type = STRING_LITERAL("bool");
 }
 
-int lotus::BoolValue::asInt(Module& module) {
+int lotus::BoolValue::asInt(Module&) {
     return static_cast<int>(value);
 }
 
-double lotus::BoolValue::asDouble(Module& module) {
+double lotus::BoolValue::asDouble(Module&) {
     return static_cast<double>(value);
 }
 
-bool lotus::BoolValue::asBool(Module& module) {
+bool lotus::BoolValue::asBool(Module&) {
     return value;
 }
 
-String lotus::BoolValue::asString(Module& module) {
+String lotus::BoolValue::asString(Module&) {
     return value ? STRING_LITERAL("true") : STRING_LITERAL("false");
 }
 
@@ -67,7 +67,7 @@ Value lotus::BoolValue::bitwiseXor(const Value& other, Module& module) {
     throwOverloadError(STRING_LITERAL("bitwiseXor"), getType(), other->getType());
 }
 
-Value lotus::BoolValue::bitwiseNot(Module& module) {
+Value lotus::BoolValue::bitwiseNot(Module&) {
     return BOOL(~static_cast<int>(value));
 }
 
@@ -122,7 +122,7 @@ Value lotus::BoolValue::unaryMinus(Module& module) {
     return INT(asInt(module))->unaryMinus(module);
 }
 
-Value lotus::BoolValue::unaryNot(Module& module) {
+Value lotus::BoolValue::unaryNot(Module&) {
     return BOOL(!value);
 }
 

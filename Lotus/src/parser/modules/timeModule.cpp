@@ -40,7 +40,7 @@ void lotus::Parser::loadTimeModule() {
 			module.THROW(STRING("Invalid date"));
 		}
 
-		auto days = evalDayOfYearAndDayOfWeek(sec, min, hour, day, month, year);
+		auto days = evalDayOfYearAndDayOfWeek(day, month, year);
 
 		this_time->getField("sec") = INT(sec);
 		this_time->getField("min") = INT(min);

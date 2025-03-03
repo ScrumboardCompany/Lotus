@@ -26,3 +26,4 @@ print("Hello, World!")
 We are actively working on improving Lotus. Some planned features include:
 - More standard libraries
 - Bug fixes
+- Unicode support

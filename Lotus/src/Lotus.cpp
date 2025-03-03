@@ -15,9 +15,8 @@ int main(int argc, char* argv[]) {
     try {
         lotus::String content;
         if (argc < 2) {
-            //std::cerr << "Must specify a file to compile" << std::endl;
-            //return 1;
-            content = lotus::wreadContent(L"test.lts");
+            std::cerr << "Must specify a file to compile" << std::endl;
+            return 1;
         }
         else {
             content = lotus::wreadContent(STRING_VAR_LITERAL(argv[1]));

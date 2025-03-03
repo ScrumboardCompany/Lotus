@@ -25,9 +25,9 @@ namespace lotus {
 		bool instanceOf(const char* type) const;
 		virtual Value& getField(const String& name);
 		virtual Value& getField(const char* name);
-		virtual Value callMethod(const String& name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {});
+		virtual Value callMethod(const String& name, const std::vector<Value>&, Module&, const StringMap<Value>& = {});
 		virtual Value callMethod(const char* name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {});
-		virtual Value call(const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {});
+		virtual Value call(const std::vector<Value>&, Module&, const StringMap<Value>& = {});
 
 		virtual Value add(const Value& other, Module& module);
 		virtual Value substract(const Value& other, Module& module);

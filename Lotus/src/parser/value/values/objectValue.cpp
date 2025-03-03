@@ -24,7 +24,7 @@ String lotus::ObjectValue::asString(Module& module) {
     return result;
 }
 
-Value lotus::ObjectValue::add(const Value& other, Module& module) {
+Value lotus::ObjectValue::add(const Value& other, Module&) {
     if (other->getType() == STRING_LITERAL("object")) {
         StringMap<Value> newFields = fields;
 
@@ -85,7 +85,7 @@ Value lotus::ObjectValue::setOfIndex(const Value& index, const Value& other, Mod
     throwOverloadError(STRING_LITERAL("index"), getType(), index->getType());
 }
 
-Value lotus::ObjectValue::size(Module& module) {
+Value lotus::ObjectValue::size(Module&) {
     return INT(static_cast<int>(fields.size()));
 }
 

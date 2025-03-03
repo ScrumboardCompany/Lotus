@@ -1,8 +1,10 @@
 #include "parser/parser.h"
 #include "parser/value/stringValue.h"
 #include "parser/value/boolValue.h"
+#include "utils/utils.h"
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 #include <array>
 
 using namespace lotus;

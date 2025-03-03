@@ -35,7 +35,7 @@ std::wstring lotus::wreadContent(const std::wstring& filePath) {
     return content;
 }
 
-std::pair<int, int> lotus::evalDayOfYearAndDayOfWeek(int sec, int min, int hour, int day, int month, int year) {
+std::pair<int, int> lotus::evalDayOfYearAndDayOfWeek(int day, int month, int year) {
     std::vector<int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
     bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
