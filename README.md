@@ -6,6 +6,7 @@
 
 ## Features
 - Easy to understand [documentation](Documentation.md)
+- [VS Code extension](https://marketplace.visualstudio.com/items?itemName=scrumboard-company.lotus-lang)
 - Simple and readable syntax
 - Written in C++ for performance
 - Designed for learning and experimentation
