@@ -3,7 +3,7 @@
 #ifndef _ARRAYEXPRESSION_
 #define _ARRAYEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

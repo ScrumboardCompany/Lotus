@@ -3,7 +3,7 @@
 #ifndef _BITWISEEXPRESSION_
 #define _BITWISEEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

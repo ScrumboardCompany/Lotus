@@ -3,7 +3,7 @@
 #ifndef _LOGICALEXPRESSION_
 #define _LOGICALEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

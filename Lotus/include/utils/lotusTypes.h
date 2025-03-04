@@ -5,7 +5,6 @@
 
 #include <string>
 #include <unordered_map>
-#include <type_traits>
 #include <memory>
 
 namespace lotus {

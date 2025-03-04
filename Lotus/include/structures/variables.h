@@ -6,7 +6,6 @@
 #include "utils/lotusTypes.h"
 #include "utils/lotusDefines.h"
 #include "parser/value/undefinedValue.h"
-#include <stack>
 #include <vector>
 
 namespace lotus {

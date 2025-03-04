@@ -3,7 +3,7 @@
 #ifndef _INDEXEXPRESSION_
 #define _INDEXEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

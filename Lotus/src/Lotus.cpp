@@ -1,15 +1,5 @@
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include "lexer/lexer.h"
-#include "parser/parser.h"
-#include "parser/value/value.h"
-#include "utils/lotusError.h"
-#include "parser/expression/expresion.h"
-#include "parser/statement/statement.h"
-#include "parser/statement/continueStatement.h"
-#include "parser/statement/breakStatement.h"
-#include "utils/utils.h"
+#include "Lotus.h"
 
 int main(int argc, char* argv[]) {
     try {

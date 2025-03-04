@@ -3,7 +3,7 @@
 #ifndef _LAMBDAEXPRESSION_
 #define _LAMBDAEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 #include "parser/function/function.h"
 
 namespace lotus {

@@ -8,8 +8,6 @@
 #include "utils/lotusTypes.h"
 #include "lexer/token.h"
 #include "utils/lotusDefines.h"
-#include "structures/variables.h"
-#include "structures/functions.h"
 #include "structures/flags.h"
 #include "structures/module.h"
 

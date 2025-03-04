@@ -3,8 +3,7 @@
 #ifndef _SETEXPRESSION_
 #define _SETEXPRESSION_
 
-#include "parser/expression/expresion.h"
-#include "structures/variables.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

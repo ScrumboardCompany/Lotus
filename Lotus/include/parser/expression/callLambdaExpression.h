@@ -3,7 +3,7 @@
 #ifndef _CALLLAMBDAEXPRESSION_
 #define _CALLLAMBDAEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

@@ -4,7 +4,6 @@
 #define _STATICSTATEMENT_
 
 #include "parser/statement/statement.h"
-#include "structures/classStructures.h"
 
 namespace lotus {
 

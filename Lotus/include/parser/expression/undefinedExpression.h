@@ -3,7 +3,7 @@
 #ifndef _UNDEFINEDEXPRESSION_
 #define _UNDEFINEDEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

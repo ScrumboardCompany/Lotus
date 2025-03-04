@@ -75,7 +75,12 @@ void lotus::Lexer::tokenizeText() {
         if (current == CHAR_LITERAL('\\')) {
             current = next();
 
-            if (current == CHAR_LITERAL('\"')) {
+            if (current == CHAR_LITERAL('\\')) {
+                current = next();
+                buffer.push_back(CHAR_LITERAL('\\'));
+                continue;
+            }
+            else if (current == CHAR_LITERAL('\"')) {
                 current = next();
                 buffer.push_back(CHAR_LITERAL('\"'));
                 continue;
@@ -88,10 +93,6 @@ void lotus::Lexer::tokenizeText() {
             else if (current == CHAR_LITERAL('t')) {
                 current = next();
                 buffer.push_back(CHAR_LITERAL('\t'));
-                continue;
-            }
-            else {
-                buffer.push_back(CHAR_LITERAL('\\'));
                 continue;
             }
         }

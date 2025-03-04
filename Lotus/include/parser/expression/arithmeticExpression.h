@@ -3,7 +3,7 @@
 #ifndef _ARITHMETICEXPRESSION_
 #define _ARITHMETICEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

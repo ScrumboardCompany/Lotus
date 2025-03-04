@@ -3,7 +3,7 @@
 #ifndef _FLOATEXPRESSION_
 #define _FLOATEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

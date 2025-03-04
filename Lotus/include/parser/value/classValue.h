@@ -4,7 +4,6 @@
 #define _CLASSVALUE_
 
 #include "parser/value/value.h"
-#include "parser/function/function.h"
 #include "structures/classStructures.h"
 
 namespace lotus {

@@ -4,7 +4,6 @@
 #define _CPPFUNTIONSTATEMENT_
 
 #include "parser/statement/statement.h"
-#include "structures/variables.h"
 #include <functional>
 
 namespace lotus {

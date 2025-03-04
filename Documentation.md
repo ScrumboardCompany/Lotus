@@ -11,6 +11,90 @@ Multiline comment
 
 ```
 
+## Expressions
+
+**Arithmetic operators**
+```Lotus
+x + y
+x - y
+x * y
+x / y
+x ** y
+x // y
+```
+
+**Bitwise operators**
+```Lotus
+x & y
+x | y
+x ^ y
+~x
+x << y
+x >> y
+```
+
+**Logical operators**
+```Lotus
+x || y
+x && y
+!x
+```
+
+**Comparison operators**
+```Lotus
+x > y
+x < y
+x >= y
+x <= y
+x == y
+x != y
+```
+
+**Assigmnet operators**
+```Lotus
+x += y
+x -= y
+x *= y
+x /= y
+x **= y
+x //= y
+x &= y
+x |= y
+x ^= y
+x ~= y
+x <<= y
+x >>= y
+```
+
+**Unary operators**
+```Lotus
++x
+-x
+!x
+++x
+x++
+--x
+x--
+```
+
+**Indexing**
+```Lotus
+x[i]
+x[i] = y
+```
+
+**Calling**
+```Lotus
+x()
+```
+
+**Literals**
+```Lotus
+true
+false
+0xDEADBEEF # HEX numbers
+```
+
 ## Variable declaration
 ```Lotus
 let a = 10;
@@ -250,8 +334,20 @@ flag ImportEverythingWithSameName true;
 A <<< "file1.lts" # class A and variable A will be imported
 ```
 
-## Standard functions
+## [Standard](Lotus/src/parser/modules/standardModule.cpp)
+**Structures**
+```
+exception # Class
+```
+
+**Functions**
 ```Lotus
+exception();
+exception(msg);
+exception(msg, type);
+exception.message(); # Returns message of the exception
+exception.type(); # Returns type of the exception
+
 print(args...); # Prints arguments
 println(args...); # Prints arguments with split "\n"
 input(); # Takes input and returns string
@@ -262,17 +358,12 @@ int(arg); # Casts argument to integer
 float(arg); # Casts argument to float
 bool(arg); # Casts argument to bool
 string(arg); # Casts argument to string
-throw() # Throw default exception
-throw(msg) # Throw exception with msg
-throw(msg, type) # Throw exception with msg and type
+throw(); # Throw default exception
+throw(msg); # Throw exception with msg
+throw(msg, type); # Throw exception with msg and type
 ```
 
-## Math module
-**Constants**
-```Lotus
-Math::PI
-Math::E
-```
+## [Math module](Lotus/src/parser/modules/mathModule.cpp)
 **Functions**
 ```Lotus
 Math::absolute(value); # Returns absolute value of the value
@@ -280,9 +371,11 @@ Math::round(value); # Rounds the value
 Math::min(value1, value2); # Returns the smaller of the two given values
 Math::max(value1, value2); # Returns the bigger of the two given values
 Math::sqrt(value); # Returns square root of the value
+Math::PI(); # Returns PI
+Math::E(); # Returns E
 ```
 
-## Time module
+## [Time module](Lotus/src/parser/modules/timeModule.cpp)
 **Structures**
 ```
 Time # Class
@@ -311,7 +404,7 @@ Time::now(); # Returns current world time
 Time::sleep(duration); # Stops the code execution for "duration" milliseconds
 ```
 
-## Os module
+## [Os module](Lotus/src/parser/modules/osModule.cpp)
 **Structures**
 ```
 File # Class

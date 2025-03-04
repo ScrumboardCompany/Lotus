@@ -3,7 +3,7 @@
 #ifndef _OBJECTEXPRESSION_
 #define _OBJECTEXPRESSION_
 
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 
 namespace lotus {
 

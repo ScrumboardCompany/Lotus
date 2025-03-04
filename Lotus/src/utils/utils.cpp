@@ -1,5 +1,5 @@
 #include "utils/utils.h"
-#include "parser/expression/expresion.h"
+#include "parser/expression/expression.h"
 #include "parser/value/value.h"
 #include "parser/value/undefinedValue.h"
 #include "utils/lotusError.h"
