@@ -61,7 +61,7 @@ void lotus::Lexer::tokenizeWord() {
         addToken(keywords[buffer], buffer);
     }
     else {
-        addToken(TokenType::WORD, buffer);
+        addToken(TokenType::IDENTIFIER, buffer);
     }
 }
 

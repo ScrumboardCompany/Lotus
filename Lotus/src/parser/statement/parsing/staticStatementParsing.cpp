@@ -4,7 +4,7 @@
 using namespace lotus;
 
 Statement lotus::Parser::handleStaticStatement() {
-	String name = consume(TokenType::WORD).text;
+	String name = consume(TokenType::IDENTIFIER).text;
 
 	auto staticInfo = handleFieldsMethods();
 

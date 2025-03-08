@@ -25,6 +25,9 @@ bool lotus::FloatValue::asBool(Module&) {
 }
 
 String lotus::FloatValue::asString(Module&) {
+	if (value == static_cast<int>(value)) {
+		return std::to_wstring(static_cast<int>(value));
+	}
 	return std::to_wstring(value);
 }
 

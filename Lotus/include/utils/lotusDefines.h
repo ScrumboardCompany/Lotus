@@ -17,21 +17,21 @@
 #define RETURN_VALUE(value) throw Value(value);
 
 #define STRING_LITERAL(str) []{ \
-    if constexpr (std::is_same_v<lotus::String, std::string>) \
+    if constexpr (::std::is_same_v<lotus::String, std::string>) \
         return str; \
     else \
         return L##str; \
 }()
 
 #define STRING_VAR_LITERAL(var) ([](const char* str) { \
-    if constexpr (std::is_same_v<lotus::String, std::string>) \
+    if constexpr (::std::is_same_v<lotus::String, std::string>) \
         return std::string(str); \
     else \
         return std::wstring(str, str + std::char_traits<char>::length(str)); \
 })(var)
 
 #define CHAR_LITERAL(ch) []{ \
-    if constexpr (std::is_same_v<Char, char>) \
+    if constexpr (::std::is_same_v<Char, char>) \
         return ch; \
     else \
         return L##ch; \

@@ -8,8 +8,8 @@ std::pair<std::vector<Expression>, StringMap<Expression>> lotus::Parser::handleT
 	StringMap<Expression> specifiedExpressions;
 
 	while (true) {
-		if (get(0).type == TokenType::WORD && get(1).type == TokenType::EQUALGREATER) {
-			String name = consume(TokenType::WORD).text;
+		if (get(0).type == TokenType::IDENTIFIER && get(1).type == TokenType::EQUALGREATER) {
+			String name = consume(TokenType::IDENTIFIER).text;
 
 			consume(TokenType::EQUALGREATER);
 

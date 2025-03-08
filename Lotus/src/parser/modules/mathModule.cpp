@@ -7,37 +7,35 @@ using namespace lotus;
 
 void lotus::Parser::loadMathModule() {
 	Module Math;
-	Static MathStatic;
 
-	MathStatic.addMethod("absolute", METHOD(AccessModifierType::PUBLIC, [&] {
+	Math.DEF("absolute", [&] {
 		if (module.GET("arg")->getType() == STRING_LITERAL("int")) RETURN_VALUE(INT(std::abs(module.GET("arg")->asInt(module))));
 		RETURN_VALUE(FLOAT(std::abs(module.GET("arg")->asDouble(module))));
-		}, "arg"));
+		}, "arg");
 
-	MathStatic.addMethod("round", METHOD(AccessModifierType::PUBLIC, [&] {
+	Math.DEF("round", [&] {
 		RETURN_VALUE(INT(module.GET("arg")->asInt(module)));
-		}, "arg"));
+		}, "arg");
 
-	MathStatic.addMethod("min", METHOD(AccessModifierType::PUBLIC, [&] {
+	Math.DEF("min", [&] {
 		RETURN_VALUE(FLOAT(std::min(module.GET("arg1")->asDouble(module), module.GET("arg2")->asDouble(module))));
-		}, "arg1", "arg2"));
+		}, "arg1", "arg2");
 
-	MathStatic.addMethod("max", METHOD(AccessModifierType::PUBLIC, [&] {
+	Math.DEF("max", [&] {
 		RETURN_VALUE(FLOAT(std::max(module.GET("arg1")->asDouble(module), module.GET("arg2")->asDouble(module))));
-		}, "arg1", "arg2"));
+		}, "arg1", "arg2");
 
-	MathStatic.addMethod("sqrt", METHOD(AccessModifierType::PUBLIC, [&] {
+	Math.DEF("sqrt", [&] {
 		RETURN_VALUE(FLOAT(std::sqrt(module.GET("arg")->asDouble(module))));
-		}, "arg"));
+		}, "arg");
 
-	MathStatic.addMethod("PI", METHOD(AccessModifierType::PUBLIC, [&] {
+	Math.DEF("PI", [&] {
 		RETURN_VALUE(FLOAT(3.14342354));
-		}));
+		});
 
-	MathStatic.addMethod("E", METHOD(AccessModifierType::PUBLIC, [&] {
+	Math.DEF("E", [&] {
 		RETURN_VALUE(FLOAT(2.7182818284));
-		}));
+		});
 
-	Math.STATIC("Math", MathStatic);
 	modules.emplace(STRING_LITERAL("Math"), Math);
 }

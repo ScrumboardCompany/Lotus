@@ -56,7 +56,7 @@ Expression lotus::Parser::unary() {
             result = MAKE_PTR<UnaryExpression>(result, UnaryOperationType::POSTFIXDECREMENT);
         }
         else if (match(TokenType::DOT)) {
-            String name = consume(TokenType::WORD).text;
+            String name = consume(TokenType::IDENTIFIER).text;
             if (match(TokenType::LPAREN)) {
                 std::pair<std::vector<Expression>, StringMap<Expression>> args;
 

@@ -12,7 +12,7 @@ Expression lotus::Parser::assigment() {
     else if (match(TokenType::PLUSEQUAL)) {
         result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::ADDSET);
     }
-    else if (match(TokenType::MINUSQUAL)) {
+    else if (match(TokenType::MINUSEQUAL)) {
         result = MAKE_PTR<SetExpression>(result, expression(), SetOperationType::SUBSTRACTSET);
     }
     else if (match(TokenType::STARQUAL)) {

@@ -17,23 +17,23 @@ using namespace lotus;
 
 Expression lotus::Parser::primary() {
 	
-	const Token CurrentToken = get(0);
+	const Token currentToken = get(0);
 
 	if (match(TokenType::HEX)) {
-		return MAKE_PTR<IntExpression>(std::stoi(CurrentToken.text, nullptr, 16));
+		return MAKE_PTR<IntExpression>(std::stoi(currentToken.text, nullptr, 16));
 	}
 	if (match(TokenType::INT_TYPE)) {
-		return MAKE_PTR<IntExpression>(std::stoi(CurrentToken.text));
+		return MAKE_PTR<IntExpression>(std::stoi(currentToken.text));
 	}
 	if (match(TokenType::FLOAT_TYPE)) {
-		return MAKE_PTR<FloatExpression>(std::stod(CurrentToken.text));
+		return MAKE_PTR<FloatExpression>(std::stod(currentToken.text));
 	}
 	if (match(TokenType::STRING_TYPE)) {
-		return MAKE_PTR<StringExpression>(CurrentToken.text);
+		return MAKE_PTR<StringExpression>(currentToken.text);
 	}
-	if (match(TokenType::WORD)) {
+	if (match(TokenType::IDENTIFIER)) {
 		if (match(TokenType::COLONCOLON)) {
-			String name = consume(TokenType::WORD).text;
+			String name = consume(TokenType::IDENTIFIER).text;
 
 			if (match(TokenType::LPAREN)) {
 				std::pair<std::vector<Expression>, StringMap<Expression>> args;
@@ -44,13 +44,13 @@ Expression lotus::Parser::primary() {
 					consume(TokenType::RPAREN);
 				}
 
-				return MAKE_PTR<StaticMethodExpression>(CurrentToken.text, name, args.first, args.second);
+				return MAKE_PTR<StaticMethodExpression>(currentToken.text, name, args.first, args.second);
 			}
 			else {
-				return MAKE_PTR<StaticFieldExpression>(CurrentToken.text, name);
+				return MAKE_PTR<StaticFieldExpression>(currentToken.text, name);
 			}
 		}
-		else return MAKE_PTR<WordExpression>(CurrentToken.text);
+		else return MAKE_PTR<WordExpression>(currentToken.text);
 	}
 	if (match(TokenType::UNDEFINED_)) {
 		return MAKE_PTR<UndefinedExpression>();
@@ -60,6 +60,14 @@ Expression lotus::Parser::primary() {
 	}
 	if (match(TokenType::FALSE)) {
 		return MAKE_PTR<BoolExpression>(false);
+	}
+	if (match(TokenType::FLAGVALUE)) {
+
+		consume(TokenType::LPAREN);
+		String flag = consume(TokenType::IDENTIFIER).text;
+		consume(TokenType::RPAREN);
+
+		return MAKE_PTR<BoolExpression>(module.flags.get(flag));
 	}
 	if (match(TokenType::LET)) {
 		return handleLetExpression();

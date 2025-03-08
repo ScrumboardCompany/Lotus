@@ -22,9 +22,6 @@ namespace lotus {
 		Module module;
 
 		StringMap<Module> modules;
-
-		Flags flags;
-
 		friend class ImportStatement;
 
 	public:
@@ -45,6 +42,8 @@ namespace lotus {
 		void loadTimeModule();
 
 		void loadOsModule();
+
+		void loadVectorModule();
 
 		Statement getNextGlobalStatement();
 

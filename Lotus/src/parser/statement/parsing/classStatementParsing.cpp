@@ -4,13 +4,13 @@
 using namespace lotus;
 
 Statement lotus::Parser::handleClassStatement() {
-	String name = consume(TokenType::WORD).text;
+	String name = consume(TokenType::IDENTIFIER).text;
 
 	std::vector<String> parents;
 	if (match(TokenType::COLON)) {
 
 		while (true) {
-			parents.push_back(consume(TokenType::WORD).text);
+			parents.push_back(consume(TokenType::IDENTIFIER).text);
 
 			if (!match(TokenType::COMMA)) {
 				break;

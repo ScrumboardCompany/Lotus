@@ -9,7 +9,7 @@ Statement lotus::Parser::handleTryCatch() {
 	consume(TokenType::CATCH);
 
 	consume(TokenType::LPAREN);
-	String name = consume(TokenType::WORD).text;
+	String name = consume(TokenType::IDENTIFIER).text;
 	consume(TokenType::RPAREN);
 
 	Statement catchBlock = handleBlockStatement();

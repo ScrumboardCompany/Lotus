@@ -15,7 +15,16 @@
 We created Lotus to practice building a programming language and to explore how compilers and interpreters work. Our goal is to make a language that is both lightweight and beginner-friendly.
 
 ## Installation & Usage
-(Currently, the project is in development. Installation instructions will be provided soon.)
+After installing the language, we recommend you to restart your PC to ensure PATH variable works correctly
+
+(Currently, the project is in development. Installation instructions will be provided soon)
+
+Lotus files have .lts extension.
+
+You can also use CLI command to compile lotus files
+
+```Lotus ./main.lts```
+
 
 ## Example Code
 Here is a simple "Hello, World!" program in Lotus:

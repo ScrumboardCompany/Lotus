@@ -29,7 +29,7 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 		}
 
 		if (match(TokenType::DEF)) {
-			String methodName = consume(TokenType::WORD).text;
+			String methodName = consume(TokenType::IDENTIFIER).text;
 
 			std::vector<Argument> args = handleArgs();
 
@@ -48,7 +48,7 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 			} else methods.emplace(methodName, std::vector<MethodMemberInfo>{memberInfo});
 		}
 		else {
-			String fieldName = consume(TokenType::WORD).text;
+			String fieldName = consume(TokenType::IDENTIFIER).text;
 			Expression fieldValue = nullptr;
 
 			if (match(TokenType::EQUAL)) {
@@ -73,7 +73,7 @@ StringMap<Expression> lotus::Parser::handleObject() {
 	consume(TokenType::LBRACE);
 
 	while (!match(TokenType::RBRACE)) {
-		String fieldName = consume(TokenType::WORD).text;
+		String fieldName = consume(TokenType::IDENTIFIER).text;
 		Expression fieldValue = nullptr;
 
 		if (match(TokenType::EQUAL)) {

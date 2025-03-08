@@ -6,7 +6,7 @@ using namespace lotus;
 Statement lotus::Parser::handleForEachStatement() {
 	consume(TokenType::LPAREN);
 
-	String name = consume(TokenType::WORD).text;
+	String name = consume(TokenType::IDENTIFIER).text;
 
 	consume(TokenType::COLON);
 

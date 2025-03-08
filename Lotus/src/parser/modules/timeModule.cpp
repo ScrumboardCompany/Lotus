@@ -114,9 +114,9 @@ void lotus::Parser::loadTimeModule() {
 		std::tm end_time;
 
 #ifdef _WIN32
-		return localtime_s(&end_time, &now_time);
+		localtime_s(&end_time, &now_time);
 #else
-		return localtime_r(&now_time, &end_time);
+		localtime_r(&now_time, &end_time);
 #endif
 
 		RETURN_VALUE(module.CALL("Time",

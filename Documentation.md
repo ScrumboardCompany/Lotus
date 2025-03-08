@@ -8,7 +8,6 @@ Documentation for Lotus language
 /*
 Multiline comment
 */
-
 ```
 
 ## Expressions
@@ -50,7 +49,7 @@ x == y
 x != y
 ```
 
-**Assigmnet operators**
+**Assignment operators**
 ```Lotus
 x += y
 x -= y
@@ -92,6 +91,7 @@ x()
 ```Lotus
 true
 false
+flagValue(flagName)
 0xDEADBEEF # HEX numbers
 ```
 
@@ -264,10 +264,10 @@ class C : A, B {}
 
 ## Import
 ```Lotus
-Math <<< "Math"
-* <<< "Time" # Import all from module
+PI <<< Math # Notation in quotes is also available - "ModuleName"
+* <<< Time # Import all from module
 
-print(Math::PI)
+print(PI())
 
 # File import
 
@@ -296,7 +296,8 @@ a(1, 2, b => 10);
 
 ## Flags
 ```
-flag FlagName true/false;
+flag flagName true/false; # set flag`s value
+flag flagName default; # set flag`s value to default
 ```
 
 **Available flags**
@@ -336,7 +337,7 @@ A <<< "file1.lts" # class A and variable A will be imported
 
 ## [Standard](Lotus/src/parser/modules/standardModule.cpp)
 **Structures**
-```
+```Lotus
 exception # Class
 ```
 
@@ -366,24 +367,24 @@ throw(msg, type); # Throw exception with msg and type
 ## [Math module](Lotus/src/parser/modules/mathModule.cpp)
 **Functions**
 ```Lotus
-Math::absolute(value); # Returns absolute value of the value
-Math::round(value); # Rounds the value
-Math::min(value1, value2); # Returns the smaller of the two given values
-Math::max(value1, value2); # Returns the bigger of the two given values
-Math::sqrt(value); # Returns square root of the value
-Math::PI(); # Returns PI
-Math::E(); # Returns E
+absolute(value); # Returns absolute value of the value
+round(value); # Rounds the value
+min(value1, value2); # Returns the smaller of the two given values
+max(value1, value2); # Returns the bigger of the two given values
+sqrt(value); # Returns square root of the value
+PI(); # Returns PI
+E(); # Returns E
 ```
 
 ## [Time module](Lotus/src/parser/modules/timeModule.cpp)
 **Structures**
-```
+```Lotus
 Time # Class
 Time # Static
 ```
 
 **Fields**
-```
+```Lotus
 Time.sec
 Time.min
 Time.hour
@@ -396,9 +397,9 @@ Time.isdst
 ```
 
 **Functions**
-```
+```Lotus
 Time();
-Time(sec, min, hour, day, month, year, day_of_week, day_of_year, isdst);
+Time(sec, min, hour, day, month, year, isdst);
 
 Time::now(); # Returns current world time
 Time::sleep(duration); # Stops the code execution for "duration" milliseconds
@@ -406,22 +407,20 @@ Time::sleep(duration); # Stops the code execution for "duration" milliseconds
 
 ## [Os module](Lotus/src/parser/modules/osModule.cpp)
 **Structures**
-```
+```Lotus
 File # Class
 File # Static
-Console # Static
 ```
 
 **Functions**
-
-```
+```Lotus
 File();
 File(path);
 
 File.path(); # Returns relative path
 File.fullPath(); # Returns absolute path
-File.fullName(); # Returns name and extension
 File.name(); # Returns name
+File.fullName(); # Returns name and extension
 File.extension(); # Returns extension
 
 File.setPath(path); # Sets relative path
@@ -434,5 +433,52 @@ File.rename(name); # Renames the file
 File::create(path); # Creates file in specified path and returns File class object
 File::isExists(path); # Returns if specified file exists
 
-Console::execute(command); # Executes specified command and returns result
+execute(command); # Executes specified command and returns result
+platform(); # Returns name of the user’s platform
+```
+
+## [Vector module](Lotus/src/parser/modules/vectorModule.cpp)
+**Structures**
+```Lotus
+Vector2 # Class
+Vector3 # Class
+```
+
+**Functions**
+```Lotus
+Vector2();
+Vector2(X, Y);
+Vector3();
+Vector3(X, Y, Z);
+
+Vector2.normalize();
+Vector2.dot(otherVector);
+Vector2.distance(otherVector);
+Vector2.angleBetween(otherVector);
+Vector2.lerp(otherVector, t);
+
+Vector3.normalize();
+Vector3.dot(otherVector);
+Vector3.distance(otherVector);
+Vector3.lerp(otherVector, t);
+
+# Vector2 and Vector3 have operator overloads 
+vector + otherVector
+vector - otherVector
+vector * scalar
+vector / scalar
+vector == otherVector
+vector != otherVector
++vector
+-vector
+vector < otherVector
+vector > otherVector
+vector <= otherVector
+vector >= otherVector
+vector += otherVector
+vector -= otherVector
+vector *= scalar
+vector /= scalar
+size(vector)
+string(vector)
 ```

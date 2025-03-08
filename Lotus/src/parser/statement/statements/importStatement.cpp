@@ -8,8 +8,8 @@
 
 using namespace lotus;
 
-lotus::ImportStatement::ImportStatement(const String& key, const String& filePath, StringMap<Module>& modules, const Flags& flags)
-    : key(key), filePath(filePath), modules(modules), flags(flags) {}
+lotus::ImportStatement::ImportStatement(const String& key, const String& filePath, StringMap<Module>& modules)
+    : key(key), filePath(filePath), modules(modules) {}
 
 void lotus::ImportStatement::execute(Module& currentModule) {
     size_t find = filePath.find_last_of(CHAR_LITERAL('/'));
@@ -35,7 +35,7 @@ void lotus::ImportStatement::execute(Module& currentModule) {
         module = modules[file];
     }
 
-    bool importEverythingWithSameName = flags.getImportEverythingWithSameName();
+    bool importEverythingWithSameName = currentModule.flags.getImportEverythingWithSameName();
     bool importAll = (key == STRING_LITERAL("*"));
 
     if (importAll) {

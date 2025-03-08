@@ -11,9 +11,46 @@ using namespace lotus;
 
 void lotus::Parser::loadOsModule() {
 	Module Os;
+	Os.DEF("platform", [&] {
+#if defined(_WIN32)
+		RETURN_VALUE(STRING("windows"));
+#elif defined(__APPLE__) && defined(__MACH__)
+		RETURN_VALUE(STRING("macos"));
+#elif defined(__linux__)
+		RETURN_VALUE(STRING("linux"));
+#elif defined(__unix__)
+		RETURN_VALUE(STRING("unix"));
+#elif defined(__FreeBSD__)
+		RETURN_VALUE(STRING("freebsd"));
+#elif defined(__OpenBSD__)
+		RETURN_VALUE(STRING("openbsd"));
+#elif defined(__NetBSD__)
+		RETURN_VALUE(STRING("netbsd"));
+#elif defined(__ANDROID__)
+		RETURN_VALUE(STRING("android"));
+#elif defined(__CYGWIN__)
+		RETURN_VALUE(STRING("cygwin"));
+#elif defined(_POSIX_VERSION)
+		RETURN_VALUE(STRING("posix"));
+#elif defined(__HAIKU__)
+		RETURN_VALUE(STRING("haiku"));
+#elif defined(__sun) && defined(__SVR4)
+		RETURN_VALUE(STRING("solaris"));
+#elif defined(__QNX__)
+		RETURN_VALUE(STRING("qnx"));
+#elif defined(__VXWORKS__)
+		RETURN_VALUE(STRING("vxworks"));
+#elif defined(__riscos__)
+		RETURN_VALUE(STRING("riscos"));
+#elif defined(__EMSCRIPTEN__)
+		RETURN_VALUE(STRING("emscripten"));
+#else
+		RETURN_VALUE(STRING("unknown"));
+#endif
+		});
+
 	Class FileClass;
 	Static FileStatic;
-	Static ConsoleStatic;
 
 	FileClass.addField("path", FIELD(AccessModifierType::PRIVATE, STRING()));
 
@@ -177,7 +214,7 @@ void lotus::Parser::loadOsModule() {
 		RETURN_VALUE(BOOL(std::filesystem::exists(std::filesystem::path(module.GET("path")->asString(module)))));
 		}, "path"));
 
-	ConsoleStatic.addMethod("execute", METHOD(AccessModifierType::PUBLIC, [&] {
+	Os.DEF("execute", [&] {
 		String command = module.GET("command")->asString(module);
 		std::array<Char, 128> buffer;
 		String result;
@@ -202,10 +239,9 @@ void lotus::Parser::loadOsModule() {
 #endif
 
 		RETURN_VALUE(STRING(result));
-		}, "command"));
+		}, "command");
 
 	Os.CLASS("File", FileClass);
 	Os.STATIC("File", FileStatic);
-	Os.STATIC("Console", ConsoleStatic);
 	modules.emplace(STRING_LITERAL("Os"), Os);
 }

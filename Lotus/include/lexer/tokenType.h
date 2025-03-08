@@ -9,7 +9,7 @@ namespace lotus {
 		INT_TYPE,
 		FLOAT_TYPE,
 		STRING_TYPE,
-		WORD,
+		IDENTIFIER,
 		HEX,
 
 		PLUS,
@@ -33,7 +33,7 @@ namespace lotus {
 		GREATERGREATER,
 		LESSLESSLESS,
 		PLUSEQUAL,
-		MINUSQUAL,
+		MINUSEQUAL,
 		STARQUAL,
 		SLASHQUAL,
 		STARSTAREQUAL,
@@ -82,6 +82,7 @@ namespace lotus {
 		STATIC,
 		TRY,
 		CATCH,
+		FLAGVALUE,
 
 		LPAREN,
 		RPAREN,

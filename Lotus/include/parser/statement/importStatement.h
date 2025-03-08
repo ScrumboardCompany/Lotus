@@ -16,13 +16,12 @@ namespace lotus {
 		String key;
 		String filePath;
 		StringMap<Module>& modules;
-		const Flags& flags;
 
 		Ptr<Parser> parser;
 
 	public:
 
-		ImportStatement(const String& key, const String& filePath, StringMap<Module>& modules, const Flags& flags);
+		ImportStatement(const String& key, const String& filePath, StringMap<Module>& modules);
 		void execute(Module& currentModule) override;
 	};
 

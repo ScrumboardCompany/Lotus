@@ -12,7 +12,7 @@ std::vector<Argument> lotus::Parser::handleArgs() {
 	if (!match(TokenType::RPAREN)) {
 
 		while (true) {
-			String name = consume(TokenType::WORD).text;
+			String name = consume(TokenType::IDENTIFIER).text;
 
 			for (auto& arg : args) {
 				if (name == arg.name) throw LotusException(STRING_LITERAL("Cannot have two arguments with same name \"") + name + STRING_LITERAL("\""));

@@ -4,7 +4,7 @@
 using namespace lotus;
 
 Statement lotus::Parser::handleDefStatement() {
-	String name = consume(TokenType::WORD).text;
+	String name = consume(TokenType::IDENTIFIER).text;
 
 	std::vector<Argument> args = handleArgs();
 

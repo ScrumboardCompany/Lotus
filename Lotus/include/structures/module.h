@@ -7,6 +7,7 @@
 #include "structures/functions.h"
 #include "structures/statics.h"
 #include "structures/classes.h"
+#include "structures/flags.h"
 #include "parser/statement/cppFunctionStatement.h"
 
 //#define LET(name, value) variables.declare(STRING_LITERAL(name), value)
@@ -43,6 +44,7 @@ namespace lotus {
 		Functions functions;
 		Statics statics;
 		Classes classes;
+		Flags flags;
 
 		void LET(const String& name, const Value& value);
 

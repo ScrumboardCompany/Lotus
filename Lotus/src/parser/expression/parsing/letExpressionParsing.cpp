@@ -4,7 +4,7 @@
 using namespace lotus;
 
 Expression lotus::Parser::handleLetExpression() {
-	String name = consume(TokenType::WORD).text;
+	String name = consume(TokenType::IDENTIFIER).text;
 
 	Expression value = nullptr;
 	if (match(TokenType::EQUAL)) {

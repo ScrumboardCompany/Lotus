@@ -11,8 +11,8 @@ String lotus::Token::type_to_string() const {
 		return STRING_LITERAL("float");
 	case lotus::TokenType::STRING_TYPE:
 		return STRING_LITERAL("string");
-	case lotus::TokenType::WORD:
-		return STRING_LITERAL("word");
+	case lotus::TokenType::IDENTIFIER:
+		return STRING_LITERAL("identifier");
 	case lotus::TokenType::HEX:
 		return STRING_LITERAL("hex");
 	case lotus::TokenType::PLUS:
@@ -57,7 +57,7 @@ String lotus::Token::type_to_string() const {
 		return STRING_LITERAL("<<<");
 	case lotus::TokenType::PLUSEQUAL:
 		return STRING_LITERAL("+=");
-	case lotus::TokenType::MINUSQUAL:
+	case lotus::TokenType::MINUSEQUAL:
 		return STRING_LITERAL("-=");
 	case lotus::TokenType::STARQUAL:
 		return STRING_LITERAL("*=");
@@ -123,6 +123,8 @@ String lotus::Token::type_to_string() const {
 		return STRING_LITERAL("foreach");
 	case lotus::TokenType::FLAG:
 		return STRING_LITERAL("flag");
+	case lotus::TokenType::FLAGVALUE:
+		return STRING_LITERAL("flagValue");
 	case lotus::TokenType::CONTINUE:
 		return STRING_LITERAL("continue");
 	case lotus::TokenType::BREAK:

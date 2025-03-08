@@ -70,7 +70,7 @@ void lotus::Parser::loadStandardModule() {
 
 	Class exceptionClass;
 
-	exceptionClass.addField("__msg", FIELD(AccessModifierType::PRIVATE, STRING("")));
+	exceptionClass.addField("__msg", FIELD(AccessModifierType::PRIVATE, STRING("error")));
 	exceptionClass.addField("__type", FIELD(AccessModifierType::PRIVATE, STRING("error")));
 
 	exceptionClass.addMethod("exception", METHOD(AccessModifierType::PUBLIC, [&] {}));

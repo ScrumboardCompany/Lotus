@@ -39,7 +39,7 @@ namespace lotus {
 			{STRING_LITERAL(">>"), TokenType::GREATERGREATER},
 			{STRING_LITERAL("<<<"), TokenType::LESSLESSLESS},
 			{STRING_LITERAL("+="), TokenType::PLUSEQUAL},
-			{STRING_LITERAL("-="), TokenType::MINUSQUAL},
+			{STRING_LITERAL("-="), TokenType::MINUSEQUAL},
 			{STRING_LITERAL("*="), TokenType::STARQUAL},
 			{STRING_LITERAL("/="), TokenType::SLASHQUAL},
 			{STRING_LITERAL("**="), TokenType::STARSTAREQUAL},
@@ -90,6 +90,7 @@ namespace lotus {
 			{STRING_LITERAL("static"), TokenType::STATIC},
 			{STRING_LITERAL("try"), TokenType::TRY},
 			{STRING_LITERAL("catch"), TokenType::CATCH},
+			{STRING_LITERAL("flagValue"), TokenType::FLAGVALUE},
 		};
 
 		String input;
