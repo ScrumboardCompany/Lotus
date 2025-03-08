@@ -21,9 +21,19 @@ After installing the language, we recommend you to restart your PC to ensure PAT
 
 Lotus files have .lts extension.
 
-You can also use CLI command to compile lotus files
+## CLI
+
+CLI command to compile lotus files
 
 ```Lotus ./main.lts```
+
+Flags
+```
+--help, -h - outputs all CLI flags
+--version, -v - outputs lotus version
+--flag [name] [value] - set flag value before interpretation
+--flag-config [cfgFilePath] - specify flags config
+```
 
 
 ## Example Code

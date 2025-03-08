@@ -24,7 +24,7 @@ std::wstring lotus::wreadContent(const std::wstring& filePath) {
     file.imbue(std::locale(""));
 
     if (!file) {
-        throw LotusException(STRING_LITERAL("Unable to open file: ") + filePath);
+        throw LotusException(STRING_LITERAL("Error: unable to open file: ") + filePath);
     }
 
     std::wstringstream buffer;

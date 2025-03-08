@@ -11,8 +11,6 @@
 #include "structures/flags.h"
 #include "structures/module.h"
 
-#define EOF_TOKEN lotus::Token({ lotus::TokenType::END_OF_FILE, STRING_LITERAL("")})
-
 namespace lotus {
 
 	class Parser {
