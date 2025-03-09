@@ -431,7 +431,7 @@ File.append(content); # Appends content to the file
 File.rename(name); # Renames the file
 
 File::create(path); # Creates file in specified path and returns File class object
-File::isExists(path); # Returns if specified file exists
+File::exists(path); # Returns if specified file exists
 
 execute(command); # Executes specified command and returns result
 platform(); # Returns name of the user’s platform
