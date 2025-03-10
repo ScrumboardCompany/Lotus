@@ -38,8 +38,8 @@ void lotus::Class::registerClass(Module& module) {
 				RETURN_VALUE(MAKE_PTR<ClassValue>(value));
 				}), method.value.args);
 
-			module.functions.declare(name, constructor);
+			module.functions.forceSet(name, constructor);
 		}
 	}
-	else module.functions.declare(name, makeDefaultConstructor());
+	else module.functions.forceSet(name, makeDefaultConstructor());
 }

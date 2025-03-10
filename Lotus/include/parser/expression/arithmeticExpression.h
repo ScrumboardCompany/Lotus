@@ -7,8 +7,6 @@
 
 namespace lotus {
 
-	class Variables;
-
 	enum class ArithmeticOperationType {
 		ADD,
 		SUBSTRACT,

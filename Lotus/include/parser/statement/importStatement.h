@@ -8,20 +8,37 @@
 namespace lotus {
 
 	struct Module;
-	class Flags;
 	class Parser;
 
-	class ImportStatement : public IStatement {
-		
+	enum class KeyType {
+		VARIABLE,
+		FUNCTION,
+		STATIC,
+		CLASS,
+		EVERYTHING,
+		UNKNOWN,
+		NOTYPE
+	};
+
+	struct ImportElementInfo {
 		String key;
+		KeyType type;
+		String stringType;
+	};
+
+	class ImportStatement : public IStatement {
+
+		std::vector<ImportElementInfo> elements;
 		String filePath;
 		StringMap<Module>& modules;
 
 		Ptr<Parser> parser;
 
+		void loadFromModule(Module& from, Module& to);
+
 	public:
 
-		ImportStatement(const String& key, const String& filePath, StringMap<Module>& modules);
+		ImportStatement(const std::vector<ImportElementInfo>& elements, const String& filePath, StringMap<Module>& modules);
 		void execute(Module& currentModule) override;
 	};
 

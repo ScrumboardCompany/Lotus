@@ -48,7 +48,7 @@ void compile(const String& filePath, const StringMap<bool>& flags) {
 
 int main(int argc, char* argv[]) {
 
-    std::vector<std::string> args(argv + 1, argv + argc);
+    /*std::vector<std::string> args(argv + 1, argv + argc);
 
     StringMap<bool> flags;
     Map<std::string, bool> boolValues = { {"true", true}, {"false", false} };
@@ -98,7 +98,9 @@ int main(int argc, char* argv[]) {
             compile(STRING_VAR_LITERAL(args[i].c_str()), flags);
             break;
         }
-    }
+    }*/
+
+    compile(L"test.lts", {});
 
     return 0;
 }

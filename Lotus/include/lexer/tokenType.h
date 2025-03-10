@@ -83,6 +83,8 @@ namespace lotus {
 		TRY,
 		CATCH,
 		FLAGVALUE,
+		VARIABLE,
+		FUNCTION,
 
 		LPAREN,
 		RPAREN,

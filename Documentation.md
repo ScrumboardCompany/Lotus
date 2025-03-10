@@ -186,7 +186,7 @@ let a = def() {
     print("Hello World!");
 }
 ```
-Lambdas have higher priority than regular functions, so in this situation - lambda will be called
+Regular functiona have higher priority than regular variables, so in this situation - regular function will be called
 ```Lotus
 let a = def() {
     print("Lambda");
@@ -237,6 +237,64 @@ print(John.age, John.name);
 > **IMPORTANT** In classes and statics the access modifier is `private` by default!
 > **IMPORTANT** Classes and statics can be named the same
 
+**Available overloads**
+```Lotus
+__asInt__()
+__asDouble__()
+__asBool__()
+__asString__()
+
+__add__(other)
+__substract__(other)
+__multiply__(other)
+__divide__(other)
+__power__(other)
+__divideModule__(other)
+
+__bitwiseAnd__(other)
+__bitwiseOr__(other)
+__bitwiseXor__(other)
+__bitwiseNot__
+__bitwiseLeftShift__(other)
+__bitwiseRightShift__(other)
+
+__greater__(other)
+__less__(other)
+__greaterEqual__(other)
+__lessEqual__(other)
+__equality__(other)
+__inequality__(other)
+__logicalOr__(other)
+__logicalAnd__(other)
+
+__addSet__(other)
+__substractSet__(other)
+__multiplySet__(other)
+__divideSet__(other)
+__powerSet__(other)
+__divideModuleSet__(other)
+__bitwiseAndSet__(other)
+__bitwiseOrSet__(other)
+__bitwiseXorSet__(other)
+__bitwiseNotSet__
+__bitwiseLeftShiftSet__(other)
+__bitwiseRightShiftSet__(other)
+
+__unaryPlus__
+__unaryMinus__
+__unaryNot__
+__prefixIncrement__
+__postfixIncrement__
+__prefixDecrement__
+__postfixDecrement__
+
+__size__
+__getOfIndex__(index)
+__setOfIndex__(index)
+__call__() # Possible to specify any arguments
+```
+
+
 ## Inheritance
 ```Lotus
 class A {
@@ -264,17 +322,24 @@ class C : A, B {}
 
 ## Import
 ```Lotus
-PI <<< Math # Notation in quotes is also available - "ModuleName"
-* <<< Time # Import all from module
+* <<< "file.lts" # Imports everything from file.lts
+A <<< "file.lts" # If flag ImportEverythingWithSameName is true, then imports everything with name A, otherwise it imports with this priority: class -> static -> function -> variable
+variable A <<< "file.lts" # Imports variable A. Other possible types to import: class, static, function
+variable * <<< "file.lts" # Imports every variable
+```
+You can combine those imports
+```Lotus
+variable A, class *, B <<< "file.lts"
+```
+>**IMPORTANT**: If you specify `*` without type, you can't specify other elements to import
 
-print(PI())
-
-# File import
-
-Function <<< "Path/To/Dot/Lts/File.lts"
-# or
-* <<< "Path/To/Dot/Lts/File.lts" # Import all from file
-
+**Import from modules**
+```Lotus
+PI <<< Math
+```
+Or
+```Lotus
+PI <<< "Math"
 ```
 
 ## Infinite arguments
@@ -283,7 +348,7 @@ def a(args...) {
     print(args);
 }
 ```
-**IMPORTANT**: The infinite argument must be the last argument in function
+> **IMPORTANT**: The infinite argument must be the last argument in function
 
 ## Specified arguments
 ```Lotus
@@ -430,7 +495,7 @@ File.write(content); # Rewrites content in the file
 File.append(content); # Appends content to the file
 File.rename(name); # Renames the file
 
-File::create(path); # Creates file in specified path and returns File class object
+File::create(path); # Creates file in specified path and returns absolute file path
 File::exists(path); # Returns if specified file exists
 
 execute(command); # Executes specified command and returns result

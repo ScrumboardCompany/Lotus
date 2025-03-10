@@ -31,6 +31,8 @@ namespace lotus {
 
 	private:
 
+		bool isValidImportStatement();
+
 		void loadModules();
 
 		void loadStandardModule();

@@ -91,6 +91,8 @@ namespace lotus {
 			{STRING_LITERAL("try"), TokenType::TRY},
 			{STRING_LITERAL("catch"), TokenType::CATCH},
 			{STRING_LITERAL("flagValue"), TokenType::FLAGVALUE},
+			{STRING_LITERAL("variable"), TokenType::VARIABLE},
+			{STRING_LITERAL("function"), TokenType::FUNCTION}
 		};
 
 		String input;

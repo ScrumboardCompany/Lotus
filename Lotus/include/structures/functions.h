@@ -46,6 +46,10 @@ namespace lotus {
 		bool isExists(const String& name);
 
 		bool isExists(const char* name);
+
+		bool isExists(const String& name, size_t argsCount);
+
+		bool isExists(const char* name, size_t argsCount);
 	};
 
 }

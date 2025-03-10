@@ -2,6 +2,7 @@
 #include "parser/expression/wordExpression.h"
 #include "parser/value/lambdaValue.h"
 #include "structures/module.h"
+#include "utils/lotusError.h"
 
 using namespace lotus;
 
@@ -23,7 +24,15 @@ Value lotus::CallLambdaExpression::eval(Module& module) {
 	}
 
 	if (auto word = std::dynamic_pointer_cast<WordExpression>(function)) {
-		if (module.variables.isExists(word->name)) {
+
+		if (module.functions.isExists(word->name)) {
+			if (specifiedValues.empty()) {
+				return module.functions.call(word->name, values, module);
+			}
+
+			return module.functions.call(word->name, values, specifiedValues, module);
+		}
+		else if (module.variables.isExists(word->name)) {
 			if (auto lambda = std::dynamic_pointer_cast<LambdaValue>(module.variables.get(word->name))) {
 				Ptr<Function> variadic = nullptr;
 
@@ -37,11 +46,7 @@ Value lotus::CallLambdaExpression::eval(Module& module) {
 			}
 		}
 		else {
-			if (specifiedValues.empty()) {
-				return module.functions.call(word->name, values, module);
-			}
-
-			return module.functions.call(word->name, values, specifiedValues, module);
+			throw LotusException(STRING_LITERAL("Function or variable \"") + word->name + STRING_LITERAL("\" is not found"));
 		}
 	}
 

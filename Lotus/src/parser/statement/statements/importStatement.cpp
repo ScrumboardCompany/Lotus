@@ -5,11 +5,131 @@
 #include "structures/variables.h"
 #include "utils/lotusError.h"
 #include "structures/classes.h"
+#include <algorithm>
 
 using namespace lotus;
 
-lotus::ImportStatement::ImportStatement(const String& key, const String& filePath, StringMap<Module>& modules)
-    : key(key), filePath(filePath), modules(modules) {}
+void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
+    bool importEverythingWithSameName = to.flags.getImportEverythingWithSameName();
+    if (elements.empty()) throw LotusException(STRING_LITERAL("No elements to import specified"));
+    bool importAll = (elements[0].key == STRING_LITERAL("*") && elements[0].type == KeyType::NOTYPE);
+
+    for (auto& [key, type, stringType] : elements) {
+        if (importAll) {
+            for (auto& cls : from.classes.classes) {
+                to.classes.forceSet(cls.first, cls.second);
+            }
+            for (auto& stat : from.statics.statics) {
+                to.statics.forceSet(stat.first, stat.second);
+            }
+            for (auto& func : from.functions.functions) {
+                for (auto& overload : func.second) {
+                    to.functions.forceSet(func.first, overload);
+                }
+            }
+            if (!from.variables.scopes.empty()) {
+                for (auto& var : from.variables.scopes[0]) {
+                    to.variables.forceSet(var.first, var.second);
+                }
+            }
+        }
+        else if (type != KeyType::NOTYPE) {
+            if (type == KeyType::UNKNOWN) {
+                throw LotusException(stringType + STRING_LITERAL(" is unknown type"));
+            }
+
+            if (from.classes.isExists(key) && type == KeyType::CLASS) {
+                to.classes.forceSet(key, from.classes.get(key));
+                to.classes.registerClass(key, to);
+                continue;
+            } else if (key == STRING_LITERAL("*") && type == KeyType::CLASS) {
+                for (auto& cls : from.classes.classes) {
+                    to.classes.forceSet(cls.first, cls.second);
+                    to.classes.registerClass(cls.first, to);
+                }
+                continue;
+            }
+
+            if (from.statics.isExists(key) && type == KeyType::STATIC) {
+                to.statics.forceSet(key, from.statics.get(key));
+                continue;
+            } else if (key == STRING_LITERAL("*") && type == KeyType::STATIC) {
+                for (auto& stat : from.statics.statics) {
+                    to.statics.forceSet(stat.first, stat.second);
+                }
+                continue;
+            }
+
+            if (from.functions.isExists(key) && type == KeyType::FUNCTION) {
+                for (auto& f : from.functions.functions[key]) {
+                    to.functions.forceSet(key, f);
+                }
+                continue;
+            } else if (key == STRING_LITERAL("*") && type == KeyType::FUNCTION) {
+                for (auto& func : from.functions.functions) {
+                    for (auto& overload : func.second) {
+                        to.functions.forceSet(func.first, overload);
+                    }
+                }
+                continue;
+            }
+
+            if (from.variables.isExists(key) && type == KeyType::VARIABLE) {
+                to.variables.forceSet(key, from.variables.get(key));
+                continue;
+            } else if (key == STRING_LITERAL("*") && type == KeyType::VARIABLE) {
+                if (!from.variables.scopes.empty()) {
+                    for (auto& var : from.variables.scopes[0]) {
+                        to.variables.forceSet(var.first, var.second);
+                    }
+                }
+                continue;
+            }
+
+            throw LotusException(stringType + STRING_LITERAL(" \"") + key + STRING_LITERAL("\"") +
+                String(STRING_LITERAL(" not found in ")) + STRING_LITERAL("\"") + filePath + STRING_LITERAL("\""));
+        }
+        else {
+            bool found = false;
+            if (from.classes.isExists(key)) {
+                to.classes.forceSet(key, from.classes.get(key));
+                if (!importEverythingWithSameName) {
+                    to.classes.registerClass(key, to);
+                }
+                found = true;
+            }
+
+            if (from.statics.isExists(key)) {
+                if (importEverythingWithSameName || !found) {
+                    to.statics.forceSet(key, from.statics.get(key));
+                    found = true;
+                }
+            }
+
+            if (from.functions.isExists(key)) {
+                if ( importEverythingWithSameName || !found) {
+                    for (auto& f : from.functions.functions[key]) {
+                        to.functions.forceSet(key, f);
+                    }
+                    found = true;
+                }
+            }
+
+            if (from.variables.isExists(key)) {
+                if (importEverythingWithSameName || !found) {
+                    to.variables.forceSet(key, from.variables.get(key));
+                    found = true;
+                }
+            }
+
+            if (!found) throw LotusException(STRING_LITERAL("\"") + key + STRING_LITERAL("\"") +
+                String(STRING_LITERAL(" not found in ")) + STRING_LITERAL("\"") + filePath + STRING_LITERAL("\""));
+        }
+    }
+}
+
+lotus::ImportStatement::ImportStatement(const std::vector<ImportElementInfo>& elements, const String& filePath, StringMap<Module>& modules)
+    : elements(elements), filePath(filePath), modules(modules) {}
 
 void lotus::ImportStatement::execute(Module& currentModule) {
     size_t find = filePath.find_last_of(CHAR_LITERAL('/'));
@@ -35,62 +155,5 @@ void lotus::ImportStatement::execute(Module& currentModule) {
         module = modules[file];
     }
 
-    bool importEverythingWithSameName = currentModule.flags.getImportEverythingWithSameName();
-    bool importAll = (key == STRING_LITERAL("*"));
-
-    if (importAll) {
-        for (auto& cls : module.classes.classes) {
-            if (!currentModule.classes.isExists(cls.first)) {
-                currentModule.classes.declare(cls.first, cls.second);
-                currentModule.classes.registerClass(cls.first, currentModule);
-            }
-        }
-        for (auto& stat : module.statics.statics) {
-            if (!currentModule.statics.isExists(stat.first))
-                currentModule.statics.forceSet(stat.first, stat.second);
-        }
-        for (auto& func : module.functions.functions) {
-            if (!currentModule.functions.isExists(func.first) && !module.classes.isExists(func.first)) {
-                for (auto& f : func.second) {
-                    currentModule.functions.forceSet(func.first, f);
-                }
-            }
-        }
-        if (!module.variables.scopes.empty())
-        for (auto& var : module.variables.scopes[0]) {
-            if (!currentModule.variables.isExists(var.first))
-                currentModule.variables.forceSet(var.first, var.second);
-        }
-    }
-    else {
-        bool found = false;
-        if (module.classes.isExists(key)) {
-            currentModule.classes.declare(key, module.classes.get(key));
-            currentModule.classes.registerClass(key, currentModule);
-            found = true;
-        }
-        if (module.statics.isExists(key)) {
-            if (importEverythingWithSameName || !found) {
-                currentModule.statics.forceSet(key, module.statics.get(key));
-                found = true;
-            }
-        }
-        if (module.functions.isExists(key)) {
-            if ((importEverythingWithSameName || !found) && !module.classes.isExists(key)) {
-                for (auto& f : module.functions.functions[key]) {
-                    currentModule.functions.declare(key, f);
-                }
-                found = true;
-            }
-        }
-        if (module.variables.isExists(key)) {
-            if (importEverythingWithSameName || !found) {
-                currentModule.variables.forceSet(key, module.variables.get(key));
-                found = true;
-            }
-        }
-
-        if (!found) throw LotusException(STRING_LITERAL("\"") + key + STRING_LITERAL("\"") +
-            String(STRING_LITERAL(" not found in ")) + STRING_LITERAL("\"") + filePath + STRING_LITERAL("\""));
-    }
+    loadFromModule(module, currentModule);
 }

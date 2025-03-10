@@ -207,7 +207,7 @@ void lotus::Parser::loadOsModule() {
 			module.THROW(STRING(STRING_LITERAL("Failed to create file: ") + path), STRING("file_error"));
 		}
 
-		RETURN_VALUE(module.CALL("File", STRING(path)));
+		RETURN_VALUE(STRING(std::filesystem::absolute(path).wstring()));
 		}, "path"));
 
 	FileStatic.addMethod("exists", METHOD(AccessModifierType::PUBLIC, [&] {

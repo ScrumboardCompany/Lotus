@@ -94,3 +94,22 @@ bool Functions::isExists(const String& name) {
 bool lotus::Functions::isExists(const char* name) {
 	return isExists(STRING_VAR_LITERAL(name));
 }
+
+bool Functions::isExists(const String& name, size_t argsCount) {
+	if (isExists(name)) {
+		bool variadic = false;
+		for (auto& function : functions[name]) {
+			if (function.hasVariadic() && argsCount >= function.getArgsCount() - 1) variadic = true;
+			if (function.getArgsCount() == argsCount) return true;
+		}
+
+		if (variadic) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool lotus::Functions::isExists(const char* name, size_t argsCount) {
+	return isExists(STRING_VAR_LITERAL(name), argsCount);
+}

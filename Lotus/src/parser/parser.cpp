@@ -28,7 +28,10 @@ Module& lotus::Parser::getModule() {
 Statement lotus::Parser::getNextGlobalStatement() {
 	Statement statement;
 
-	if (match(TokenType::FLAG)) {
+	if (isValidImportStatement()) {
+		statement = handleImportStatement();
+	}
+	else if (match(TokenType::FLAG)) {
 		statement = handleFlagStatement();
 	} 
 	else if (match(TokenType::DEF)) {
@@ -39,9 +42,6 @@ Statement lotus::Parser::getNextGlobalStatement() {
 	}
 	else if (match(TokenType::STATIC)) {
 		statement = handleStaticStatement();
-	}
-	else if ((get(0).type == TokenType::IDENTIFIER || get(0).type == TokenType::STAR) && get(1).type == TokenType::LESSLESSLESS) {
-		statement = handleImportStatement();
 	}
 	else statement = getNextStatement();
 
