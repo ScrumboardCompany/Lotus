@@ -113,5 +113,5 @@ Value lotus::StringValue::size(Module&) {
 }
 
 Value lotus::StringValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(StringValue)));
+    return INT(static_cast<int>(sizeof(*this)));
 }

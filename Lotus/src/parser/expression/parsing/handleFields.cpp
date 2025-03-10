@@ -2,6 +2,7 @@
 #include "parser/function/function.h"
 #include "structures/classStructures.h"
 #include "utils/lotusError.h"
+#include "parser/expression/undefinedExpression.h"
 
 using namespace lotus;
 
@@ -49,7 +50,7 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 		}
 		else {
 			String fieldName = consume(TokenType::IDENTIFIER).text;
-			Expression fieldValue = nullptr;
+			Expression fieldValue = MAKE_PTR<UndefinedExpression>();
 
 			if (match(TokenType::EQUAL)) {
 				fieldValue = expression();
@@ -74,7 +75,7 @@ StringMap<Expression> lotus::Parser::handleObject() {
 
 	while (!match(TokenType::RBRACE)) {
 		String fieldName = consume(TokenType::IDENTIFIER).text;
-		Expression fieldValue = nullptr;
+		Expression fieldValue = MAKE_PTR<UndefinedExpression>();
 
 		if (match(TokenType::EQUAL)) {
 			fieldValue = expression();

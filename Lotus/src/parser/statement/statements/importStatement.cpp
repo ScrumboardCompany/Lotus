@@ -22,6 +22,9 @@ void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
             for (auto& stat : from.statics.statics) {
                 to.statics.forceSet(stat.first, stat.second);
             }
+            for (auto& en : from.enums.enums) {
+                to.enums.forceSet(en.first, en.second);
+            }
             for (auto& func : from.functions.functions) {
                 for (auto& overload : func.second) {
                     to.functions.forceSet(func.first, overload);
@@ -56,6 +59,17 @@ void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
             } else if (key == STRING_LITERAL("*") && type == KeyType::STATIC) {
                 for (auto& stat : from.statics.statics) {
                     to.statics.forceSet(stat.first, stat.second);
+                }
+                continue;
+            }
+
+            if (from.enums.isExists(key) && type == KeyType::ENUM) {
+                to.enums.forceSet(key, from.enums.get(key));
+                continue;
+            }
+            else if (key == STRING_LITERAL("*") && type == KeyType::ENUM) {
+                for (auto& en : from.enums.enums) {
+                    to.enums.forceSet(en.first, en.second);
                 }
                 continue;
             }
@@ -102,6 +116,13 @@ void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
             if (from.statics.isExists(key)) {
                 if (importEverythingWithSameName || !found) {
                     to.statics.forceSet(key, from.statics.get(key));
+                    found = true;
+                }
+            }
+
+            if (from.enums.isExists(key)) {
+                if (importEverythingWithSameName || !found) {
+                    to.enums.forceSet(key, from.enums.get(key));
                     found = true;
                 }
             }

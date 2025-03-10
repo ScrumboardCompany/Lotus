@@ -89,5 +89,5 @@ Value lotus::ArrayValue::size(Module&) {
 }
 
 Value lotus::ArrayValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(ArrayValue)));
+    return INT(static_cast<int>(sizeof(*this)));
 }

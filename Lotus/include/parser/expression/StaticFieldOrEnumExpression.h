@@ -9,7 +9,7 @@ namespace lotus {
 
 	class Statics;
 
-	class StaticFieldExpression : public IExpression {
+	class StaticFieldOrEnumExpression : public IExpression {
 
 		String staticName;
 		String field;
@@ -17,7 +17,7 @@ namespace lotus {
 		friend class SetExpression;
 
 	public:
-		StaticFieldExpression(const String& staticName, const String& field);
+		StaticFieldOrEnumExpression(const String& staticName, const String& field);
 
 		Value eval(Module& module) override;
 	};

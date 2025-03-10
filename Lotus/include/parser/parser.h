@@ -79,7 +79,9 @@ namespace lotus {
 
 		Statement handleStaticStatement();
 
-		Statement handleTryCatch();
+		Statement handleTryCatchStatement();
+
+		Statement handleEnumStatement();
 
 		std::vector<Expression> handleExpressions();
 

@@ -17,9 +17,10 @@ void compile(const String& filePath, const StringMap<bool>& flags) {
 
         auto statements = parser.parse();
 
+        Module& module = parser.getModule();
         for (auto& statement : statements) {
             if (statement) {
-                statement->execute(parser.getModule());
+                statement->execute(module);
             }
         }
     }

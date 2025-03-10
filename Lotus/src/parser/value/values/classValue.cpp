@@ -69,6 +69,14 @@ void lotus::ClassValue::publicToProtectedInParents(const StringMap<AccessModifie
     }
 }
 
+void lotus::ClassValue::calculateSizeInRam(int& size) {
+    size += static_cast<int>(sizeof(fields));
+
+    for (auto& parent : parents) {
+        parent->calculateSizeInRam(size);
+    }
+}
+
 int lotus::ClassValue::asInt(Module& module) {
     return callMethod(STRING_LITERAL("__asInt__"), {}, module)->asInt(module);
 }
@@ -254,7 +262,9 @@ Value lotus::ClassValue::setOfIndex(const Value& index, const Value& other, Modu
 }
 
 Value lotus::ClassValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(ClassValue)));
+    int size = 0;
+    calculateSizeInRam(size);
+    return INT(size);
 }
 
 ClassValue& lotus::ClassValue::getMethod(const String& name, size_t argsCount, MethodMemberInfo& memberInfo) {

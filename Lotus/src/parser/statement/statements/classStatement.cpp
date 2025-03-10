@@ -14,7 +14,7 @@ void lotus::ClassStatement::execute(Module& module) {
 	for (auto& field : fields) {
 
 		FieldMemberInfo memberInfo;
-		memberInfo.value = field.second.first ? field.second.first->eval(module) : UNDEFINED();
+		memberInfo.value = field.second.first->eval(module);
 		memberInfo.accessModifier = field.second.second.accessModifier;
 
 		newClass->addField(field.first, memberInfo);

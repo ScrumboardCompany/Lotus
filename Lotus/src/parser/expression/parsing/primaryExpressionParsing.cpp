@@ -10,7 +10,7 @@
 #include "parser/expression/fieldExpression.h"
 #include "parser/expression/objectExpression.h"
 #include "parser/expression/lambdaExpression.h"
-#include "parser/expression/staticFieldExpression.h"
+#include "parser/expression/staticFieldOrEnumExpression.h"
 #include "parser/expression/staticMethodExpression.h"
 
 using namespace lotus;
@@ -47,7 +47,7 @@ Expression lotus::Parser::primary() {
 				return MAKE_PTR<StaticMethodExpression>(currentToken.text, name, args.first, args.second);
 			}
 			else {
-				return MAKE_PTR<StaticFieldExpression>(currentToken.text, name);
+				return MAKE_PTR<StaticFieldOrEnumExpression>(currentToken.text, name);
 			}
 		}
 		else return MAKE_PTR<WordExpression>(currentToken.text);

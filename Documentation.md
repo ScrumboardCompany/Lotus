@@ -105,8 +105,8 @@ let b = 2 + 2 * 3
 ```Lotus
 let a = [10, 20, 30];
 let b = {
-    Name = "John"
-    Age = 30
+    Name = "John";
+    Age = 30;
 }
 
 print(b.Name)
@@ -197,6 +197,20 @@ def a() {
 }
 
 a();
+```
+
+## Enums
+```Lotus
+enum Lang { # You can also use string instead of int
+    cpp = 0;
+    js = 1;
+    lotus; # lotus = biggest previous element value + 1 = js + 1 = 2, if there is string type in enum elements, you must specify value
+    python = 3;
+} # All elements of enum must have same type
+
+let a = Lang::lotus;
+
+print(int(a)) # output is 2
 ```
 
 ## Statics
@@ -323,8 +337,8 @@ class C : A, B {}
 ## Import
 ```Lotus
 * <<< "file.lts" # Imports everything from file.lts
-A <<< "file.lts" # If flag ImportEverythingWithSameName is true, then imports everything with name A, otherwise it imports with this priority: class -> static -> function -> variable
-variable A <<< "file.lts" # Imports variable A. Other possible types to import: class, static, function
+A <<< "file.lts" # If flag ImportEverythingWithSameName is true, then imports everything with name A, otherwise it imports with this priority: class -> static -> enum -> function -> variable
+variable A <<< "file.lts" # Imports variable A. Other possible types to import: class, static, enum, function
 variable * <<< "file.lts" # Imports every variable
 ```
 You can combine those imports

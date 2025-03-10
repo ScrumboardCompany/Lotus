@@ -3,7 +3,7 @@
 
 using namespace lotus;
 
-Statement lotus::Parser::handleTryCatch() {
+Statement lotus::Parser::handleTryCatchStatement() {
 	Statement tryBlock = handleBlockStatement();
 
 	consume(TokenType::CATCH);

@@ -15,14 +15,14 @@ namespace lotus {
 		FUNCTION,
 		STATIC,
 		CLASS,
-		EVERYTHING,
+		ENUM,
 		UNKNOWN,
 		NOTYPE
 	};
 
 	struct ImportElementInfo {
 		String key;
-		KeyType type;
+		KeyType type = KeyType::UNKNOWN;
 		String stringType;
 	};
 

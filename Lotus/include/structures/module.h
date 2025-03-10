@@ -7,19 +7,9 @@
 #include "structures/functions.h"
 #include "structures/statics.h"
 #include "structures/classes.h"
+#include "structures/enums.h"
 #include "structures/flags.h"
 #include "parser/statement/cppFunctionStatement.h"
-
-//#define LET(name, value) variables.declare(STRING_LITERAL(name), value)
-//#define SET(name, value) variables.set(STRING_LITERAL(name), value)
-//#define GET(name) variables.get(STRING_LITERAL(name))
-//#define DEF(name, body, ...) functions.declare(STRING_LITERAL(name), MAKE_CPP_FUNCTION(body, __VA_ARGS__))
-//#define CALL(module, name, ...) functions.call(name, {__VA_ARGS__}, module)
-//#define CALL_SPECIFY(module, name, args, specifiedArgs) functions.call(name, args, specifiedArgs, module)
-//#define STATIC(name, value) statics.declare(STRING_LITERAL(name), value)
-//#define CLASS(module, name, value) classes.declare(name, MAKE_PTR<Class>(value))
-//#define METHOD(accessModifier, body, ...) MethodMemberInfo(MAKE_CPP_FUNCTION(body, __VA_ARGS__), accessModifier)
-//#define FIELD(accessModifier, value) FieldMemberInfo(value, accessModifier)
 
 namespace lotus {
 
@@ -44,6 +34,7 @@ namespace lotus {
 		Functions functions;
 		Statics statics;
 		Classes classes;
+		Enums enums;
 		Flags flags;
 
 		void LET(const String& name, const Value& value);
@@ -93,6 +84,10 @@ namespace lotus {
 		void CLASS(const String& name, const Class& value, bool doRegister = false);
 
 		void CLASS(const char* name, const Class& value, bool doRegister = false);
+
+		void ENUM(const String& name, const Enum& value);
+
+		void ENUM(const char* name, const Enum& value);
 
 		[[noreturn]] void THROW();
 

@@ -20,5 +20,5 @@ Value lotus::LambdaValue::call(const std::vector<Value>& args, Module& module, c
 }
 
 Value lotus::LambdaValue::sizeInRam() {
-	return INT(static_cast<int>(sizeof(LambdaValue)));
+	return INT(static_cast<int>(sizeof(*this)));
 }

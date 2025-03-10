@@ -20,6 +20,10 @@ Statement Parser::handleImportStatement() {
 			element.type = KeyType::STATIC;
 			element.stringType = STRING_LITERAL("static");
 		}
+		else if (match(TokenType::ENUM)) {
+			element.type = KeyType::ENUM;
+			element.stringType = STRING_LITERAL("enum");
+		}
 		else if (match(TokenType::FUNCTION)) {
 			element.type = KeyType::FUNCTION;
 			element.stringType = STRING_LITERAL("function");

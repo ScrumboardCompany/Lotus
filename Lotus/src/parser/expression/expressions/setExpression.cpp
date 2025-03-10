@@ -2,7 +2,7 @@
 #include "parser/expression/indexExpression.h"
 #include "parser/expression/fieldExpression.h"
 #include "parser/expression/wordExpression.h"
-#include "parser/expression/staticFieldExpression.h"
+#include "parser/expression/staticFieldOrEnumExpression.h"
 #include "structures/module.h"
 #include "utils/lotusError.h"
 
@@ -71,7 +71,7 @@ Value lotus::SetExpression::eval(Module& module) {
         return applyOperation(element);
     }
 
-    if (auto staticField = std::dynamic_pointer_cast<StaticFieldExpression>(expression1)) {
+    if (auto staticField = std::dynamic_pointer_cast<StaticFieldOrEnumExpression>(expression1)) {
         Value& field = module.statics.get(staticField->staticName).getField(staticField->field);
         return applyOperation(field);
     }

@@ -25,7 +25,7 @@
 #include "parser/expression/methodExpression.h"
 #include "parser/expression/objectExpression.h"
 #include "parser/expression/setExpression.h"
-#include "parser/expression/staticFieldExpression.h"
+#include "parser/expression/staticFieldOrEnumExpression.h"
 #include "parser/expression/staticMethodExpression.h"
 #include "parser/expression/stringExpression.h"
 #include "parser/expression/ternaryExpression.h"

@@ -23,6 +23,8 @@ namespace lotus {
 
 		void publicToProtectedInParents(const StringMap<AccessModifierType>& accessModifiers, bool needThis = true);
 
+		void calculateSizeInRam(int& size);
+
 	public:
 
 		ClassValue() = default;

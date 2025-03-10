@@ -27,5 +27,5 @@ String lotus::UndefinedValue::asString(Module&) {
 }
 
 Value lotus::UndefinedValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(UndefinedValue)));
+    return INT(static_cast<int>(sizeof(*this)));
 }

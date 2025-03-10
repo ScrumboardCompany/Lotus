@@ -235,5 +235,5 @@ Value lotus::IntValue::size(Module&) {
 }
 
 Value lotus::IntValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(IntValue)));
+    return INT(static_cast<int>(sizeof(*this)));
 }

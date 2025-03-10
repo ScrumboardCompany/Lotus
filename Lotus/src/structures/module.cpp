@@ -51,6 +51,14 @@ void lotus::Module::CLASS(const char* name, const Class& value, bool doRegister)
 	CLASS(STRING_VAR_LITERAL(name), value, doRegister);
 }
 
+void lotus::Module::ENUM(const String& name, const Enum& value) {
+	enums.declare(name, value);
+}
+
+void lotus::Module::ENUM(const char* name, const Enum& value) {
+	ENUM(STRING_VAR_LITERAL(name), value);
+}
+
 void lotus::Module::THROW() {
 	throw ThrowValue(CALL("exception"));
 }

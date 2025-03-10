@@ -20,7 +20,7 @@ namespace lotus {
 			{STRING_LITERAL(">"), TokenType::GREATER},
 			{STRING_LITERAL("<"), TokenType::LESS},
 			{STRING_LITERAL(">="), TokenType::GREATEREQUAL},
-			{STRING_LITERAL("<"), TokenType::LESSEQUAL},
+			{STRING_LITERAL("<="), TokenType::LESSEQUAL},
 			{STRING_LITERAL("=="), TokenType::EQUALEQUAL},
 			{STRING_LITERAL("!="), TokenType::NOTEQUAL},
 			{STRING_LITERAL("||"), TokenType::BARBAR},
@@ -92,7 +92,8 @@ namespace lotus {
 			{STRING_LITERAL("catch"), TokenType::CATCH},
 			{STRING_LITERAL("flagValue"), TokenType::FLAGVALUE},
 			{STRING_LITERAL("variable"), TokenType::VARIABLE},
-			{STRING_LITERAL("function"), TokenType::FUNCTION}
+			{STRING_LITERAL("function"), TokenType::FUNCTION},
+			{STRING_LITERAL("enum"), TokenType::ENUM}
 		};
 
 		String input;

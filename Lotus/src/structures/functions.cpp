@@ -4,7 +4,9 @@
 using namespace lotus;
 
 void Functions::forceSet(const String& name, const Function& value) {
-	functions[name].push_back(value);
+	if (!isExists(name, value.getArgsCount())) {
+		functions[name].push_back(value);
+	}
 }
 
 void lotus::Functions::forceSet(const char* name, const Function& value) {

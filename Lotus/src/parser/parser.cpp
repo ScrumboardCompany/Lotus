@@ -43,6 +43,9 @@ Statement lotus::Parser::getNextGlobalStatement() {
 	else if (match(TokenType::STATIC)) {
 		statement = handleStaticStatement();
 	}
+	else if (match(TokenType::ENUM)) {
+		statement = handleEnumStatement();
+	}
 	else statement = getNextStatement();
 
 	while (match(TokenType::SEMICOLON));
@@ -81,7 +84,7 @@ Statement lotus::Parser::getNextStatement() {
 		statement = handleSwitchCaseStatement();
 	}
 	else if (match(TokenType::TRY)) {
-		statement = handleTryCatch();
+		statement = handleTryCatchStatement();
 	}
 	else statement = MAKE_PTR<ExpressionStatement>(expression());
 

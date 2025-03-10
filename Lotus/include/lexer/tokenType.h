@@ -85,6 +85,7 @@ namespace lotus {
 		FLAGVALUE,
 		VARIABLE,
 		FUNCTION,
+		ENUM,
 
 		LPAREN,
 		RPAREN,

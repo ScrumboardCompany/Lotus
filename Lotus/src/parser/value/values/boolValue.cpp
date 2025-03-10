@@ -127,5 +127,5 @@ Value lotus::BoolValue::unaryNot(Module&) {
 }
 
 Value lotus::BoolValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(BoolValue)));
+    return INT(static_cast<int>(sizeof(*this)));
 }
