@@ -101,5 +101,5 @@ Expression lotus::Parser::primary() {
 		return MAKE_PTR<ObjectExpression>(handleObject());
 	}
 
-	throw LotusException(STRING_LITERAL("Undefined expression"));
+	throw LotusException(STRING_LITERAL("Undefined expression"), currentToken.line);
 }

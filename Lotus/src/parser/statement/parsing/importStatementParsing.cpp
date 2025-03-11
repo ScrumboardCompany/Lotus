@@ -59,7 +59,7 @@ Statement Parser::handleImportStatement() {
 		});
 
 	if (everythingCount > 0 && elements.size() > 1) {
-		throw LotusException(STRING_LITERAL("Can't specify what to import when importing everything"));
+		throw LotusException(STRING_LITERAL("Can't specify what to import when importing everything"), get(0).line);
 	}
 
 	consume(TokenType::LESSLESSLESS);

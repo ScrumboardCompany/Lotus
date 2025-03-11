@@ -11,21 +11,21 @@ Token lotus::Parser::get(const size_t relativePosition) {
 }
 
 bool lotus::Parser::match(const TokenType type) {
-	const Token CurrentToken = get(0);
-	if (type != CurrentToken.type) return false;
+	const Token currentToken = get(0);
+	if (type != currentToken.type) return false;
 	pos++;
 
 	return true;
 }
 
 Token lotus::Parser::consume(const TokenType type) {
-	const Token CurrentToken = get(0);
-	if (type != CurrentToken.type) {
-		throw LotusException(STRING_LITERAL("Expected ") + Token({ type, STRING_LITERAL("") }).type_to_string() + STRING_LITERAL(" instead of ") + CurrentToken.type_to_string());
+	const Token currentToken = get(0);
+	if (type != currentToken.type) {
+		throw LotusException(STRING_LITERAL("Expected ") + Token({ type, STRING_LITERAL("") }).type_to_string() + STRING_LITERAL(" instead of ") + currentToken.type_to_string(), currentToken.line);
 	}
 	pos++;
 
-	return CurrentToken;
+	return currentToken;
 }
 
 

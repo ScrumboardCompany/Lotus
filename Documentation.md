@@ -93,6 +93,9 @@ true
 false
 flagValue(flagName)
 0xDEADBEEF # HEX numbers
+__path__ # File path
+__file__ # File name
+__version__ # Lotus version
 ```
 
 ## Variable declaration

@@ -11,6 +11,7 @@ namespace lotus {
 	struct Token {
 		TokenType type;
 		String text;
+		size_t line;
 
 		String type_to_string() const;
 	};

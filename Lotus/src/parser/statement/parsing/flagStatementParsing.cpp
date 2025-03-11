@@ -19,7 +19,7 @@ Statement Parser::handleFlagStatement() {
 		value = false;
 	}
 	else {
-		throw LotusException(STRING_LITERAL("Required flag value"));
+		throw LotusException(STRING_LITERAL("Required flag value"), get(0).line);
 	}
 
 	module.flags.set(flag, value);

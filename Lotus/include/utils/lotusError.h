@@ -12,15 +12,21 @@ namespace lotus {
 	class LotusException {
 
 		String msg;
+		size_t _line;
+
 	public:
 		LotusException() = default;
 		LotusException(const LotusException&) = default;
 		LotusException(LotusException&&) = default;
 
-		explicit LotusException(const String& msg) : msg(msg) {}
+		explicit LotusException(const String& msg, size_t line = SIZE_MAX) : msg(msg), _line(line) {}
 
 		const String& wwhat() const noexcept {
 			return msg;
+		}
+
+		size_t line() const {
+			return _line;
 		}
 	};
 

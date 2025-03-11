@@ -14,7 +14,7 @@
 #define OBJECT MAKE_PTR<ObjectValue>
 #define LAMBDA MAKE_PTR<LambdaValue>
 
-#define LOTUS_VERSION 1.12;
+#define LOTUS_VERSION 1.13
 #define EOF_TOKEN lotus::Token({ lotus::TokenType::END_OF_FILE, STRING_LITERAL("")})
 
 #define RETURN_VALUE(value) throw Value(value);

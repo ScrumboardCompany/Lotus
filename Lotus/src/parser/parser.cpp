@@ -59,8 +59,10 @@ Statement lotus::Parser::getNextStatement() {
 	if (match(TokenType::IF)) {
 		statement = handleIfElseStatement();
 	}
-	else if (match(TokenType::ELSE)) {
-		throw LotusException(STRING_LITERAL("Cannot use else without if"));
+	else if (get(0).type == TokenType::ELSE) {
+		size_t elseTokenLine = get(0).line;
+		match(TokenType::ELSE);
+		throw LotusException(STRING_LITERAL("Cannot use else without if"), elseTokenLine);
 	}
 	else if (match(TokenType::WHILE)) {
 		statement = handleWhileStatement();

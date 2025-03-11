@@ -15,11 +15,11 @@ std::pair<std::vector<Expression>, StringMap<Expression>> lotus::Parser::handleT
 
 			specifiedExpressions.emplace(name, expression());
 		}
-		else if(specifiedExpressions.empty()) {
+		else if (specifiedExpressions.empty()) {
 			expressions.push_back(expression());
 		} 
 		else {
-			throw LotusException(STRING_LITERAL("Cannot specify regular agrument after specified argument"));
+			throw LotusException(STRING_LITERAL("Cannot specify regular agrument after specified argument"), get(0).line);
 		}
 
 		if (!match(TokenType::COMMA)) {

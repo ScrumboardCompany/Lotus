@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Lotus.h"
+#include <filesystem>
 
 using namespace lotus;
 
@@ -17,6 +18,21 @@ void compile(const String& filePath, const StringMap<bool>& flags) {
 
         auto statements = parser.parse();
 
+        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
+            MAKE_PTR<LetExpression>(STRING_LITERAL("__file__"),
+                MAKE_PTR<StringExpression>(std::filesystem::path(filePath).filename().wstring())
+            )));
+
+        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
+            MAKE_PTR<LetExpression>(STRING_LITERAL("__path__"),
+                MAKE_PTR<StringExpression>(std::filesystem::absolute(filePath).wstring())
+            )));
+
+        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
+            MAKE_PTR<LetExpression>(STRING_LITERAL("__version__"),
+                MAKE_PTR<FloatExpression>(LOTUS_VERSION)
+            )));
+
         Module& module = parser.getModule();
         for (auto& statement : statements) {
             if (statement) {
@@ -25,7 +41,10 @@ void compile(const String& filePath, const StringMap<bool>& flags) {
         }
     }
     catch (const LotusException& e) {
-        std::wcout << std::endl << e.wwhat() << std::endl;
+        std::wcout << std::endl << e.wwhat();
+        if (e.line() != SIZE_MAX) {
+            std::cout << " on line: " << e.line() << std::endl;
+        }
     }
     catch (const std::exception& e) {
         std::cout << std::endl << e.what() << std::endl;
@@ -47,20 +66,19 @@ void compile(const String& filePath, const StringMap<bool>& flags) {
     }
 }
 
-int main(int argc, char* argv[]) {
-
-    /*std::vector<std::string> args(argv + 1, argv + argc);
+int handleArgsAndCompile(int argc, char* argv[]) {
+    std::vector<std::string> args(argv + 1, argv + argc);
 
     StringMap<bool> flags;
     Map<std::string, bool> boolValues = { {"true", true}, {"false", false} };
 
     for (size_t i = 0; i < args.size(); i++) {
         if (args[i] == "--help" || args[i] == "-h") {
-            std::cout << 
+            std::cout <<
                 "--help, -h - outputs all CLI flags\n"
                 "--version, -v - outputs lotus version\n"
                 "--flag [name] [value] - set flag value before interpretation\n";
-                "--flag-config [cfgFilePath] - specify flags config";
+            "--flag-config [cfgFilePath] - specify flags config";
             break;
         }
         else if (args[i] == "--version" || args[i] == "-v") {
@@ -99,7 +117,13 @@ int main(int argc, char* argv[]) {
             compile(STRING_VAR_LITERAL(args[i].c_str()), flags);
             break;
         }
-    }*/
+    }
+
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    //return handleArgsAndCompile(argc, argv);
 
     compile(L"test.lts", {});
 

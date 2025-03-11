@@ -99,6 +99,7 @@ namespace lotus {
 		String input;
 		std::list<Token> tokens;
 		size_t pos;
+		size_t line;
 
 	public:
 
@@ -122,11 +123,11 @@ namespace lotus {
 
 		void tokenizeHex();
 
-		Char peek(const size_t relativePosition) const;
+		Char peek(size_t relativePosition) const;
 
 		Char next();
 
-		void addToken(const TokenType& type, const String& text = STRING_LITERAL(""));
+		void addToken(const TokenType& type, const String& text);
 
 		bool isStartOperator(Char ch);
 

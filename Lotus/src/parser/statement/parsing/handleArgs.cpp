@@ -12,13 +12,13 @@ std::vector<Argument> lotus::Parser::handleArgs() {
 	if (!match(TokenType::RPAREN)) {
 
 		while (true) {
-			String name = consume(TokenType::IDENTIFIER).text;
+			Token name = consume(TokenType::IDENTIFIER);
 
 			for (auto& arg : args) {
-				if (name == arg.name) throw LotusException(STRING_LITERAL("Cannot have two arguments with same name \"") + name + STRING_LITERAL("\""));
+				if (name.text == arg.name) throw LotusException(STRING_LITERAL("Cannot have two arguments with same name \"") + name.text + STRING_LITERAL("\""), name.line);
 			}
 
-			args.push_back(name);
+			args.push_back(name.text);
 
 			if (match(TokenType::DOTDOTDOT)) args.back().isVariadic = true;
 
@@ -35,13 +35,13 @@ std::vector<Argument> lotus::Parser::handleArgs() {
 
 		if (args[i].isVariadic) {
 			if (hasVariadic) {
-				throw LotusException(STRING_LITERAL("Cannot have more one variadic argument"));
+				throw LotusException(STRING_LITERAL("Cannot have more one variadic argument"), get(0).line);
 			}
 			else hasVariadic = true;
 		}
 	}
 	if (hasVariadic && !args.back().isVariadic) {
-		throw LotusException(STRING_LITERAL("Variadic argument should be the last one"));
+		throw LotusException(STRING_LITERAL("Variadic argument should be the last one"), get(0).line);
 	}
 
 	return args;

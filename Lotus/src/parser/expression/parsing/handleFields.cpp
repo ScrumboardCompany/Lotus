@@ -30,7 +30,7 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 		}
 
 		if (match(TokenType::DEF)) {
-			String methodName = consume(TokenType::IDENTIFIER).text;
+			Token methodName = consume(TokenType::IDENTIFIER);
 
 			std::vector<Argument> args = handleArgs();
 
@@ -40,16 +40,16 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 			memberInfo.value = Function(body, args);
 			memberInfo.accessModifier = accessModifier;
 
-			if (methods.find(methodName) != methods.end()) {
-				for (auto& method : methods[methodName]) {
-					if (method.value.getArgsCount() == args.size()) throw LotusException(STRING_LITERAL("Method \"") + methodName + STRING_LITERAL("\" with ") + std::to_wstring(args.size()) + STRING_LITERAL(" arguments already exists"));
+			if (methods.find(methodName.text) != methods.end()) {
+				for (auto& method : methods[methodName.text]) {
+					if (method.value.getArgsCount() == args.size()) throw LotusException(STRING_LITERAL("Method \"") + methodName.text + STRING_LITERAL("\" with ") + std::to_wstring(args.size()) + STRING_LITERAL(" arguments already exists"), methodName.line);
 				}
 
-				methods[methodName].push_back(memberInfo);
-			} else methods.emplace(methodName, std::vector<MethodMemberInfo>{memberInfo});
+				methods[methodName.text].push_back(memberInfo);
+			} else methods.emplace(methodName.text, std::vector<MethodMemberInfo>{memberInfo});
 		}
 		else {
-			String fieldName = consume(TokenType::IDENTIFIER).text;
+			Token fieldName = consume(TokenType::IDENTIFIER);
 			Expression fieldValue = MAKE_PTR<UndefinedExpression>();
 
 			if (match(TokenType::EQUAL)) {
@@ -61,7 +61,9 @@ std::pair<RawFields_t, Methods_t> lotus::Parser::handleFieldsMethods() {
 			ClassMemberInfo memberInfo;
 			memberInfo.accessModifier = accessModifier;
 
-			fields.emplace(fieldName, std::make_pair(fieldValue, memberInfo));
+			if (fields.find(fieldName.text) != fields.end()) throw LotusException(STRING_LITERAL("Field \"") + fieldName.text + STRING_LITERAL("\" already exists"), fieldName.line);
+
+			fields.emplace(fieldName.text, std::make_pair(fieldValue, memberInfo));
 		}
 	}
 
@@ -74,7 +76,7 @@ StringMap<Expression> lotus::Parser::handleObject() {
 	consume(TokenType::LBRACE);
 
 	while (!match(TokenType::RBRACE)) {
-		String fieldName = consume(TokenType::IDENTIFIER).text;
+		Token fieldName = consume(TokenType::IDENTIFIER);
 		Expression fieldValue = MAKE_PTR<UndefinedExpression>();
 
 		if (match(TokenType::EQUAL)) {
@@ -83,7 +85,9 @@ StringMap<Expression> lotus::Parser::handleObject() {
 
 		while (match(TokenType::SEMICOLON));
 
-		fields.emplace(fieldName, fieldValue);
+		if (fields.find(fieldName.text) != fields.end()) throw LotusException(STRING_LITERAL("Field \"") + fieldName.text + STRING_LITERAL("\" already exists"), fieldName.line);
+
+		fields.emplace(fieldName.text, fieldValue);
 	}
 
 	return fields;

@@ -4,7 +4,7 @@
 
 using namespace lotus;
 
-lotus::Lexer::Lexer(const String& input) : input(input), tokens(), pos(0) {}
+lotus::Lexer::Lexer(const String& input) : input(input), tokens(), pos(0), line(1) {}
 
 std::list<Token> lotus::Lexer::tokenize() {
     while (pos < input.length()) {
@@ -164,19 +164,25 @@ void lotus::Lexer::tokenizeHex() {
     addToken(TokenType::HEX, buffer);
 }
 
-Char lotus::Lexer::peek(const size_t relativePosition) const {
-    const size_t position = pos + relativePosition;
+Char lotus::Lexer::peek(size_t relativePosition) const {
+    size_t position = pos + relativePosition;
     if (position >= input.length()) return CHAR_LITERAL('\0');
     return input[position];
 }
 
 Char lotus::Lexer::next() {
+    Char ch = peek(0);
     pos++;
+
+    if (ch == CHAR_LITERAL('\n')) {
+        line++;
+    }
+
     return peek(0);
 }
 
 void lotus::Lexer::addToken(const TokenType& type, const String& text) {
-    tokens.push_back(Token({ type, text }));
+    tokens.push_back(Token({ type, text, line }));
 }
 
 bool lotus::Lexer::isStartOperator(Char ch) {
