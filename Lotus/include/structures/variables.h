@@ -37,12 +37,14 @@ namespace lotus {
 
 		Value& get(const char* name);
 
-		bool isExists(const String& name);
+		bool isExists(const String& name) const;
 
-		bool isExists(const char* name);
+		bool isExists(const char* name) const;
 
 		void enterScope(); 
 		void exitScope();
+
+		size_t scopesCount() const;
 	};
 
 }

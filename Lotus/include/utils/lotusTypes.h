@@ -20,6 +20,7 @@ namespace lotus {
 	using Int = int64_t;
 	using String = std::wstring;
     using Char = wchar_t;
+    using Int = int64_t;
 
     template<typename _KeyTy, typename _ValTy>
     using Map = std::unordered_map<_KeyTy, _ValTy>;
