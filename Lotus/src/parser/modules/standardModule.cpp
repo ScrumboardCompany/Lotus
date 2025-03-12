@@ -4,6 +4,7 @@
 #include "parser/value/intValue.h"
 #include "parser/value/boolValue.h"
 #include <iostream>
+#include "utils/utils.h"
 
 using namespace lotus;
 

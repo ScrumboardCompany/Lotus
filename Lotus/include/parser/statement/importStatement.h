@@ -32,8 +32,6 @@ namespace lotus {
 		String filePath;
 		StringMap<Module>& modules;
 
-		Ptr<Parser> parser;
-
 		void loadFromModule(Module& from, Module& to);
 
 	public:

@@ -164,34 +164,7 @@ void lotus::ImportStatement::execute(Module& currentModule) {
     Module module;
 
     if (file.find(CHAR_LITERAL('.')) != String::npos) {
-        String content = lotus::wreadContent(filePath);
-        Lexer lexer(content);
-
-        auto tokens = lexer.tokenize();
-
-        parser = MAKE_PTR<Parser>(tokens);
-
-        auto statements = parser->parse();
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__file__"),
-                MAKE_PTR<StringExpression>(std::filesystem::path(filePath).filename().wstring())
-            )));
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__path__"),
-                MAKE_PTR<StringExpression>(std::filesystem::absolute(filePath).wstring())
-            )));
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__version__"),
-                MAKE_PTR<FloatExpression>(LOTUS_VERSION)
-            )));
-
-        for (auto& statement : statements) {
-            if (statement) statement->execute(parser->getModule());
-        }
-        module = parser->getModule();
+        module = Compiler::compile(filePath, {});
     }
     else {
         if (modules.find(file) == modules.end()) {

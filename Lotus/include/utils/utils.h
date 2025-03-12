@@ -10,7 +10,11 @@ namespace lotus {
 
 	struct Module;
 
+	class Parser;
+
 	Value callAllExpressionsAndReturnLastValue(const std::vector<Expression>& expressions, Module& module);
+
+	void setConsoleLocale();
 
 	std::wstring wreadContent(const std::wstring& filePath);
 
@@ -23,6 +27,17 @@ namespace lotus {
 	std::tuple<int, int, int, int, int, int> fromTotalSeconds(int64_t total_seconds);
 
 	std::string wstring_to_string(const std::wstring& wstr);
+
+	void nowTime(tm* _Tm);
+
+	String nowTimeInString();
+
+	class Compiler {
+		static std::vector<Ptr<Parser>> parsers;
+
+	public:
+		static Module& compile(const String& filePath, const StringMap<bool>& flags);
+	};
 
 	struct ThrowValue {
 		ThrowValue() = default;

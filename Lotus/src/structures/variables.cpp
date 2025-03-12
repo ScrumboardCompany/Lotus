@@ -4,7 +4,7 @@
 using namespace lotus;
 
 void Variables::forceSet(const String& name, const Value& value) {
-	if (name == STRING_LITERAL("__file__") || name == STRING_LITERAL("__path__") || name == STRING_LITERAL("__version__")) {
+	if (name == STRING_LITERAL("__file__") || name == STRING_LITERAL("__path__") || name == STRING_LITERAL("__time__") || name == STRING_LITERAL("__version__")) {
 		if (scopes.empty()) {
 			if (variables.find(name) == variables.end()) {
 				variables[name] = value;
@@ -80,7 +80,7 @@ Value& Variables::get(const char* name) {
 	return get(STRING_VAR_LITERAL(name));
 }
 
-bool Variables::isExists(const String& name) {
+bool Variables::isExists(const String& name) const {
 	for (auto it = scopes.rbegin(); it != scopes.rend(); ++it) {
 		if (it->count(name) > 0) {
 			return true;
@@ -90,7 +90,7 @@ bool Variables::isExists(const String& name) {
 	return variables.count(name) > 0;
 }
 
-bool Variables::isExists(const char* name) {
+bool Variables::isExists(const char* name) const {
 	return isExists(STRING_VAR_LITERAL(name));
 }
 
@@ -105,4 +105,8 @@ void Variables::exitScope() {
 	else {
 		throw LotusException(STRING_LITERAL("Cannot exit global scope"));
 	}
+}
+
+size_t lotus::Variables::scopesCount() const {
+	return scopes.size();
 }

@@ -66,7 +66,7 @@ Expression lotus::Parser::unary() {
                     consume(TokenType::RPAREN);
                 }
 
-                return MAKE_PTR<MethodExpression>(result, name, args.first, args.second);
+                result = MAKE_PTR<MethodExpression>(result, name, args.first, args.second);
             }
             else result = MAKE_PTR<FieldExpression>(result, name);
         }

@@ -4,68 +4,6 @@
 
 using namespace lotus;
 
-void compile(const String& filePath, const StringMap<bool>& flags) {
-    try {
-        String content = wreadContent(filePath);
-
-        Lexer lexer(content);
-        auto tokens = lexer.tokenize();
-
-        Parser parser(tokens);
-        for (const auto& [name, value] : flags) {
-            parser.getModule().flags.set(name, value);
-        }
-
-        auto statements = parser.parse();
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__file__"),
-                MAKE_PTR<StringExpression>(std::filesystem::path(filePath).filename().wstring())
-            )));
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__path__"),
-                MAKE_PTR<StringExpression>(std::filesystem::absolute(filePath).wstring())
-            )));
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__version__"),
-                MAKE_PTR<FloatExpression>(LOTUS_VERSION)
-            )));
-
-        Module& module = parser.getModule();
-        for (auto& statement : statements) {
-            if (statement) {
-                statement->execute(module);
-            }
-        }
-    }
-    catch (const LotusException& e) {
-        std::wcout << std::endl << e.wwhat();
-        if (e.line() != SIZE_MAX) {
-            std::cout << " on line: " << e.line() << std::endl;
-        }
-    }
-    catch (const std::exception& e) {
-        std::cout << std::endl << e.what() << std::endl;
-    }
-    catch (const ContinueStatement&) {
-        std::cout << std::endl << "No continue processing found" << std::endl;
-    }
-    catch (const BreakStatement&) {
-        std::cout << std::endl << "No break processing found" << std::endl;
-    }
-    catch (const Value&) {
-        std::cout << std::endl << "No return processing found" << std::endl;
-    }
-    catch (const ThrowValue&) {
-        std::cout << std::endl << "No exception processing found" << std::endl;
-    }
-    catch (...) {
-        std::cout << std::endl << "Unhandled exception" << std::endl;
-    }
-}
-
 int handleArgsAndCompile(int argc, char* argv[]) {
     std::vector<std::string> args(argv + 1, argv + argc);
 
@@ -114,7 +52,12 @@ int handleArgsAndCompile(int argc, char* argv[]) {
             flags = flagConfigParser.getFlags();
         }
         else {
-            compile(STRING_VAR_LITERAL(args[i].c_str()), flags);
+            try {
+                Compiler::compile(STRING_VAR_LITERAL(args[i].c_str()), flags);
+            }
+            catch (...) {
+                return 1;
+            }
             break;
         }
     }
@@ -123,9 +66,16 @@ int handleArgsAndCompile(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
+    setConsoleLocale();
+
     //return handleArgsAndCompile(argc, argv);
 
-    compile(L"test.lts", {});
+    try {
+        Compiler::compile(L"test.lts", {});
+    }
+    catch (...) {
+        return 1;
+    }
 
     return 0;
 }

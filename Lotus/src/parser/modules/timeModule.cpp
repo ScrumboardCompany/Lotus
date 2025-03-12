@@ -108,16 +108,9 @@ void lotus::Parser::loadTimeModule() {
 
 	TimeStatic.addMethod("now", METHOD(AccessModifierType::PUBLIC, [&] {
 
-		auto now = std::chrono::system_clock::now();
-		std::time_t now_time = std::chrono::system_clock::to_time_t(now);
-
 		std::tm end_time;
 
-#ifdef _WIN32
-		localtime_s(&end_time, &now_time);
-#else
-		localtime_r(&now_time, &end_time);
-#endif
+		lotus::nowTime(&end_time);
 
 		RETURN_VALUE(module.CALL("Time",
 			INT(end_time.tm_sec),
