@@ -14,15 +14,17 @@ namespace lotus {
 
 	std::wstring wreadContent(const std::wstring& filePath);
 
-	std::pair<int, int> evalDayOfYearAndDayOfWeek(int day, int month, int year);
+	std::pair<Int, Int> evalDayOfYearAndDayOfWeek(Int day, Int month, Int year);
 
-	bool isValidDate(int day, int month, int year);
+	bool isValidDate(Int day, Int month, Int year);
 
 	int64_t getTotalSeconds(Value time, Module& module);
 
-	std::tuple<int, int, int, int, int, int> fromTotalSeconds(int64_t total_seconds);
+	std::tuple<Int, Int, Int, Int, Int, Int> fromTotalSeconds(Int total_seconds);
 
 	std::string wstring_to_string(const std::wstring& wstr);
+
+	bool isNumber(const Value& value);
 
 	struct ThrowValue {
 		ThrowValue() = default;

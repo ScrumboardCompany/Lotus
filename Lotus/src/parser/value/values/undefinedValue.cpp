@@ -10,7 +10,7 @@ lotus::UndefinedValue::UndefinedValue() {
     type = STRING_LITERAL("undefined");
 }
 
-int lotus::UndefinedValue::asInt(Module&) {
+Int lotus::UndefinedValue::asInt(Module&) {
     return -1;
 }
 
@@ -27,5 +27,5 @@ String lotus::UndefinedValue::asString(Module&) {
 }
 
 Value lotus::UndefinedValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(*this)));
+    return INT(static_cast<Int>(sizeof(*this)));
 }

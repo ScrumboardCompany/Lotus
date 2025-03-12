@@ -8,10 +8,10 @@
 namespace lotus {
 
 	class IntExpression : public IExpression {
-		int value;
+		Int value;
 
 	public:
-		IntExpression(int value);
+		IntExpression(Int value);
 
 		Value eval(Module&) override;
 	};

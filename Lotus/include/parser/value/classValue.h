@@ -13,7 +13,7 @@ namespace lotus {
 		friend class ObjectExpression;
 		friend struct Class;
 
-		ClassValue& getMethod(const String& name, size_t argsCount, MethodMemberInfo& memberInfo);
+		ClassValue& getMethod(const String& name, size_t argsCount, MethodMemberInfo& memberInfo, Ptr<FieldMemberInfo> field);
 
 		std::vector<Ptr<ClassValue>> parents;
 
@@ -23,13 +23,13 @@ namespace lotus {
 
 		void publicToProtectedInParents(const StringMap<AccessModifierType>& accessModifiers, bool needThis = true);
 
-		void calculateSizeInRam(int& size);
+		void calculateSizeInRam(Int& size);
 
 	public:
 
 		ClassValue() = default;
 
-		virtual int asInt(Module& module) override;
+		virtual Int asInt(Module& module) override;
 		virtual double asDouble(Module& module) override;
 		virtual bool asBool(Module& module) override;
 		virtual String asString(Module& module) override;

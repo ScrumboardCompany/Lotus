@@ -35,52 +35,52 @@ std::wstring lotus::wreadContent(const std::wstring& filePath) {
     return content;
 }
 
-std::pair<int, int> lotus::evalDayOfYearAndDayOfWeek(int day, int month, int year) {
-    std::vector<int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+std::pair<Int, Int> lotus::evalDayOfYearAndDayOfWeek(Int day, Int month, Int year) {
+    std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
     bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     if (is_leap) days_in_months[1] = 29;
 
-    int day_of_year = day;
-    for (int i = 0; i < month - 1; i++) {
+    Int day_of_year = day;
+    for (int i = 0; i < static_cast<int>(month) - 1; i++) {
         day_of_year += days_in_months[i];
     }
 
-    int y = (month < 3) ? year - 1 : year;
-    int m = (month < 3) ? month + 12 : month;
-    int K = y % 100;
-    int J = y / 100;
+    Int y = (month < 3) ? year - 1 : year;
+    Int m = (month < 3) ? month + 12 : month;
+    Int K = y % 100;
+    Int J = y / 100;
 
-    int day_of_week = (day + (13 * (m + 1)) / 5 + K + (K / 4) + (J / 4) + (5 * J)) % 7;
+    Int day_of_week = (day + (13 * (m + 1)) / 5 + K + (K / 4) + (J / 4) + (5 * J)) % 7;
     day_of_week = (day_of_week + 6) % 7;
 
     return std::make_pair(day_of_year, day_of_week);
 }
 
-bool lotus::isValidDate(int day, int month, int year) {
+bool lotus::isValidDate(Int day, Int month, Int year) {
     if (month < 1 || month > 12 || day < 1) return false;
 
-    std::vector<int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     if (is_leap) days_in_months[1] = 29;
 
-    return day <= days_in_months[month - 1];
+    return day <= days_in_months[static_cast<int>(month) - 1];
 }
 
 int64_t lotus::getTotalSeconds(Value time, Module& module) {
-    int sec = time->getField("sec")->asInt(module);
-    int min = time->getField("min")->asInt(module);
-    int hour = time->getField("hour")->asInt(module);
-    int day = time->getField("day")->asInt(module);
-    int month = time->getField("month")->asInt(module);
-    int year = time->getField("year")->asInt(module);
+    Int sec = time->getField("sec")->asInt(module);
+    Int min = time->getField("min")->asInt(module);
+    Int hour = time->getField("hour")->asInt(module);
+    Int day = time->getField("day")->asInt(module);
+    Int month = time->getField("month")->asInt(module);
+    Int year = time->getField("year")->asInt(module);
 
-    std::vector<int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     if (is_leap) days_in_months[1] = 29;
 
-    int total_days = (year - 1970) * 365 + (year - 1969) / 4 - (year - 1901) / 100 + (year - 1601) / 400;
-    for (int i = 0; i < month - 1; i++) {
+    Int total_days = (year - 1970) * 365 + (year - 1969) / 4 - (year - 1901) / 100 + (year - 1601) / 400;
+    for (int i = 0; i < static_cast<int>(month) - 1; i++) {
         total_days += days_in_months[i];
     }
     total_days += day - 1;
@@ -88,10 +88,10 @@ int64_t lotus::getTotalSeconds(Value time, Module& module) {
     return total_days * 86400ll + hour * 3600ll + min * 60ll + sec;
 }
 
-std::tuple<int, int, int, int, int, int> lotus::fromTotalSeconds(int64_t total_seconds) {
-    int year = 0;
+std::tuple<Int, Int, Int, Int, Int, Int> lotus::fromTotalSeconds(int64_t total_seconds) {
+    Int year = 0;
     while (true) {
-        int days_in_year = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ? 366 : 365;
+        Int days_in_year = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ? 366 : 365;
         if (total_seconds >= days_in_year * 86400) {
             total_seconds -= days_in_year * 86400;
             year++;
@@ -101,11 +101,11 @@ std::tuple<int, int, int, int, int, int> lotus::fromTotalSeconds(int64_t total_s
         }
     }
 
-    std::vector<int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     if (is_leap) days_in_months[1] = 29;
 
-    int month = 1;
+    Int month = 1;
     for (int i = 0; i < 12; i++) {
         if (total_seconds >= days_in_months[i] * 86400) {
             total_seconds -= days_in_months[i] * 86400;
@@ -116,12 +116,12 @@ std::tuple<int, int, int, int, int, int> lotus::fromTotalSeconds(int64_t total_s
         }
     }
 
-    int day = static_cast<int>(total_seconds / 86400ll + 1ll);
+    Int day = static_cast<Int>(total_seconds / 86400ll + 1ll);
     total_seconds %= 86400ll;
-    int hour = static_cast<int>(total_seconds / 3600ll);
+    Int hour = static_cast<Int>(total_seconds / 3600ll);
     total_seconds %= 3600ll;
-    int min = static_cast<int>(total_seconds / 60ll);
-    int sec = static_cast<int>(total_seconds % 60ll);
+    Int min = static_cast<Int>(total_seconds / 60ll);
+    Int sec = static_cast<Int>(total_seconds % 60ll);
 
     return { sec, min, hour, day, month, year };
 }
@@ -138,4 +138,8 @@ std::string lotus::wstring_to_string(const std::wstring& wstr) {
         }
     }
     return str;
+}
+
+bool lotus::isNumber(const Value& value) {
+    return (value->instanceOf("int") || value->instanceOf("float"));
 }

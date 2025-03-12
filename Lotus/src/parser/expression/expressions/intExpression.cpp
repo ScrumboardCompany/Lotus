@@ -3,7 +3,7 @@
 
 using namespace lotus;
 
-lotus::IntExpression::IntExpression(int value) : value(value) {}
+lotus::IntExpression::IntExpression(Int value) : value(value) {}
 
 Value lotus::IntExpression::eval(Module&) {
 	return INT(value);

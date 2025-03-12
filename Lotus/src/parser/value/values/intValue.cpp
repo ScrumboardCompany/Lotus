@@ -3,22 +3,23 @@
 #include "parser/value/stringValue.h"
 #include "parser/value/boolValue.h"
 #include "utils/lotusError.h"
+#include "utils/utils.h"
 #include "parser/function/function.h"
 #include "structures/module.h"
 #include <cmath>
 
 using namespace lotus;
 
-IntValue::IntValue(int value) : value(value) {
+IntValue::IntValue(Int value) : value(value) {
     type = STRING_LITERAL("int");
 }
 
-int lotus::IntValue::asInt(Module&) {
+Int lotus::IntValue::asInt(Module&) {
 	return value;
 }
 
 double lotus::IntValue::asDouble(Module&) {
-	return static_cast<double>(value);
+    return static_cast<double>(value);
 }
 
 bool lotus::IntValue::asBool(Module&) {
@@ -31,16 +32,19 @@ String lotus::IntValue::asString(Module&) {
 }
 
 Value lotus::IntValue::add(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
     if (other->getType() == STRING_LITERAL("int")) return INT(value + other->asInt(module));
     return FLOAT(value + other->asDouble(module));
 }
 
 Value lotus::IntValue::substract(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("substract"), getType(), other->getType());
     if (other->getType() == STRING_LITERAL("int")) return INT(value - other->asInt(module));
     return FLOAT(value - other->asDouble(module));
 }
 
 Value lotus::IntValue::multiply(const Value& other, Module& module) {
+    if (!isNumber(other) && !other->instanceOf("string")) throwOverloadError(STRING_LITERAL("multiply"), getType(), other->getType());
     if (other->getType() == STRING_LITERAL("int")) return INT(value * other->asInt(module));
     else if (other->getType() == STRING_LITERAL("string")) {
         String result;
@@ -53,6 +57,7 @@ Value lotus::IntValue::multiply(const Value& other, Module& module) {
 }
 
 Value lotus::IntValue::divide(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("divide"), getType(), other->getType());
     double value2 = other->asDouble(module);
     if (value2 == 0) throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Can`t divide by zero"));
 
@@ -60,11 +65,13 @@ Value lotus::IntValue::divide(const Value& other, Module& module) {
 }
 
 Value lotus::IntValue::power(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("power"), getType(), other->getType());
     if (other->getType() == STRING_LITERAL("int")) return INT(static_cast<int>(pow(value, other->asInt(module))));
     return FLOAT(pow(value, other->asDouble(module)));
 }
 
 Value lotus::IntValue::divideModule(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("divideModule"), getType(), other->getType());
     if (other->getType() == STRING_LITERAL("float")) throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Can`t use module operator over float type"));
     return INT(value % other->asInt(module));
 }
@@ -98,20 +105,23 @@ Value lotus::IntValue::bitwiseRightShift(const Value& other, Module& module) {
     throwOverloadError(STRING_LITERAL("bitwiseRightShift"), getType(), other->getType());
 }
 
-
 Value lotus::IntValue::greater(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("greater"), getType(), other->getType());
     return BOOL(value > other->asDouble(module));
 }
 
 Value lotus::IntValue::less(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("less"), getType(), other->getType());
     return BOOL(value < other->asDouble(module));
 }
 
 Value lotus::IntValue::greaterEqual(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("greaterEqual"), getType(), other->getType());
     return BOOL(value >= other->asDouble(module));
 }
 
 Value lotus::IntValue::lessEqual(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("lessEqual"), getType(), other->getType());
     return BOOL(value <= other->asDouble(module));
 }
 
@@ -132,32 +142,44 @@ Value lotus::IntValue::logicalAnd(const Value& other, Module& module) {
 }
 
 Value lotus::IntValue::addSet(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("addSet"), getType(), other->getType());
     value = add(other, module)->asInt(module);
-    return INT(value);
+    if (other->getType() == STRING_LITERAL("int")) return INT(value);
+    return FLOAT(asDouble(module));
 }
 
 Value lotus::IntValue::substractSet(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("substractSet"), getType(), other->getType());
     value = substract(other, module)->asInt(module);
-    return INT(value);
+    if (other->getType() == STRING_LITERAL("int")) return INT(value);
+    return FLOAT(asDouble(module));
 }
 
 Value lotus::IntValue::multiplySet(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("multiplySet"), getType(), other->getType());
     value = multiply(other, module)->asInt(module);
-    return INT(value);
+    if (other->getType() == STRING_LITERAL("int")) return INT(value);
+    return FLOAT(asDouble(module));
 }
 
 Value lotus::IntValue::divideSet(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("divideSet"), getType(), other->getType());
     value = divide(other, module)->asInt(module);
-    return INT(value);
+    if (other->getType() == STRING_LITERAL("int")) return INT(value);
+    return FLOAT(asDouble(module));
 }
 
 Value lotus::IntValue::powerSet(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("powerSet"), getType(), other->getType());
     value = power(other, module)->asInt(module);
-    return INT(value);
+    if (other->getType() == STRING_LITERAL("int")) return INT(value);
+    return FLOAT(asDouble(module));
 }
 
 Value lotus::IntValue::divideModuleSet(const Value& other, Module& module) {
+    if (!isNumber(other)) throwOverloadError(STRING_LITERAL("powerSet"), getType(), other->getType());
     value = divideModule(other, module)->asInt(module);
+    if (other->getType() == STRING_LITERAL("float")) throw LotusException(getType() + STRING_LITERAL(": ") + STRING_LITERAL("Can`t use module operator over float type"));
     return INT(value);
 }
 
@@ -235,5 +257,5 @@ Value lotus::IntValue::size(Module&) {
 }
 
 Value lotus::IntValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(*this)));
+    return INT(static_cast<Int>(sizeof(*this)));
 }

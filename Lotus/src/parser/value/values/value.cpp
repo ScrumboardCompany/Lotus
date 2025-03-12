@@ -6,7 +6,7 @@
 
 using namespace lotus;
 
-int lotus::IValue::asInt(Module&) {
+Int lotus::IValue::asInt(Module&) {
     throwOverloadError(STRING_LITERAL("asInt"), getType());
 }
 

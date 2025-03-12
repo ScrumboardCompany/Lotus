@@ -34,6 +34,10 @@ namespace lotus {
 
 	[[noreturn]] void throwOverloadError(const String& overload, const String& type1, const String& type2);
 
+	void throwTypeError(const String& type1, const String& type2, Module& module);
+
+	void throwTypeError(const String& type1, const String& type2, const String& type3, Module& module);
+
 	void checkThrowIndexError(const Value& index, size_t size, Module& module);
 }
 

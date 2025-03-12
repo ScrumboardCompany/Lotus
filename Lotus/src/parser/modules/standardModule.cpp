@@ -22,14 +22,14 @@ void lotus::Parser::loadStandardModule() {
 
 	module.DEF("print", [&] {
 		Value args = module.GET("args");
-		for (int i = 0, size = args->size(module)->asInt(module); i < size; i++) {
+		for (Int i = 0, size = args->size(module)->asInt(module); i < size; i++) {
 			std::wcout << args->getOfIndex(INT(i), module)->asString(module);
 		}
 		}, "args...");
 
 	module.DEF("println", [&] {
 		Value args = module.GET("args");
-		for (int i = 0, size = args->size(module)->asInt(module); i < size; i++) {
+		for (Int i = 0, size = args->size(module)->asInt(module); i < size; i++) {
 			std::wcout << args->getOfIndex(INT(i), module)->asString(module) << std::endl;
 		}
 		}, "args...");

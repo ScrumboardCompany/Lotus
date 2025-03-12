@@ -14,7 +14,7 @@ namespace lotus {
 
 		FloatValue(double value);
 
-		int asInt(Module&) override;
+		Int asInt(Module&) override;
 		double asDouble(Module&) override;
 		bool asBool(Module&) override;
 		String asString(Module&) override;

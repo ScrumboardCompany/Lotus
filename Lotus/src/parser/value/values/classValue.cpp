@@ -69,15 +69,15 @@ void lotus::ClassValue::publicToProtectedInParents(const StringMap<AccessModifie
     }
 }
 
-void lotus::ClassValue::calculateSizeInRam(int& size) {
-    size += static_cast<int>(sizeof(fields));
+void lotus::ClassValue::calculateSizeInRam(Int& size) {
+    size += static_cast<Int>(sizeof(fields));
 
     for (auto& parent : parents) {
         parent->calculateSizeInRam(size);
     }
 }
 
-int lotus::ClassValue::asInt(Module& module) {
+Int lotus::ClassValue::asInt(Module& module) {
     return callMethod(STRING_LITERAL("__asInt__"), {}, module)->asInt(module);
 }
 
@@ -262,35 +262,43 @@ Value lotus::ClassValue::setOfIndex(const Value& index, const Value& other, Modu
 }
 
 Value lotus::ClassValue::sizeInRam() {
-    int size = 0;
+    Int size = 0;
     calculateSizeInRam(size);
     return INT(size);
 }
 
-ClassValue& lotus::ClassValue::getMethod(const String& name, size_t argsCount, MethodMemberInfo& memberInfo) {
+ClassValue& lotus::ClassValue::getMethod(const String& name, size_t argsCount, MethodMemberInfo& memberInfo, Ptr<FieldMemberInfo> field) {
     if (methods.find(name) != methods.end()) {
         Ptr<MethodMemberInfo> variadic = nullptr;
         for (auto& method : methods[name]) {
-            if (method.value.hasVariadic() && argsCount >= method.value.getArgsCount() - 1) variadic = MAKE_PTR<MethodMemberInfo>(method);
+            if (method.value.hasVariadic() && argsCount >= method.value.getArgsCount() - 1)
+                variadic = MAKE_PTR<MethodMemberInfo>(method);
             if (method.value.getArgsCount() == argsCount) {
                 memberInfo = method;
-                break;
+                return *this;
             }
         }
-        if (variadic) memberInfo = *variadic;
-        return *this;
+        if (variadic) {
+            memberInfo = *variadic;
+            return *this;
+        }
     }
 
     for (auto& parent : parents) {
         try {
             MethodMemberInfo parentMemberInfo;
-            ClassValue& parentClass = parent->getMethod(name, argsCount, parentMemberInfo);
+            ClassValue& parentClass = parent->getMethod(name, argsCount, parentMemberInfo, field);
             memberInfo = parentMemberInfo;
             return parentClass;
         }
         catch (const LotusException&) {
             continue;
         }
+    }
+
+    if (fields.find(name) != fields.end()) {
+        field->value = fields[name].value;
+        return *this;
     }
 
     throw LotusException(STRING_LITERAL("Undefined method \"") + name + STRING_LITERAL("\""));
@@ -337,16 +345,21 @@ Value& lotus::ClassValue::getField(const String& name) {
 }
 
 Value ClassValue::callMethod(const String& name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs) {
-    if (fields.find(name) != fields.end()) {
-        if (auto lambda = std::dynamic_pointer_cast<LambdaValue>(getField(name))) {
-            if (lambda->getArgsCount() == args.size() + specifiedArgs.size()) return lambda->call(args, module, specifiedArgs);
-        }
-    }
-
     MethodMemberInfo methodInfo;
-    ClassValue& value = getMethod(name, args.size() + specifiedArgs.size(), methodInfo);
+    Ptr<FieldMemberInfo> field = MAKE_PTR<FieldMemberInfo>();
+    ClassValue& value = getMethod(name, args.size() + specifiedArgs.size(), methodInfo, field);
     bool isParentClass = value.getType() != getType();
 
+    if (field->value) {
+        if (field->accessModifier == AccessModifierType::PRIVATE) {
+            throw LotusException(STRING_LITERAL("Request to private field: \"") + name + STRING_LITERAL("\""));
+        }
+        else if (field->accessModifier == AccessModifierType::PROTECTED) {
+            throw LotusException(STRING_LITERAL("Request to protected field: \"") + name + STRING_LITERAL("\""));
+        }
+
+        return field->value->call(args, module, specifiedArgs);
+    }
 
     if (methodInfo.accessModifier == AccessModifierType::PRIVATE) {
         throw LotusException(STRING_LITERAL("Request to private method: \"") + name + STRING_LITERAL("\""));

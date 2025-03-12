@@ -8,13 +8,13 @@
 namespace lotus {
 
 	class IntValue : public IValue {
-		int value;
+		Int value;
 
 	public:
 
-		IntValue(int value);
+		IntValue(Int value);
 
-		int asInt(Module&) override;
+		Int asInt(Module&) override;
 		double asDouble(Module&) override;
 		bool asBool(Module&) override;
 		String asString(Module&) override;

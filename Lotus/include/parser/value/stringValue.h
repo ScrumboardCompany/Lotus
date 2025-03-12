@@ -16,7 +16,7 @@ namespace lotus {
 		StringValue(const String& value);
 		StringValue() = default;
 
-		int asInt(Module&) override;
+		Int asInt(Module&) override;
 		double asDouble(Module&) override;
 		bool asBool(Module&) override;
 		String asString(Module&) override;

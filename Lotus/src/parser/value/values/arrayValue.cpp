@@ -19,20 +19,20 @@ lotus::ArrayValue::ArrayValue(const std::vector<Value>& elements, Module& module
 
     declareMethod(STRING_LITERAL("push"), METHOD(AccessModifierType::PUBLIC, [&] {
         if (!module.GET("index")->instanceOf("int")) module.THROW(STRING("Index can be only int"), STRING("type_error"));
-        int index = module.GET("index")->asInt(module);
-        if (index > static_cast<int>(this->elements.size())) module.THROW(STRING("Index is bigger than array size"), STRING("out_of_range"));
+        Int index = module.GET("index")->asInt(module);
+        if (index > static_cast<Int>(this->elements.size())) module.THROW(STRING("Index is bigger than array size"), STRING("out_of_range"));
         if (index < 0) module.THROW(STRING("Index can't be less than 0"), STRING("out_of_range"));
-        this->elements.insert(this->elements.begin() + index, module.GET("element"));
+        this->elements.insert(this->elements.begin() + static_cast<int>(index), module.GET("element"));
         }, "element", "index"));
 
     declareMethod(STRING_LITERAL("push"), METHOD(AccessModifierType::PUBLIC, [&] {
         if (!module.GET("start")->instanceOf("int") || !module.GET("end")->instanceOf("int")) module.THROW(STRING("Index can be only int"), STRING("type_error"));
-        int start = module.GET("start")->asInt(module);
-        int end = module.GET("end")->asInt(module);
+        Int start = module.GET("start")->asInt(module);
+        Int end = module.GET("end")->asInt(module);
         Value value = module.GET("value");
 
-        if (start > static_cast<int>(this->elements.size())) module.THROW(STRING("Start index is bigger than array size"), STRING("out_of_range"));
-        if (end > static_cast<int>(this->elements.size())) module.THROW(STRING("End index is bigger than array size"), STRING("out_of_range"));
+        if (start > static_cast<Int>(this->elements.size())) module.THROW(STRING("Start index is bigger than array size"), STRING("out_of_range"));
+        if (end > static_cast<Int>(this->elements.size())) module.THROW(STRING("End index is bigger than array size"), STRING("out_of_range"));
         if (start < 0) module.THROW(STRING("Start index can't be less than 0"), STRING("out_of_range"));
         if (end < 0) module.THROW(STRING("End index can't be less than 0"), STRING("out_of_range"));
         if (start > end) module.THROW(STRING("Start index can't be greater than end index"), STRING("out_of_range"));
@@ -41,7 +41,7 @@ lotus::ArrayValue::ArrayValue(const std::vector<Value>& elements, Module& module
             this->elements[i] = value;
         }*/ // Replaces
 
-        this->elements.insert(this->elements.begin() + start, end - start + 1, value); // Adds
+        this->elements.insert(this->elements.begin() + static_cast<int>(start), static_cast<int>(end - start) + 1, value); // Adds
         }, "value", "start", "end"));
 
     declareMethod(STRING_LITERAL("pop"), METHOD(AccessModifierType::PUBLIC, [&] {
@@ -50,24 +50,24 @@ lotus::ArrayValue::ArrayValue(const std::vector<Value>& elements, Module& module
 
     declareMethod(STRING_LITERAL("pop"), METHOD(AccessModifierType::PUBLIC, [&] {
         if (!module.GET("index")->instanceOf("int")) module.THROW(STRING("Index can be only int"), STRING("type_error"));
-        int index = module.GET("index")->asInt(module);
-        if (index > static_cast<int>(this->elements.size())) module.THROW(STRING("Index is bigger than array size"), STRING("out_of_range"));
+        Int index = module.GET("index")->asInt(module);
+        if (index > static_cast<Int>(this->elements.size())) module.THROW(STRING("Index is bigger than array size"), STRING("out_of_range"));
         if (index < 0) module.THROW(STRING("Index can't be less than 0"), STRING("out_of_range"));
-        this->elements.erase(this->elements.begin() + module.GET("index")->asInt(module));
+        this->elements.erase(this->elements.begin() + static_cast<int>(module.GET("index")->asInt(module)));
         }, "index"));
 
     declareMethod(STRING_LITERAL("pop"), METHOD(AccessModifierType::PUBLIC, [&] {
         if (!module.GET("start")->instanceOf("int") || !module.GET("end")->instanceOf("int")) module.THROW(STRING("Index can be only int"), STRING("type_error"));
-        int start = module.GET("start")->asInt(module);
-        int end = module.GET("end")->asInt(module);
+        Int start = module.GET("start")->asInt(module);
+        Int end = module.GET("end")->asInt(module);
 
-        if (start > static_cast<int>(this->elements.size())) module.THROW(STRING("Start index is bigger than array size"), STRING("out_of_range"));
-        if (end > static_cast<int>(this->elements.size())) module.THROW(STRING("End index is bigger than array size"), STRING("out_of_range"));
+        if (start > static_cast<Int>(this->elements.size())) module.THROW(STRING("Start index is bigger than array size"), STRING("out_of_range"));
+        if (end > static_cast<Int>(this->elements.size())) module.THROW(STRING("End index is bigger than array size"), STRING("out_of_range"));
         if (start < 0) module.THROW(STRING("Start index can't be less than 0"), STRING("out_of_range"));
         if (end < 0) module.THROW(STRING("End index can't be less than 0"), STRING("out_of_range"));
         if (start > end) module.THROW(STRING("Start index can't be greater than end index"), STRING("out_of_range"));
 
-        this->elements.erase(this->elements.begin() + start, this->elements.begin() + end + 1);
+        this->elements.erase(this->elements.begin() + static_cast<int>(start), this->elements.begin() + static_cast<int>(end) + 1);
         }, "start", "end"));
 
     declareMethod(STRING_LITERAL("clear"), METHOD(AccessModifierType::PUBLIC, [&] {
@@ -137,7 +137,7 @@ void lotus::ArrayValue::foreach(const String& name, const Statement& body, Modul
 Value lotus::ArrayValue::getOfIndex(const Value& index, Module& module) {
     if (index->getType() == STRING_LITERAL("int")) {
         checkThrowIndexError(index, elements.size(), module);
-        return elements[index->asInt(module)];
+        return elements[static_cast<int>(index->asInt(module))];
     }
     throwOverloadError(STRING_LITERAL("getOfIndex"), getType(), index->getType());
 }
@@ -145,16 +145,16 @@ Value lotus::ArrayValue::getOfIndex(const Value& index, Module& module) {
 Value lotus::ArrayValue::setOfIndex(const Value& index, const Value& other, Module& module) {
     if (index->getType() == STRING_LITERAL("int")) {
         checkThrowIndexError(index, elements.size(), module);
-        elements[index->asInt(module)] = other;
-        return elements[index->asInt(module)];
+        elements[static_cast<int>(index->asInt(module))] = other;
+        return elements[static_cast<int>(index->asInt(module))];
     }
     throwOverloadError(STRING_LITERAL("setOfIndex"), getType(), index->getType());
 }
 
 Value lotus::ArrayValue::size(Module&) {
-    return INT(static_cast<int>(elements.size()));
+    return INT(static_cast<Int>(elements.size()));
 }
 
 Value lotus::ArrayValue::sizeInRam() {
-    return INT(static_cast<int>(sizeof(*this)));
+    return INT(static_cast<Int>(sizeof(*this)));
 }

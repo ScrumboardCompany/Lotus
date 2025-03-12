@@ -19,7 +19,7 @@ lotus::EnumValue::EnumValue(const Value& value, const String& type) : value(valu
 	this->type = type;
 }
 
-int lotus::EnumValue::asInt(Module& module) {
+Int lotus::EnumValue::asInt(Module& module) {
 	if (value->instanceOf("int")) {
 		return value->asInt(module);
 	}
@@ -82,5 +82,5 @@ Value lotus::EnumValue::logicalAnd(const Value& other, Module& module) {
 }
 
 Value lotus::EnumValue::sizeInRam() {
-	return INT(static_cast<int>(sizeof(*this)));
+	return INT(static_cast<Int>(sizeof(*this)));
 }

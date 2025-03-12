@@ -14,7 +14,7 @@ namespace lotus {
 	class IValue {
 	public:
 
-		virtual int asInt(Module& module);
+		virtual Int asInt(Module& module);
 		virtual double asDouble(Module& module);
 		virtual bool asBool(Module& module);
 		virtual String asString(Module& module);

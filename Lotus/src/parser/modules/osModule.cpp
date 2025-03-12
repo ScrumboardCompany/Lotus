@@ -176,6 +176,7 @@ void lotus::Parser::loadOsModule() {
 		}, "content"));
 
 	FileClass.addMethod("rename", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("new_path")->instanceOf("string")) module.THROW(STRING("Incorrect type"), STRING("type_error"));
 		Value& this_file = module.GET("this");
 		String old_path = this_file->getField("_path")->asString(module);
 		String new_path = module.GET("new_path")->asString(module);
@@ -198,6 +199,8 @@ void lotus::Parser::loadOsModule() {
 
 	FileStatic.addMethod("create", METHOD(AccessModifierType::PUBLIC, [&] {
 
+		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type"), STRING("type_error"));
+
 		String path = module.GET("path")->asString(module);
 
 		std::filesystem::path file_path(path);
@@ -211,6 +214,7 @@ void lotus::Parser::loadOsModule() {
 		}, "path"));
 
 	FileStatic.addMethod("exists", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type"), STRING("type_error"));
 		RETURN_VALUE(BOOL(std::filesystem::exists(std::filesystem::path(module.GET("path")->asString(module)))));
 		}, "path"));
 
@@ -228,7 +232,7 @@ void lotus::Parser::loadOsModule() {
 		if (!pipe) {
 			module.THROW(STRING(STRING_LITERAL("Failed to run command: ") + command), STRING("execute_error"));
 		}
-		while (fgetws(buffer.data(), (int)buffer.size(), pipe) != nullptr) {
+		while (fgetws(buffer.data(), (Int)buffer.size(), pipe) != nullptr) {
 			result += buffer.data();
 		}
 

@@ -13,9 +13,9 @@ void lotus::Enum::addElement(const String& key, Value value, Module& module) {
 				value = INT(0);
 			}
 			else if (elements.begin()->second->instanceOf("int")) {
-				int maxValue = elements.begin()->second->asInt(module);
+				Int maxValue = elements.begin()->second->asInt(module);
 				for (auto& element : elements) {
-					int elementValue = element.second->asInt(module);
+					Int elementValue = element.second->asInt(module);
 					if (elementValue > maxValue) {
 						maxValue = elementValue;
 					}

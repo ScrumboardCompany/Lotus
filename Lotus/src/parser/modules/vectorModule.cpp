@@ -2,6 +2,8 @@
 #include "parser/value/floatValue.h"
 #include "parser/value/boolValue.h"
 #include "parser/value/stringValue.h"
+#include "utils/lotusError.h"
+#include "utils/utils.h"
 
 using namespace lotus;
 
@@ -10,13 +12,36 @@ void lotus::Parser::loadVectorModule() {
 
 	Class Vector2Class;
 
-	Vector2Class.addField("X", FIELD(AccessModifierType::PUBLIC, FLOAT(0)));
-	Vector2Class.addField("Y", FIELD(AccessModifierType::PUBLIC, FLOAT(0)));
+	Vector2Class.addField("X", FIELD(AccessModifierType::PRIVATE, FLOAT(0)));
+	Vector2Class.addField("Y", FIELD(AccessModifierType::PRIVATE, FLOAT(0)));
+
+	Vector2Class.addMethod("X", METHOD(AccessModifierType::PUBLIC, [&] {
+		RETURN_VALUE(module.GET("this")->getField("X"));
+		}));
+
+	Vector2Class.addMethod("X", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!isNumber(module.GET("X"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("X")->getType(), module);
+		Value& thisValue = module.GET("this");
+		thisValue->getField("X") = FLOAT(module.GET("X")->asDouble(module));
+		}, "X"));
+
+	Vector2Class.addMethod("Y", METHOD(AccessModifierType::PUBLIC, [&] {
+		RETURN_VALUE(module.GET("this")->getField("Y"));
+		}));
+
+	Vector2Class.addMethod("Y", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!isNumber(module.GET("Y"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("Y")->getType(), module);
+		Value& thisValue = module.GET("this");
+		thisValue->getField("Y") = FLOAT(module.GET("Y")->asDouble(module));
+		}, "Y"));
 
 	Vector2Class.addMethod("Vector2", METHOD(AccessModifierType::PUBLIC, [&] {}));
 
 	Vector2Class.addMethod("Vector2", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& thisValue = module.GET("this");
+		
+		if (!isNumber(module.GET("X"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("X")->getType(), module);
+		if (!isNumber(module.GET("Y"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("Y")->getType(), module);
 
 		thisValue->getField("X") = module.GET("X");
 		thisValue->getField("Y") = module.GET("Y");
@@ -27,23 +52,29 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
 		RETURN_VALUE(module.CALL("Vector2",
-			thisValue->getField("X")->add(otherValue->getField("X"), module),
-			thisValue->getField("Y")->add(otherValue->getField("Y"), module)));
+			thisValue->getField("X")->add(otherValue->callMethod("X", {}, module), module),
+			thisValue->getField("Y")->add(otherValue->callMethod("Y", {}, module), module)));
 		}, "other"));
 
 	Vector2Class.addMethod("__substract__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
 		RETURN_VALUE(module.CALL("Vector2",
-			thisValue->getField("X")->substract(otherValue->getField("X"), module),
-			thisValue->getField("Y")->substract(otherValue->getField("Y"), module)));
+			thisValue->getField("X")->substract(otherValue->callMethod("X", {}, module), module),
+			thisValue->getField("Y")->substract(otherValue->callMethod("Y", {}, module), module)));
 		}, "other"));
 
 	Vector2Class.addMethod("__multiply__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value scalar = module.GET("scalar");
+
+		if (!isNumber(scalar)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), scalar->getType(), module);
 
 		RETURN_VALUE(module.CALL("Vector2",
 			thisValue->getField("X")->multiply(scalar, module),
@@ -54,6 +85,8 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value scalar = module.GET("scalar");
 
+		if (!isNumber(scalar)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), scalar->getType(), module);
+
 		RETURN_VALUE(module.CALL("Vector2",
 			thisValue->getField("X")->divide(scalar, module),
 			thisValue->getField("Y")->divide(scalar, module)));
@@ -63,18 +96,22 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->equality(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->equality(otherValue->getField("Y"), module)->asBool(module)));
+			thisValue->getField("X")->equality(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->equality(otherValue->callMethod("Y", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector2Class.addMethod("__inequality__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->inequality(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->inequality(otherValue->getField("Y"), module)->asBool(module)));
+			thisValue->getField("X")->inequality(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->inequality(otherValue->callMethod("Y", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector2Class.addMethod("__unaryPlus__", METHOD(AccessModifierType::PUBLIC, [&] {
@@ -97,44 +134,54 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->less(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->less(otherValue->getField("Y"), module)->asBool(module)));
+			thisValue->getField("X")->less(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->less(otherValue->callMethod("Y", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector2Class.addMethod("__greater__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->greater(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->greater(otherValue->getField("Y"), module)->asBool(module)));
+			thisValue->getField("X")->greater(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->greater(otherValue->callMethod("Y", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector2Class.addMethod("__lessEqual__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->lessEqual(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->lessEqual(otherValue->getField("Y"), module)->asBool(module)));
+			thisValue->getField("X")->lessEqual(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->lessEqual(otherValue->callMethod("Y", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector2Class.addMethod("__greaterEqual__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->greaterEqual(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->greaterEqual(otherValue->getField("Y"), module)->asBool(module)));
+			thisValue->getField("X")->greaterEqual(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->greaterEqual(otherValue->callMethod("Y", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector2Class.addMethod("__addSet__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
-		thisValue->getField("X")->addSet(thisValue->getField("X"), module);
-		thisValue->getField("Y")->addSet(thisValue->getField("Y"), module);
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
+		thisValue->getField("X")->addSet(otherValue->callMethod("X", {}, module), module);
+		thisValue->getField("Y")->addSet(otherValue->callMethod("Y", {}, module), module);
 
 		RETURN_VALUE(thisValue);
 		}, "other"));
@@ -143,8 +190,10 @@ void lotus::Parser::loadVectorModule() {
 		Value& thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
-		thisValue->getField("X")->substractSet(thisValue->getField("X"), module);
-		thisValue->getField("Y")->substractSet(thisValue->getField("Y"), module);
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
+		thisValue->getField("X")->substractSet(otherValue->callMethod("X", {}, module), module);
+		thisValue->getField("Y")->substractSet(otherValue->callMethod("Y", {}, module), module);
 
 		RETURN_VALUE(thisValue);
 		}, "other"));
@@ -152,6 +201,8 @@ void lotus::Parser::loadVectorModule() {
 	Vector2Class.addMethod("__multiplySet__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& thisValue = module.GET("this");
 		Value scalar = module.GET("scalar");
+
+		if (!isNumber(scalar)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), scalar->getType(), module);
 
 		thisValue->getField("X")->multiplySet(scalar, module);
 		thisValue->getField("Y")->multiplySet(scalar, module);
@@ -162,6 +213,8 @@ void lotus::Parser::loadVectorModule() {
 	Vector2Class.addMethod("__divideSet__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& thisValue = module.GET("this");
 		Value scalar = module.GET("scalar");
+
+		if (!isNumber(scalar)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), scalar->getType(), module);
 
 		thisValue->getField("X")->divideSet(scalar, module);
 		thisValue->getField("Y")->divideSet(scalar, module);
@@ -200,16 +253,20 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
-		RETURN_VALUE(thisValue->getField("X")->multiply(otherValue->getField("X"), module)
-			->add(thisValue->getField("Y")->multiply(otherValue->getField("Y"), module), module));
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
+		RETURN_VALUE(thisValue->getField("X")->multiply(otherValue->callMethod("X", {}, module), module)
+			->add(thisValue->getField("Y")->multiply(otherValue->callMethod("Y", {}, module), module), module));
 		}, "other"));
 
 	Vector2Class.addMethod("distance", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
-		Value dx = thisValue->getField("X")->substract(otherValue->getField("X"), module);
-		Value dy = thisValue->getField("Y")->substract(otherValue->getField("Y"), module);
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+
+		Value dx = thisValue->getField("X")->substract(otherValue->callMethod("X", {}, module), module);
+		Value dy = thisValue->getField("Y")->substract(otherValue->callMethod("Y", {}, module), module);
 
 		RETURN_VALUE(FLOAT(std::sqrt(dx->asDouble(module)* dx->asDouble(module) +
 			dy->asDouble(module) * dy->asDouble(module))));
@@ -218,6 +275,8 @@ void lotus::Parser::loadVectorModule() {
 	Vector2Class.addMethod("angleBetween", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
+
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
 
 		Value dot = thisValue->callMethod("dot", { otherValue }, module);
 		Value size1 = thisValue->callMethod("__size__", {}, module);
@@ -232,23 +291,30 @@ void lotus::Parser::loadVectorModule() {
 		Value otherValue = module.GET("other");
 		Value t = module.GET("t");
 
+		if (!otherValue->instanceOf("Vector2")) throwTypeError(STRING_LITERAL("Vector2"), otherValue->getType(), module);
+		if (!isNumber(t)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), t->getType(), module);
+
 		RETURN_VALUE(module.CALL("Vector2",
-			thisValue->getField("X")->add(otherValue->getField("X")->substract(thisValue->getField("X"), module)->multiply(t, module), module),
-			thisValue->getField("Y")->add(otherValue->getField("Y")->substract(thisValue->getField("Y"), module)->multiply(t, module), module)));
+			thisValue->getField("X")->add(otherValue->callMethod("X", {}, module)->substract(thisValue->getField("X"), module)->multiply(t, module), module),
+			thisValue->getField("Y")->add(otherValue->callMethod("Y", {}, module)->substract(thisValue->getField("Y"), module)->multiply(t, module), module)));
 		}, "other", "t"));
 
 	Vector.CLASS("Vector2", Vector2Class, module, true);
 
 	Class Vector3Class;
 
-	Vector3Class.addField("X", FIELD(AccessModifierType::PUBLIC, FLOAT(0)));
-	Vector3Class.addField("Y", FIELD(AccessModifierType::PUBLIC, FLOAT(0)));
-	Vector3Class.addField("Z", FIELD(AccessModifierType::PUBLIC, FLOAT(0)));
+	Vector3Class.addField("X", FIELD(AccessModifierType::PRIVATE, FLOAT(0)));
+	Vector3Class.addField("Y", FIELD(AccessModifierType::PRIVATE, FLOAT(0)));
+	Vector3Class.addField("Z", FIELD(AccessModifierType::PRIVATE, FLOAT(0)));
 
 	Vector3Class.addMethod("Vector3", METHOD(AccessModifierType::PUBLIC, [&] {}));
 
 	Vector3Class.addMethod("Vector3", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& thisValue = module.GET("this");
+
+		if (!isNumber(module.GET("X"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("X")->getType(), module);
+		if (!isNumber(module.GET("Y"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("Y")->getType(), module);
+		if (!isNumber(module.GET("Z"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("Z")->getType(), module);
 
 		thisValue->getField("X") = module.GET("X");
 		thisValue->getField("Y") = module.GET("Y");
@@ -256,29 +322,65 @@ void lotus::Parser::loadVectorModule() {
 
 		}, "X", "Y", "Z"));
 
+	Vector3Class.addMethod("X", METHOD(AccessModifierType::PUBLIC, [&] {
+		RETURN_VALUE(module.GET("this")->getField("X"));
+		}));
+
+	Vector3Class.addMethod("X", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!isNumber(module.GET("X"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("X")->getType(), module);
+		Value& thisValue = module.GET("this");
+		thisValue->getField("X") = FLOAT(module.GET("X")->asDouble(module));
+		}, "X"));
+
+	Vector3Class.addMethod("Y", METHOD(AccessModifierType::PUBLIC, [&] {
+		RETURN_VALUE(module.GET("this")->getField("Y"));
+		}));
+
+	Vector3Class.addMethod("Y", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!isNumber(module.GET("Y"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("Y")->getType(), module);
+		Value& thisValue = module.GET("this");
+		thisValue->getField("Y") = FLOAT(module.GET("Y")->asDouble(module));
+		}, "Y"));
+
+	Vector3Class.addMethod("Z", METHOD(AccessModifierType::PUBLIC, [&] {
+		RETURN_VALUE(module.GET("this")->getField("Z"));
+		}));
+
+	Vector3Class.addMethod("Z", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!isNumber(module.GET("Z"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("Z")->getType(), module);
+		Value& thisValue = module.GET("this");
+		thisValue->getField("Z") = FLOAT(module.GET("Z")->asDouble(module));
+		}, "Z"));
+
 	Vector3Class.addMethod("__add__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
 		RETURN_VALUE(module.CALL("Vector3",
-			thisValue->getField("X")->add(otherValue->getField("X"), module),
-			thisValue->getField("Y")->add(otherValue->getField("Y"), module),
-			thisValue->getField("Z")->add(otherValue->getField("Z"), module)));
+			thisValue->getField("X")->add(otherValue->callMethod("X", {}, module), module),
+			thisValue->getField("Y")->add(otherValue->callMethod("Y", {}, module), module),
+			thisValue->getField("Z")->add(otherValue->callMethod("Z", {}, module), module)));
 		}, "other"));
 
 	Vector3Class.addMethod("__substract__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
 		RETURN_VALUE(module.CALL("Vector3",
-			thisValue->getField("X")->substract(otherValue->getField("X"), module),
-			thisValue->getField("Y")->substract(otherValue->getField("Y"), module),
-			thisValue->getField("Z")->substract(otherValue->getField("Z"), module)));
+			thisValue->getField("X")->substract(otherValue->callMethod("X", {}, module), module),
+			thisValue->getField("Y")->substract(otherValue->callMethod("Y", {}, module), module),
+			thisValue->getField("Z")->substract(otherValue->callMethod("Z", {}, module), module)));
 		}, "other"));
 
 	Vector3Class.addMethod("__multiply__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value scalar = module.GET("scalar");
+
+		if (!isNumber(scalar)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), scalar->getType(), module);
 
 		RETURN_VALUE(module.CALL("Vector3",
 			thisValue->getField("X")->multiply(scalar, module),
@@ -290,6 +392,8 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value scalar = module.GET("scalar");
 
+		if (!isNumber(scalar)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), scalar->getType(), module);
+
 		RETURN_VALUE(module.CALL("Vector3",
 			thisValue->getField("X")->divide(scalar, module),
 			thisValue->getField("Y")->divide(scalar, module),
@@ -300,20 +404,24 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->equality(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->equality(otherValue->getField("Y"), module)->asBool(module) &&
-			thisValue->getField("Z")->equality(otherValue->getField("Z"), module)->asBool(module)));
+			thisValue->getField("X")->equality(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->equality(otherValue->callMethod("Y", {}, module), module)->asBool(module) &&
+			thisValue->getField("Z")->equality(otherValue->callMethod("Z", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector3Class.addMethod("__inequality__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->inequality(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->inequality(otherValue->getField("Y"), module)->asBool(module) &&
-			thisValue->getField("Z")->inequality(otherValue->getField("Z"), module)->asBool(module)));
+			thisValue->getField("X")->inequality(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->inequality(otherValue->callMethod("Y", {}, module), module)->asBool(module) &&
+			thisValue->getField("Z")->inequality(otherValue->callMethod("Z", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector3Class.addMethod("__unaryPlus__", METHOD(AccessModifierType::PUBLIC, [&] {
@@ -338,49 +446,59 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->less(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->less(otherValue->getField("Y"), module)->asBool(module) &&
-			thisValue->getField("Z")->less(otherValue->getField("Z"), module)->asBool(module)));
+			thisValue->getField("X")->less(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->less(otherValue->callMethod("Y", {}, module), module)->asBool(module) &&
+			thisValue->getField("Z")->less(otherValue->callMethod("Z", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector3Class.addMethod("__greater__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->greater(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->greater(otherValue->getField("Y"), module)->asBool(module) &&
-			thisValue->getField("Z")->greater(otherValue->getField("Z"), module)->asBool(module)));
+			thisValue->getField("X")->greater(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->greater(otherValue->callMethod("Y", {}, module), module)->asBool(module) &&
+			thisValue->getField("Z")->greater(otherValue->callMethod("Z", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector3Class.addMethod("__lessEqual__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->lessEqual(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->lessEqual(otherValue->getField("Y"), module)->asBool(module) &&
-			thisValue->getField("Z")->lessEqual(otherValue->getField("Z"), module)->asBool(module)));
+			thisValue->getField("X")->lessEqual(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->lessEqual(otherValue->callMethod("Y", {}, module), module)->asBool(module) &&
+			thisValue->getField("Z")->lessEqual(otherValue->callMethod("Z", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector3Class.addMethod("__greaterEqual__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
 		RETURN_VALUE(BOOL(
-			thisValue->getField("X")->greaterEqual(otherValue->getField("X"), module)->asBool(module) &&
-			thisValue->getField("Y")->greaterEqual(otherValue->getField("Y"), module)->asBool(module) &&
-			thisValue->getField("Z")->greaterEqual(otherValue->getField("Z"), module)->asBool(module)));
+			thisValue->getField("X")->greaterEqual(otherValue->callMethod("X", {}, module), module)->asBool(module) &&
+			thisValue->getField("Y")->greaterEqual(otherValue->callMethod("Y", {}, module), module)->asBool(module) &&
+			thisValue->getField("Z")->greaterEqual(otherValue->callMethod("Z", {}, module), module)->asBool(module)));
 		}, "other"));
 
 	Vector3Class.addMethod("__addSet__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
-		thisValue->getField("X")->addSet(otherValue->getField("X"), module);
-		thisValue->getField("Y")->addSet(otherValue->getField("Y"), module);
-		thisValue->getField("Z")->addSet(otherValue->getField("Z"), module);
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
+		thisValue->getField("X")->addSet(otherValue->callMethod("X", {}, module), module);
+		thisValue->getField("Y")->addSet(otherValue->callMethod("Y", {}, module), module);
+		thisValue->getField("Z")->addSet(otherValue->callMethod("Z", {}, module), module);
 
 		RETURN_VALUE(thisValue);
 		}, "other"));
@@ -389,9 +507,11 @@ void lotus::Parser::loadVectorModule() {
 		Value& thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
-		thisValue->getField("X")->substractSet(otherValue->getField("X"), module);
-		thisValue->getField("Y")->substractSet(otherValue->getField("Y"), module);
-		thisValue->getField("Z")->substractSet(otherValue->getField("Z"), module);
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
+		thisValue->getField("X")->substractSet(otherValue->callMethod("X", {}, module), module);
+		thisValue->getField("Y")->substractSet(otherValue->callMethod("Y", {}, module), module);
+		thisValue->getField("Z")->substractSet(otherValue->callMethod("Z", {}, module), module);
 
 		RETURN_VALUE(thisValue);
 		}, "other"));
@@ -399,6 +519,8 @@ void lotus::Parser::loadVectorModule() {
 	Vector3Class.addMethod("__multiplySet__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& thisValue = module.GET("this");
 		Value scalar = module.GET("scalar");
+
+		if (!isNumber(scalar)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), scalar->getType(), module);
 
 		thisValue->getField("X")->multiplySet(scalar, module);
 		thisValue->getField("Y")->multiplySet(scalar, module);
@@ -410,6 +532,8 @@ void lotus::Parser::loadVectorModule() {
 	Vector3Class.addMethod("__divideSet__", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& thisValue = module.GET("this");
 		Value scalar = module.GET("scalar");
+
+		if (!isNumber(scalar)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), scalar->getType(), module);
 
 		thisValue->getField("X")->divideSet(scalar, module);
 		thisValue->getField("Y")->divideSet(scalar, module);
@@ -453,18 +577,22 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
-		RETURN_VALUE(thisValue->getField("X")->multiply(otherValue->getField("X"), module)
-			->add(thisValue->getField("Y")->multiply(otherValue->getField("Y"), module), module)
-			->add(thisValue->getField("Z")->multiply(otherValue->getField("Z"), module), module));
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
+		RETURN_VALUE(thisValue->getField("X")->multiply(otherValue->callMethod("X", {}, module), module)
+			->add(thisValue->getField("Y")->multiply(otherValue->callMethod("Y", {}, module), module), module)
+			->add(thisValue->getField("Z")->multiply(otherValue->callMethod("Z", {}, module), module), module));
 		}, "other"));
 
 	Vector3Class.addMethod("distance", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value thisValue = module.GET("this");
 		Value otherValue = module.GET("other");
 
-		Value dx = thisValue->getField("X")->substract(otherValue->getField("X"), module);
-		Value dy = thisValue->getField("Y")->substract(otherValue->getField("Y"), module);
-		Value dz = thisValue->getField("Z")->substract(otherValue->getField("Z"), module);
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+
+		Value dx = thisValue->getField("X")->substract(otherValue->callMethod("X", {}, module), module);
+		Value dy = thisValue->getField("Y")->substract(otherValue->callMethod("Y", {}, module), module);
+		Value dz = thisValue->getField("Z")->substract(otherValue->callMethod("Z", {}, module), module);
 
 		RETURN_VALUE(FLOAT(std::sqrt(dx->asDouble(module) * dx->asDouble(module) +
 			dy->asDouble(module) * dy->asDouble(module) +
@@ -476,10 +604,13 @@ void lotus::Parser::loadVectorModule() {
 		Value otherValue = module.GET("other");
 		Value t = module.GET("t");
 
+		if (!otherValue->instanceOf("Vector3")) throwTypeError(STRING_LITERAL("Vector3"), otherValue->getType(), module);
+		if (!isNumber(t)) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), t->getType(), module);
+
 		RETURN_VALUE(module.CALL("Vector3",
-			thisValue->getField("X")->add(otherValue->getField("X")->substract(thisValue->getField("X"), module)->multiply(t, module), module),
-			thisValue->getField("Y")->add(otherValue->getField("Y")->substract(thisValue->getField("Y"), module)->multiply(t, module), module),
-			thisValue->getField("Z")->add(otherValue->getField("Z")->substract(thisValue->getField("Z"), module)->multiply(t, module), module)));
+			thisValue->getField("X")->add(otherValue->callMethod("X", {}, module)->substract(thisValue->getField("X"), module)->multiply(t, module), module),
+			thisValue->getField("Y")->add(otherValue->callMethod("Y", {}, module)->substract(thisValue->getField("Y"), module)->multiply(t, module), module),
+			thisValue->getField("Z")->add(otherValue->callMethod("Z", {}, module)->substract(thisValue->getField("Z"), module)->multiply(t, module), module)));
 		}, "other", "t"));
 
 	Vector.CLASS("Vector3", Vector3Class, module, true);

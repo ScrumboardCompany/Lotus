@@ -3,6 +3,7 @@
 #include "parser/value/boolValue.h"
 #include "parser/value/stringValue.h"
 #include "utils/utils.h"
+#include "utils/lotusError.h"
 #include <thread>
 
 using namespace lotus;
@@ -28,13 +29,21 @@ void lotus::Parser::loadTimeModule() {
 	TimeClass.addMethod("Time", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& this_time = module.GET("this");
 
-		int sec = module.GET("sec")->asInt(module);
-		int min = module.GET("min")->asInt(module);
-		int hour = module.GET("hour")->asInt(module);
-		int day = module.GET("day")->asInt(module);
-		int month = module.GET("month")->asInt(module);
-		int year = module.GET("year")->asInt(module);
-		int isdst = module.GET("isdst")->asInt(module);
+		if (!module.GET("sec")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("sec")->getType(), module);
+		if (!module.GET("min")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("min")->getType(), module);
+		if (!module.GET("hour")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("hour")->getType(), module);
+		if (!module.GET("day")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("day")->getType(), module);
+		if (!module.GET("month")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("month")->getType(), module);
+		if (!module.GET("year")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("year")->getType(), module);
+		if (!module.GET("isdst")->instanceOf("bool")) throwTypeError(STRING_LITERAL("bool"), module.GET("isdst")->getType(), module);
+
+		Int sec = module.GET("sec")->asInt(module);
+		Int min = module.GET("min")->asInt(module);
+		Int hour = module.GET("hour")->asInt(module);
+		Int day = module.GET("day")->asInt(module);
+		Int month = module.GET("month")->asInt(module);
+		Int year = module.GET("year")->asInt(module);
+		Int isdst = module.GET("isdst")->asInt(module);
 
 		if (!isValidDate(day, month, year)) {
 			module.THROW(STRING("Invalid date"));
@@ -54,6 +63,8 @@ void lotus::Parser::loadTimeModule() {
 		}, "sec", "min", "hour", "day", "month", "year", "isdst"));
 
 	TimeClass.addMethod("__add__", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("time")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("time")->getType(), module);
+
 		Value this_time = module.GET("this");
 		Value add_time = module.GET("time");
 
@@ -64,6 +75,8 @@ void lotus::Parser::loadTimeModule() {
 		}, "time"));
 
 	TimeClass.addMethod("__substract__", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("time")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("time")->getType(), module);
+
 		Value this_time = module.GET("this");
 		Value sub_time = module.GET("time");
 
@@ -103,6 +116,7 @@ void lotus::Parser::loadTimeModule() {
 	Static TimeStatic;
 
 	TimeStatic.addMethod("sleep", METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("duration")->instanceOf("int")) throwTypeError(STRING_LITERAL("int"), module.GET("duration")->getType(), module);
 		std::this_thread::sleep_for(std::chrono::milliseconds(module.GET("duration")->asInt(module)));
 		}, "duration"));
 

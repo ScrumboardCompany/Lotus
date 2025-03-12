@@ -17,7 +17,7 @@ namespace lotus {
 
 		EnumValue(const Value& value, const String& type);
 
-		int asInt(Module& module) override;
+		Int asInt(Module& module) override;
 		String asString(Module& module) override;
 
 		Value greater(const Value& other, Module& module) override;

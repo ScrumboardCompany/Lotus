@@ -20,10 +20,10 @@ Expression lotus::Parser::primary() {
 	const Token currentToken = get(0);
 
 	if (match(TokenType::HEX)) {
-		return MAKE_PTR<IntExpression>(std::stoi(currentToken.text, nullptr, 16));
+		return MAKE_PTR<IntExpression>(std::stoll(currentToken.text, nullptr, 16));
 	}
 	if (match(TokenType::INT_TYPE)) {
-		return MAKE_PTR<IntExpression>(std::stoi(currentToken.text));
+		return MAKE_PTR<IntExpression>(std::stoll(currentToken.text));
 	}
 	if (match(TokenType::FLOAT_TYPE)) {
 		return MAKE_PTR<FloatExpression>(std::stod(currentToken.text));

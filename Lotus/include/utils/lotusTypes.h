@@ -17,6 +17,7 @@ namespace lotus {
     struct FieldMemberInfo;
     struct MethodMemberInfo;
 
+	using Int = int64_t;
 	using String = std::wstring;
     using Char = wchar_t;
 
