@@ -1,5 +1,6 @@
 #include "parser/parser.h"
 #include "utils/lotusError.h"
+#include "utils/utils.h"
 #include "parser/expression/intExpression.h"
 #include "parser/expression/floatExpression.h"
 #include "parser/expression/stringExpression.h"
@@ -12,6 +13,8 @@
 #include "parser/expression/lambdaExpression.h"
 #include "parser/expression/staticFieldOrEnumExpression.h"
 #include "parser/expression/staticMethodExpression.h"
+#include "parser/expression/swapExpression.h"
+#include <filesystem>
 
 using namespace lotus;
 
@@ -61,6 +64,21 @@ Expression lotus::Parser::primary() {
 	if (match(TokenType::FALSE)) {
 		return MAKE_PTR<BoolExpression>(false);
 	}
+	if (match(TokenType::___FILE___)) {
+		return MAKE_PTR<StringExpression>(std::filesystem::path(filePath).filename().wstring());
+	}
+	if (match(TokenType::___PATH___)) {
+		return MAKE_PTR<StringExpression>(std::filesystem::absolute(filePath).wstring());
+	}
+	if (match(TokenType::___TIME___)) {
+		return MAKE_PTR<StringExpression>(nowTimeInString());
+	}
+	if (match(TokenType::___VERSION___)) {
+		return MAKE_PTR<FloatExpression>(LOTUS_VERSION);
+	}
+	if (match(TokenType::___LINE___)) {
+		return MAKE_PTR<IntExpression>(currentToken.line);
+	}
 	if (match(TokenType::FLAGVALUE)) {
 
 		consume(TokenType::LPAREN);
@@ -80,6 +98,19 @@ Expression lotus::Parser::primary() {
 		Function function(body, args);
 
 		return MAKE_PTR<LambdaExpression>(function);
+	}
+	if (match(TokenType::SWAP)) {
+		consume(TokenType::LPAREN);
+
+		Expression expr1 = expression();
+
+		consume(TokenType::COMMA);
+
+		Expression expr2 = expression();
+
+		consume(TokenType::RPAREN);
+
+		return MAKE_PTR<SwapExpression>(expr1, expr2);
 	}
 	if (match(TokenType::LBRACKET)) {
 

@@ -15,6 +15,7 @@ namespace lotus {
 		String field;
 
 		friend class SetExpression;
+		friend class SwapExpression;
 
 	public:
 		StaticFieldOrEnumExpression(const String& staticName, const String& field);

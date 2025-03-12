@@ -93,7 +93,13 @@ namespace lotus {
 			{STRING_LITERAL("flagValue"), TokenType::FLAGVALUE},
 			{STRING_LITERAL("variable"), TokenType::VARIABLE},
 			{STRING_LITERAL("function"), TokenType::FUNCTION},
-			{STRING_LITERAL("enum"), TokenType::ENUM}
+			{STRING_LITERAL("enum"), TokenType::ENUM},
+			{STRING_LITERAL("swap"), TokenType::SWAP},
+			{STRING_LITERAL("__file__"), TokenType::___FILE___},
+			{STRING_LITERAL("__path__"), TokenType::___PATH___},
+			{STRING_LITERAL("__time__"), TokenType::___TIME___},
+			{STRING_LITERAL("__version__"), TokenType::___VERSION___},
+			{STRING_LITERAL("__line__"), TokenType::___LINE___}
 		};
 
 		String input;

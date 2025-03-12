@@ -86,6 +86,12 @@ namespace lotus {
 		VARIABLE,
 		FUNCTION,
 		ENUM,
+		SWAP,
+		___FILE___,
+		___PATH___,
+		___TIME___,
+		___VERSION___,
+		___LINE___,
 
 		LPAREN,
 		RPAREN,

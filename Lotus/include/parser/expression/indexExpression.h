@@ -14,6 +14,7 @@ namespace lotus {
 		Expression index;
 
 		friend class SetExpression;
+		friend class SwapExpression;
 
 	public:
 		IndexExpression(const Expression& expression, const Expression& index);

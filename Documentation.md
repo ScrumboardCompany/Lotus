@@ -95,7 +95,9 @@ flagValue(flagName)
 0xDEADBEEF # HEX numbers
 __path__ # File path
 __file__ # File name
+__time__ # Time when compiled
 __version__ # Lotus version
+__line__ # Line where literal is used
 ```
 
 ## Variable declaration
@@ -112,7 +114,20 @@ let b = {
     Age = 30;
 }
 
-print(b.Name)
+print(b.Name) # Output: "John"
+```
+**Methods**
+```Lotus
+array.push(value) # Adds value to array at last index
+array.push(value, index) # Adds value to array at passed index
+array.push(value, start, end) # Adds value from start to end
+
+array.pop() # Deletes value from array at last index
+array.pop(index) # Deletes value from array at passed index
+array.pop(start, end) # Deletes values from array from start to end indexes
+
+array.clear() # Clears the array
+array.empty() # Returns is array empty
 ```
 
 ## Loops
@@ -434,13 +449,14 @@ exception.type(); # Returns type of the exception
 print(args...); # Prints arguments
 println(args...); # Prints arguments with split "\n"
 input(); # Takes input and returns string
-typeof(arg); # Returns type of the argument
-size(arg); # Returns size of the array
-sizeof(arg); # Returns size of argument in RAM
-int(arg); # Casts argument to integer
-float(arg); # Casts argument to float
-bool(arg); # Casts argument to bool
-string(arg); # Casts argument to string
+typeof(value); # Returns type of the value
+swap(value1, value2) # Swaps the value1 and value2 values
+size(value); # Returns size of the array
+sizeof(value); # Returns size of value in RAM
+int(value); # Casts value to integer
+float(value); # Casts value to float
+bool(value); # Casts value to bool
+string(value); # Casts value to string
 throw(); # Throw default exception
 throw(msg); # Throw exception with msg
 throw(msg, type); # Throw exception with msg and type

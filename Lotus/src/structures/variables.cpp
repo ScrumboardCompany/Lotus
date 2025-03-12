@@ -4,25 +4,11 @@
 using namespace lotus;
 
 void Variables::forceSet(const String& name, const Value& value) {
-	if (name == STRING_LITERAL("__file__") || name == STRING_LITERAL("__path__") || name == STRING_LITERAL("__time__") || name == STRING_LITERAL("__version__")) {
-		if (scopes.empty()) {
-			if (variables.find(name) == variables.end()) {
-				variables[name] = value;
-			}
-		}
-		else {
-			if (scopes.back().find(name) == scopes.back().end()) {
-				scopes.back()[name] = value;
-			}
-		}
+	if (scopes.empty()) {
+		variables[name] = value;
 	}
 	else {
-		if (scopes.empty()) {
-			variables[name] = value;
-		}
-		else {
-			scopes.back()[name] = value;
-		}
+		scopes.back()[name] = value;
 	}
 }
 

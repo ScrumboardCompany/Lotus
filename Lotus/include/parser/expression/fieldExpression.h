@@ -13,6 +13,7 @@ namespace lotus {
 		String field;
 
 		friend class SetExpression;
+		friend class SwapExpression;
 
 	public:
 		FieldExpression(const Expression& expr, const String& field);

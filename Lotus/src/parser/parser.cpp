@@ -4,7 +4,7 @@
 
 using namespace lotus;
 
-lotus::Parser::Parser(const std::list<Token>& tokens) : pos(0) {
+lotus::Parser::Parser(const std::list<Token>& tokens, const String& filePath) : pos(0), filePath(filePath) {
 	this->tokens.clear();
 	for (auto& token : tokens) {
 		this->tokens.push_back(token);

@@ -17,13 +17,14 @@ namespace lotus {
 		std::vector<Token> tokens;
 		size_t pos;
 
+		String filePath;
 		Module module;
 
 		StringMap<Module> modules;
 		friend class ImportStatement;
 
 	public:
-		Parser(const std::list<Token>& tokens);
+		Parser(const std::list<Token>& tokens, const String& filePath);
 
 		std::vector<Statement> parse();
 

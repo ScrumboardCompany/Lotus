@@ -15,7 +15,6 @@
 #include "parser/expression/floatExpression.h"
 #include "parser/expression/stringExpression.h"
 #include "parser/statement/expressionStatement.h"
-#include <filesystem>
 #include "parser/statement/continueStatement.h"
 #include "parser/statement/breakStatement.h"
 
@@ -210,6 +209,9 @@ void lotus::nowTime(tm* _Tm) {
 #else
     localtime_r(&now_time, _Tm);
 #endif
+
+    _Tm->tm_year += 1900;
+    _Tm->tm_mon += 1;
 }
 
 String lotus::nowTimeInString() {
@@ -243,32 +245,12 @@ Module& lotus::Compiler::compile(const String& filePath, const StringMap<bool>& 
         Lexer lexer(content);
         auto tokens = lexer.tokenize();
 
-        Ptr<Parser> parser = MAKE_PTR<Parser>(tokens);
+        Ptr<Parser> parser = MAKE_PTR<Parser>(tokens, filePath);
         for (const auto& [name, value] : flags) {
             parser->getModule().flags.set(name, value);
         }
 
         auto statements = parser->parse();
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__file__"),
-                MAKE_PTR<StringExpression>(std::filesystem::path(filePath).filename().wstring())
-            )));
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__path__"),
-                MAKE_PTR<StringExpression>(std::filesystem::absolute(filePath).wstring())
-            )));
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__time__"),
-                MAKE_PTR<StringExpression>(nowTimeInString())
-            )));
-
-        statements.insert(statements.begin(), MAKE_PTR<ExpressionStatement>(
-            MAKE_PTR<LetExpression>(STRING_LITERAL("__version__"),
-                MAKE_PTR<FloatExpression>(LOTUS_VERSION)
-            )));
 
         Module& module = parser->getModule();
         for (auto& statement : statements) {

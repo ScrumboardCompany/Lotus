@@ -131,8 +131,8 @@ void lotus::Parser::loadTimeModule() {
 			INT(end_time.tm_min),
 			INT(end_time.tm_hour),
 			INT(end_time.tm_mday),
-			INT(end_time.tm_mon + 1),
-			INT(end_time.tm_year + 1900),
+			INT(end_time.tm_mon),
+			INT(end_time.tm_year),
 			INT(end_time.tm_isdst)
 		));
 		}));
