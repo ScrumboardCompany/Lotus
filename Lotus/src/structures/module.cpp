@@ -40,15 +40,15 @@ void lotus::Module::STATIC(const char* name, const Static& value) {
 	STATIC(STRING_VAR_LITERAL(name), value);
 }
 
-void lotus::Module::CLASS(const String& name, const Class& value, bool doRegister) {
+void lotus::Module::CLASS(const String& name, const Class& value, Module& userModule, bool doRegister) {
 	classes.declare(name, MAKE_PTR<Class>(value));
 	if (doRegister) {
-		classes.registerClass(name, *this);
+		classes.registerClass(name, userModule);
 	}
 }
 
-void lotus::Module::CLASS(const char* name, const Class& value, bool doRegister) {
-	CLASS(STRING_VAR_LITERAL(name), value, doRegister);
+void lotus::Module::CLASS(const char* name, const Class& value, Module& userModule, bool doRegister) {
+	CLASS(STRING_VAR_LITERAL(name), value, userModule, doRegister);
 }
 
 void lotus::Module::ENUM(const String& name, const Enum& value) {

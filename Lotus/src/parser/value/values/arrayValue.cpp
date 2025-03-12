@@ -1,6 +1,8 @@
 #include "parser/value/arrayValue.h"
 #include "parser/value/intValue.h"
 #include "utils/lotusError.h"
+#include "parser/value/stringValue.h"
+#include "parser/value/boolValue.h"
 #include "parser/function/function.h"
 #include "parser/statement/continueStatement.h"
 #include "parser/statement/breakStatement.h"
@@ -8,8 +10,73 @@
 
 using namespace lotus;
 
-lotus::ArrayValue::ArrayValue(std::vector<Value> elements) : elements(elements) {
+lotus::ArrayValue::ArrayValue(const std::vector<Value>& elements, Module& module) : elements(elements) {
     type = STRING_LITERAL("array");
+
+    declareMethod(STRING_LITERAL("push"), METHOD(AccessModifierType::PUBLIC, [&] {
+        this->elements.push_back(module.GET("element"));
+        }, "element"));
+
+    declareMethod(STRING_LITERAL("push"), METHOD(AccessModifierType::PUBLIC, [&] {
+        if (!module.GET("index")->instanceOf("int")) module.THROW(STRING("Index can be only int"), STRING("type_error"));
+        int index = module.GET("index")->asInt(module);
+        if (index > static_cast<int>(this->elements.size())) module.THROW(STRING("Index is bigger than array size"), STRING("out_of_range"));
+        if (index < 0) module.THROW(STRING("Index can't be less than 0"), STRING("out_of_range"));
+        this->elements.insert(this->elements.begin() + index, module.GET("element"));
+        }, "element", "index"));
+
+    declareMethod(STRING_LITERAL("push"), METHOD(AccessModifierType::PUBLIC, [&] {
+        if (!module.GET("start")->instanceOf("int") || !module.GET("end")->instanceOf("int")) module.THROW(STRING("Index can be only int"), STRING("type_error"));
+        int start = module.GET("start")->asInt(module);
+        int end = module.GET("end")->asInt(module);
+        Value value = module.GET("value");
+
+        if (start > static_cast<int>(this->elements.size())) module.THROW(STRING("Start index is bigger than array size"), STRING("out_of_range"));
+        if (end > static_cast<int>(this->elements.size())) module.THROW(STRING("End index is bigger than array size"), STRING("out_of_range"));
+        if (start < 0) module.THROW(STRING("Start index can't be less than 0"), STRING("out_of_range"));
+        if (end < 0) module.THROW(STRING("End index can't be less than 0"), STRING("out_of_range"));
+        if (start > end) module.THROW(STRING("Start index can't be greater than end index"), STRING("out_of_range"));
+
+        /*for (int i = start; i <= end; ++i) {
+            this->elements[i] = value;
+        }*/ // Replaces
+
+        this->elements.insert(this->elements.begin() + start, end - start + 1, value); // Adds
+        }, "value", "start", "end"));
+
+    declareMethod(STRING_LITERAL("pop"), METHOD(AccessModifierType::PUBLIC, [&] {
+        this->elements.pop_back();
+        }));
+
+    declareMethod(STRING_LITERAL("pop"), METHOD(AccessModifierType::PUBLIC, [&] {
+        if (!module.GET("index")->instanceOf("int")) module.THROW(STRING("Index can be only int"), STRING("type_error"));
+        int index = module.GET("index")->asInt(module);
+        if (index > static_cast<int>(this->elements.size())) module.THROW(STRING("Index is bigger than array size"), STRING("out_of_range"));
+        if (index < 0) module.THROW(STRING("Index can't be less than 0"), STRING("out_of_range"));
+        this->elements.erase(this->elements.begin() + module.GET("index")->asInt(module));
+        }, "index"));
+
+    declareMethod(STRING_LITERAL("pop"), METHOD(AccessModifierType::PUBLIC, [&] {
+        if (!module.GET("start")->instanceOf("int") || !module.GET("end")->instanceOf("int")) module.THROW(STRING("Index can be only int"), STRING("type_error"));
+        int start = module.GET("start")->asInt(module);
+        int end = module.GET("end")->asInt(module);
+
+        if (start > static_cast<int>(this->elements.size())) module.THROW(STRING("Start index is bigger than array size"), STRING("out_of_range"));
+        if (end > static_cast<int>(this->elements.size())) module.THROW(STRING("End index is bigger than array size"), STRING("out_of_range"));
+        if (start < 0) module.THROW(STRING("Start index can't be less than 0"), STRING("out_of_range"));
+        if (end < 0) module.THROW(STRING("End index can't be less than 0"), STRING("out_of_range"));
+        if (start > end) module.THROW(STRING("Start index can't be greater than end index"), STRING("out_of_range"));
+
+        this->elements.erase(this->elements.begin() + start, this->elements.begin() + end + 1);
+        }, "start", "end"));
+
+    declareMethod(STRING_LITERAL("clear"), METHOD(AccessModifierType::PUBLIC, [&] {
+        this->elements.clear();
+        }));
+
+    declareMethod(STRING_LITERAL("empty"), METHOD(AccessModifierType::PUBLIC, [&] {
+        RETURN_VALUE(BOOL(this->elements.empty()));
+        }));
 }
 
 String lotus::ArrayValue::asString(Module& module) {
@@ -24,7 +91,7 @@ String lotus::ArrayValue::asString(Module& module) {
     return result;
 }
 
-Value lotus::ArrayValue::add(const Value& other, Module&) {
+Value lotus::ArrayValue::add(const Value& other, Module& module) {
     if (other->getType() == STRING_LITERAL("array")) {
         std::vector<Value> newElements = elements;
 
@@ -37,7 +104,7 @@ Value lotus::ArrayValue::add(const Value& other, Module&) {
             newElements.push_back(el);
         }
 
-        return ARRAY(newElements);
+        return ARRAY(newElements, module);
     }
     throwOverloadError(STRING_LITERAL("add"), getType(), other->getType());
 }
@@ -46,7 +113,7 @@ Value lotus::ArrayValue::addSet(const Value& other, Module& module) {
     if (auto arr = std::dynamic_pointer_cast<ArrayValue>(add(other, module))) {
         elements = arr->elements;
     }
-    return ARRAY(elements);
+    return ARRAY(elements, module);
 }
 
 void lotus::ArrayValue::foreach(const String& name, const Statement& body, Module& module) {

@@ -29,65 +29,65 @@ namespace lotus {
 
 		ClassValue() = default;
 
-		int asInt(Module& module) override;
-		double asDouble(Module& module) override;
-		bool asBool(Module& module) override;
-		String asString(Module& module) override;
+		virtual int asInt(Module& module) override;
+		virtual double asDouble(Module& module) override;
+		virtual bool asBool(Module& module) override;
+		virtual String asString(Module& module) override;
 
-		Value add(const Value& other, Module& module) override;
-		Value substract(const Value& other, Module& module) override;
-		Value multiply(const Value& other, Module& module) override;
-		Value divide(const Value& other, Module& module) override;
-		Value power(const Value& other, Module& module) override;
-		Value divideModule(const Value& other, Module& module) override;
+		virtual Value add(const Value& other, Module& module) override;
+		virtual Value substract(const Value& other, Module& module) override;
+		virtual Value multiply(const Value& other, Module& module) override;
+		virtual Value divide(const Value& other, Module& module) override;
+		virtual Value power(const Value& other, Module& module) override;
+		virtual Value divideModule(const Value& other, Module& module) override;
 
-		Value bitwiseAnd(const Value& other, Module& module) override;
-		Value bitwiseOr(const Value& other, Module& module) override;
-		Value bitwiseXor(const Value& other, Module& module) override;
-		Value bitwiseNot(Module& module) override;
-		Value bitwiseLeftShift(const Value& other, Module& module) override;
-		Value bitwiseRightShift(const Value& other, Module& module) override;
+		virtual Value bitwiseAnd(const Value& other, Module& module) override;
+		virtual Value bitwiseOr(const Value& other, Module& module) override;
+		virtual Value bitwiseXor(const Value& other, Module& module) override;
+		virtual Value bitwiseNot(Module& module) override;
+		virtual Value bitwiseLeftShift(const Value& other, Module& module) override;
+		virtual Value bitwiseRightShift(const Value& other, Module& module) override;
 
-		Value greater(const Value& other, Module& module) override;
-		Value less(const Value& other, Module& module) override;
-		Value greaterEqual(const Value& other, Module& module) override;
-		Value lessEqual(const Value& other, Module& module) override;
-		Value equality(const Value& other, Module& module) override;
-		Value inequality(const Value& other, Module& module) override;
-		Value logicalOr(const Value& other, Module& module) override;
-		Value logicalAnd(const Value& other, Module& module) override;
+		virtual Value greater(const Value& other, Module& module) override;
+		virtual Value less(const Value& other, Module& module) override;
+		virtual Value greaterEqual(const Value& other, Module& module) override;
+		virtual Value lessEqual(const Value& other, Module& module) override;
+		virtual Value equality(const Value& other, Module& module) override;
+		virtual Value inequality(const Value& other, Module& module) override;
+		virtual Value logicalOr(const Value& other, Module& module) override;
+		virtual Value logicalAnd(const Value& other, Module& module) override;
 
-		Value addSet(const Value& other, Module& module) override;
-		Value substractSet(const Value& other, Module& module) override;
-		Value multiplySet(const Value& other, Module& module) override;
-		Value divideSet(const Value& other, Module& module) override;
-		Value powerSet(const Value& other, Module& module) override;
-		Value divideModuleSet(const Value& other, Module& module) override;
-		Value bitwiseAndSet(const Value& other, Module& module) override;
-		Value bitwiseOrSet(const Value& other, Module& module) override;
-		Value bitwiseXorSet(const Value& other, Module& module) override;
-		Value bitwiseNotSet(Module& module) override;
-		Value bitwiseLeftShiftSet(const Value& other, Module& module) override;
-		Value bitwiseRightShiftSet(const Value& other, Module& module) override;
+		virtual Value addSet(const Value& other, Module& module) override;
+		virtual Value substractSet(const Value& other, Module& module) override;
+		virtual Value multiplySet(const Value& other, Module& module) override;
+		virtual Value divideSet(const Value& other, Module& module) override;
+		virtual Value powerSet(const Value& other, Module& module) override;
+		virtual Value divideModuleSet(const Value& other, Module& module) override;
+		virtual Value bitwiseAndSet(const Value& other, Module& module) override;
+		virtual Value bitwiseOrSet(const Value& other, Module& module) override;
+		virtual Value bitwiseXorSet(const Value& other, Module& module) override;
+		virtual Value bitwiseNotSet(Module& module) override;
+		virtual Value bitwiseLeftShiftSet(const Value& other, Module& module) override;
+		virtual Value bitwiseRightShiftSet(const Value& other, Module& module) override;
 
-		Value unaryPlus(Module& module) override;
-		Value unaryMinus(Module& module) override;
-		Value unaryNot(Module& module) override;
-		Value prefixIncrement(Module& module) override;
-		Value postfixIncrement(Module& module) override;
-		Value prefixDecrement(Module& module) override;
-		Value postfixDecrement(Module& module) override;
+		virtual Value unaryPlus(Module& module) override;
+		virtual Value unaryMinus(Module& module) override;
+		virtual Value unaryNot(Module& module) override;
+		virtual Value prefixIncrement(Module& module) override;
+		virtual Value postfixIncrement(Module& module) override;
+		virtual Value prefixDecrement(Module& module) override;
+		virtual Value postfixDecrement(Module& module) override;
 
-		Value size(Module& module) override;
-		Value getOfIndex(const Value& index, Module& module) override;
-		Value setOfIndex(const Value& index, const Value& other, Module& module) override;
+		virtual Value size(Module& module) override;
+		virtual Value getOfIndex(const Value& index, Module& module) override;
+		virtual Value setOfIndex(const Value& index, const Value& other, Module& module) override;
 
 		void declareField(const String& name, const FieldMemberInfo& memberInfo);
 		void declareMethod(const String& name, const MethodMemberInfo& memberInfo);
 
 		Value& getField(const String& name) override;
 		Value callMethod(const String& name, const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {}) override;
-		Value call(const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {}) override;
+		virtual Value call(const std::vector<Value>& args, Module& module, const StringMap<Value>& specifiedArgs = {}) override;
 
 		Value sizeInRam() override;
 

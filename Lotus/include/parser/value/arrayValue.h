@@ -3,20 +3,22 @@
 #ifndef _ARRAYVALUE_
 #define _ARRAYVALUE_
 
-#include "parser/value/value.h"
+#include "parser/value/classValue.h"
 
 namespace lotus {
 
-	class ArrayValue : public IValue {
+	class ArrayValue : public ClassValue {
 		std::vector<Value> elements;
 
 	public:
 
-		ArrayValue(std::vector<Value> elements);
+		ArrayValue(const std::vector<Value>& elements, Module& module);
+
+		ArrayValue(ArrayValue&&) = default;
 
 		String asString(Module& module) override;
 
-		Value add(const Value& other, Module&) override;
+		Value add(const Value& other, Module& module) override;
 
 		Value addSet(const Value& other, Module& module) override;
 

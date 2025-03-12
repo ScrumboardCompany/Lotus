@@ -98,7 +98,7 @@ void lotus::Parser::loadTimeModule() {
 		RETURN_VALUE(STRING(result));
 		}));
 
-	Time.CLASS("Time", TimeClass);
+	Time.CLASS("Time", TimeClass, module, true);
 
 	Static TimeStatic;
 

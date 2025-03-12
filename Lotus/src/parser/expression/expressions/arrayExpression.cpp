@@ -10,5 +10,5 @@ Value lotus::ArrayExpression::eval(Module& module) {
 	for (auto& element : elements) {
 		values.push_back(element->eval(module));
 	}
-	return ARRAY(values);
+	return ARRAY(values, module);
 }

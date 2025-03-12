@@ -81,9 +81,9 @@ namespace lotus {
 
 		void STATIC(const char* name, const Static& value);
 
-		void CLASS(const String& name, const Class& value, bool doRegister = false);
+		void CLASS(const String& name, const Class& value, Module& userModule, bool doRegister = false);
 
-		void CLASS(const char* name, const Class& value, bool doRegister = false);
+		void CLASS(const char* name, const Class& value, Module& userModule, bool doRegister = false);
 
 		void ENUM(const String& name, const Enum& value);
 

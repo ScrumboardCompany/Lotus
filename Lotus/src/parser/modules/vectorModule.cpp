@@ -237,7 +237,7 @@ void lotus::Parser::loadVectorModule() {
 			thisValue->getField("Y")->add(otherValue->getField("Y")->substract(thisValue->getField("Y"), module)->multiply(t, module), module)));
 		}, "other", "t"));
 
-	Vector.CLASS("Vector2", Vector2Class);
+	Vector.CLASS("Vector2", Vector2Class, module, true);
 
 	Class Vector3Class;
 
@@ -482,7 +482,7 @@ void lotus::Parser::loadVectorModule() {
 			thisValue->getField("Z")->add(otherValue->getField("Z")->substract(thisValue->getField("Z"), module)->multiply(t, module), module)));
 		}, "other", "t"));
 
-	Vector.CLASS("Vector3", Vector3Class);
+	Vector.CLASS("Vector3", Vector3Class, module, true);
 
 	modules.emplace(STRING_LITERAL("Vector"), Vector);
 }

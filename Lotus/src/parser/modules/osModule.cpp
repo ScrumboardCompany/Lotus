@@ -241,7 +241,7 @@ void lotus::Parser::loadOsModule() {
 		RETURN_VALUE(STRING(result));
 		}, "command");
 
-	Os.CLASS("File", FileClass);
+	Os.CLASS("File", FileClass, module, true);
 	Os.STATIC("File", FileStatic);
 	modules.emplace(STRING_LITERAL("Os"), Os);
 }

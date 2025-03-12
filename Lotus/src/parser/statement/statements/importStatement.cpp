@@ -133,7 +133,7 @@ void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
             }
 
             if (from.functions.isExists(key)) {
-                if ( importEverythingWithSameName || !found) {
+                if (importEverythingWithSameName || !found) {
                     for (auto& f : from.functions.functions[key]) {
                         to.functions.forceSet(key, f);
                     }

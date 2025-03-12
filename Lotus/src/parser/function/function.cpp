@@ -49,7 +49,7 @@ Value Function::call(const std::vector<Value>& callArgs, Module& module) {
 
 	if (hasVariadic()) {
 		std::vector<Value> variadicArgs(callArgs.begin() + fixedArgsCount, callArgs.end());
-		module.variables.declare(args.back().name, MAKE_PTR<ArrayValue>(variadicArgs));
+		module.variables.declare(args.back().name, ARRAY(variadicArgs, module));
 	}
 
 	try {
@@ -91,7 +91,7 @@ Value lotus::Function::call(const std::vector<Value>& callArgs, const StringMap<
 
 	if (hasVariadic()) {
 		std::vector<Value> variadicArgs(callArgs.begin() + fixedArgsCount, callArgs.end());
-		module.variables.declare(filteredArgs.back().name, MAKE_PTR<ArrayValue>(variadicArgs));
+		module.variables.declare(filteredArgs.back().name, ARRAY(variadicArgs, module));
 	}
 
 	try {
