@@ -29,7 +29,7 @@ Expression lotus::Parser::primary() {
 		return MAKE_PTR<IntExpression>(std::stoll(currentToken.text));
 	}
 	if (match(TokenType::FLOAT_TYPE)) {
-		return MAKE_PTR<FloatExpression>(std::stod(currentToken.text));
+		return MAKE_PTR<FloatExpression>(Cstod(currentToken.text));
 	}
 	if (match(TokenType::STRING_TYPE)) {
 		return MAKE_PTR<StringExpression>(currentToken.text);

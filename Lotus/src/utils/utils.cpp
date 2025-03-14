@@ -32,67 +32,112 @@ Value lotus::callAllExpressionsAndReturnLastValue(const std::vector<Expression>&
 }
 
 std::wstring lotus::wreadContent(const std::wstring& filePath) {
-    // Open the file in binary mode to check the BOM
+    //// Open the file in binary mode to check the BOM
+    //std::ifstream file(filePath, std::ios::binary);
+    //if (!file) {
+    //    throw LotusException(STRING_LITERAL("Unable to open file: ") + filePath);
+    //}
+
+    //// Read the first few bytes to check the BOM
+    //std::vector<unsigned char> bom(4, 0);
+    //file.read(reinterpret_cast<char*>(bom.data()), 4);
+    //file.seekg(0);  // Let's return the pointer to the beginning of the file
+
+    //std::wstring content;
+
+    //if (bom[0] == 0xEF && bom[1] == 0xBB && bom[2] == 0xBF) {
+    //    // File in UTF-8 with BOM
+    //    file.seekg(3);  // Skipping BOM
+    //    std::stringstream buffer;
+    //    buffer << file.rdbuf();
+    //    std::string utf8Str = buffer.str();
+
+    //    // Convert UTF-8 to wstring
+    //    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+    //    content = conv.from_bytes(utf8Str);
+    //}
+    //else if (bom[0] == 0xFF && bom[1] == 0xFE) {
+    //    // File in UTF-16 LE
+    //    file.seekg(2);
+    //    std::wifstream wfile(filePath, std::ios::binary);
+    //    wfile.imbue(std::locale(wfile.getloc(), new std::codecvt_utf16<wchar_t, 0x10FFFF, std::little_endian>));
+    //    std::wstringstream wbuffer;
+    //    wbuffer << wfile.rdbuf();
+    //    content = wbuffer.str();
+    //}
+    //else if (bom[0] == 0xFE && bom[1] == 0xFF) {
+    //    // File in UTF-16 BE
+    //    file.seekg(2);
+    //    std::wifstream wfile(filePath, std::ios::binary);
+    //    wfile.imbue(std::locale(wfile.getloc(), new std::codecvt_utf16<wchar_t, 0x10FFFF, std::consume_header>));
+    //    std::wstringstream wbuffer;
+    //    wbuffer << wfile.rdbuf();
+    //    content = wbuffer.str();
+    //}
+    //else {
+    //    // File in ANSI/Windows-1251 or UTF-8 without BOM
+    //    std::stringstream buffer;
+    //    buffer << file.rdbuf();
+    //    std::string rawStr = buffer.str();
+
+    //    try {
+    //        std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+    //        content = conv.from_bytes(rawStr);
+    //    }
+    //    catch (...) {
+    //        // If it didn't work, read as Windows-1251
+    //        std::wstring_convert<std::codecvt<wchar_t, char, std::mbstate_t>, wchar_t> cp1251conv(
+    //            new std::codecvt_byname<wchar_t, char, std::mbstate_t>("ru_RU.1251"));
+    //        content = cp1251conv.from_bytes(rawStr);
+    //    }
+    //}
+
+    //return content;
+
     std::ifstream file(filePath, std::ios::binary);
     if (!file) {
         throw LotusException(STRING_LITERAL("Unable to open file: ") + filePath);
     }
 
-    // Read the first few bytes to check the BOM
-    std::vector<unsigned char> bom(4, 0);
-    file.read(reinterpret_cast<char*>(bom.data()), 4);
-    file.seekg(0);  // Let's return the pointer to the beginning of the file
+    // Read the first 4 bytes to determine the BOM
+    unsigned char bom[4] = { 0, 0, 0, 0 };
+    file.read(reinterpret_cast<char*>(bom), 4);
 
-    std::wstring content;
-
+    // Checking the BOM
     if (bom[0] == 0xEF && bom[1] == 0xBB && bom[2] == 0xBF) {
-        // File in UTF-8 with BOM
-        file.seekg(3);  // Skipping BOM
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        std::string utf8Str = buffer.str();
-
-        // Convert UTF-8 to wstring
-        std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-        content = conv.from_bytes(utf8Str);
+        // UTF-8 with BOM
+        file.seekg(3);
     }
     else if (bom[0] == 0xFF && bom[1] == 0xFE) {
-        // File in UTF-16 LE
+        // UTF-16 LE
         file.seekg(2);
         std::wifstream wfile(filePath, std::ios::binary);
-        wfile.imbue(std::locale(wfile.getloc(), new std::codecvt_utf16<wchar_t, 0x10FFFF, std::little_endian>));
+        wfile.imbue(std::locale("en_US.UTF-16"));
         std::wstringstream wbuffer;
         wbuffer << wfile.rdbuf();
-        content = wbuffer.str();
+        return wbuffer.str();
     }
     else if (bom[0] == 0xFE && bom[1] == 0xFF) {
-        // File in UTF-16 BE
+        // UTF-16 BE
         file.seekg(2);
         std::wifstream wfile(filePath, std::ios::binary);
-        wfile.imbue(std::locale(wfile.getloc(), new std::codecvt_utf16<wchar_t, 0x10FFFF, std::consume_header>));
+        wfile.imbue(std::locale("en_US.UTF-16"));
         std::wstringstream wbuffer;
         wbuffer << wfile.rdbuf();
-        content = wbuffer.str();
+        return wbuffer.str();
     }
     else {
-        // File in ANSI/Windows-1251 or UTF-8 without BOM
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        std::string rawStr = buffer.str();
-
-        try {
-            std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-            content = conv.from_bytes(rawStr);
-        }
-        catch (...) {
-            // If it didn't work, read as Windows-1251
-            std::wstring_convert<std::codecvt<wchar_t, char, std::mbstate_t>, wchar_t> cp1251conv(
-                new std::codecvt_byname<wchar_t, char, std::mbstate_t>("ru_RU.1251"));
-            content = cp1251conv.from_bytes(rawStr);
-        }
+        // UTF-8 without BOM
+        file.seekg(0);
     }
 
-    return content;
+    // Reading a file into a string
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string utf8Str = buffer.str();
+
+    // Convert UTF-8 -> wstring
+    return string_to_wstring_codecvt(utf8Str);
 }
 
 std::pair<Int, Int> lotus::evalDayOfYearAndDayOfWeek(Int day, Int month, Int year) {
@@ -186,6 +231,16 @@ std::tuple<Int, Int, Int, Int, Int, Int> lotus::fromTotalSeconds(int64_t total_s
     return { sec, min, hour, day, month, year };
 }
 
+std::wstring lotus::string_to_wstring_codecvt(const std::string& str) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+    return conv.from_bytes(str);
+}
+
+std::string lotus::wstring_to_string_codecvt(const std::wstring& wstr) {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
+    return conv.to_bytes(wstr);
+}
+
 std::string lotus::wstring_to_string(const std::wstring& wstr) {
     std::string str;
     str.reserve(wstr.size());
@@ -234,6 +289,14 @@ String lotus::nowTimeInString() {
     result += std::to_wstring(time.tm_sec);
 
     return result;
+}
+
+double lotus::Cstod(const String& str) {
+    std::wstringstream ss(str);
+    ss.imbue(std::locale("C"));
+    double value;
+    ss >> value;
+    return value;
 }
 
 std::vector<Ptr<Parser>> Compiler::parsers = {};

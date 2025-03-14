@@ -26,11 +26,17 @@ namespace lotus {
 
 	std::tuple<Int, Int, Int, Int, Int, Int> fromTotalSeconds(Int total_seconds);
 
+	std::wstring string_to_wstring_codecvt(const std::string& str);
+
+	std::string wstring_to_string_codecvt(const std::wstring& wstr);
+
 	std::string wstring_to_string(const std::wstring& wstr);
 
 	void nowTime(tm* _Tm);
 
 	String nowTimeInString();
+
+	double Cstod(const String& str);
 
 	class Compiler {
 		static std::vector<Ptr<Parser>> parsers;
