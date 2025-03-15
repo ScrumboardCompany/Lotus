@@ -142,7 +142,6 @@ std::wstring lotus::wreadContent(const std::wstring& filePath) {
 
 std::pair<Int, Int> lotus::evalDayOfYearAndDayOfWeek(Int day, Int month, Int year) {
     std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
     bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     if (is_leap) days_in_months[1] = 29;
 
@@ -151,27 +150,26 @@ std::pair<Int, Int> lotus::evalDayOfYearAndDayOfWeek(Int day, Int month, Int yea
         day_of_year += days_in_months[i];
     }
 
+    // Вычисляем день недели по формуле Зеллера
     Int y = (month < 3) ? year - 1 : year;
     Int m = (month < 3) ? month + 12 : month;
     Int K = y % 100;
     Int J = y / 100;
-
     Int day_of_week = (day + (13 * (m + 1)) / 5 + K + (K / 4) + (J / 4) + (5 * J)) % 7;
     day_of_week = (day_of_week + 6) % 7;
-
     return std::make_pair(day_of_year, day_of_week);
 }
 
 bool lotus::isValidDate(Int day, Int month, Int year) {
     if (month < 1 || month > 12 || day < 1) return false;
-
     std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     if (is_leap) days_in_months[1] = 29;
-
     return day <= days_in_months[static_cast<int>(month) - 1];
 }
 
+// Если объект представляет абсолютное время (дата задана), вычисляем секунды от 1 января 1970;
+// иначе – считаем относительный интервал по единицам (месяц = 30 дней, год = 365 дней).
 int64_t lotus::getTotalSeconds(Value time, Module& module) {
     Int sec = time->getField("sec")->asInt(module);
     Int min = time->getField("min")->asInt(module);
@@ -180,54 +178,72 @@ int64_t lotus::getTotalSeconds(Value time, Module& module) {
     Int month = time->getField("month")->asInt(module);
     Int year = time->getField("year")->asInt(module);
 
-    std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-    if (is_leap) days_in_months[1] = 29;
-
-    Int total_days = (year - 1970) * 365 + (year - 1969) / 4 - (year - 1901) / 100 + (year - 1601) / 400;
-    for (int i = 0; i < static_cast<int>(month) - 1; i++) {
-        total_days += days_in_months[i];
+    // Абсолютный режим: все компоненты даты заданы (не равны 0)
+    if (day != 0 && month != 0 && year != 0) {
+        int64_t total_days = 0;
+        for (Int y = 1970; y < year; y++) {
+            total_days += ((y % 4 == 0 && y % 100 != 0) || (y % 400 == 0)) ? 366 : 365;
+        }
+        std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        bool is_leap = ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
+        if (is_leap) days_in_months[1] = 29;
+        for (int i = 0; i < static_cast<int>(month) - 1; i++) {
+            total_days += days_in_months[i];
+        }
+        total_days += day - 1;
+        return total_days * 86400ll + hour * 3600ll + min * 60ll + sec;
     }
-    total_days += day - 1;
-
-    return total_days * 86400ll + hour * 3600ll + min * 60ll + sec;
+    else {
+        // Относительный режим: учитываем все компоненты как интервалы
+        return sec + min * 60ll + hour * 3600ll + day * 86400ll + month * 30 * 86400ll + year * 365 * 86400ll;
+    }
 }
 
-std::tuple<Int, Int, Int, Int, Int, Int> lotus::fromTotalSeconds(int64_t total_seconds) {
-    Int year = 0;
-    while (true) {
-        Int days_in_year = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0) ? 366 : 365;
-        if (total_seconds >= days_in_year * 86400) {
-            total_seconds -= days_in_year * 86400;
-            year++;
+// Новая версия fromTotalSeconds с дополнительным параметром absolute:
+// Если absolute==true, начинаем с 1970 года (дни начинаются с 1), иначе – с 0.
+std::tuple<Int, Int, Int, Int, Int, Int> lotus::fromTotalSeconds(int64_t total_seconds, bool absolute) {
+    Int year, month, day, hour, min, sec;
+    if (absolute) {
+        year = 1970;
+        while (true) {
+            Int days_in_year = ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) ? 366 : 365;
+            if (total_seconds >= days_in_year * 86400ll) {
+                total_seconds -= days_in_year * 86400ll;
+                year++;
+            }
+            else {
+                break;
+            }
         }
-        else {
-            break;
+        std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        bool is_leap = ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
+        if (is_leap) days_in_months[1] = 29;
+        month = 1;
+        for (int i = 0; i < 12; i++) {
+            if (total_seconds >= days_in_months[i] * 86400ll) {
+                total_seconds -= days_in_months[i] * 86400ll;
+                month++;
+            }
+            else {
+                break;
+            }
         }
+        // Для абсолютных дат дни начинаются с 1
+        day = static_cast<Int>(total_seconds / 86400ll + 1ll);
     }
-
-    std::vector<Int> days_in_months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    bool is_leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-    if (is_leap) days_in_months[1] = 29;
-
-    Int month = 1;
-    for (int i = 0; i < 12; i++) {
-        if (total_seconds >= days_in_months[i] * 86400) {
-            total_seconds -= days_in_months[i] * 86400;
-            month++;
-        }
-        else {
-            break;
-        }
+    else {
+        // Относительный режим: интервал переводим в года, месяцы, дни по упрощённой схеме
+        year = total_seconds / (365 * 86400ll);
+        total_seconds %= (365 * 86400ll);
+        month = total_seconds / (30 * 86400ll);
+        total_seconds %= (30 * 86400ll);
+        day = total_seconds / 86400ll; // Здесь день считается от 0
     }
-
-    Int day = static_cast<Int>(total_seconds / 86400ll + 1ll);
     total_seconds %= 86400ll;
-    Int hour = static_cast<Int>(total_seconds / 3600ll);
+    hour = static_cast<Int>(total_seconds / 3600ll);
     total_seconds %= 3600ll;
-    Int min = static_cast<Int>(total_seconds / 60ll);
-    Int sec = static_cast<Int>(total_seconds % 60ll);
-
+    min = static_cast<Int>(total_seconds / 60ll);
+    sec = static_cast<Int>(total_seconds % 60ll);
     return { sec, min, hour, day, month, year };
 }
 

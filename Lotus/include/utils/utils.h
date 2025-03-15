@@ -24,7 +24,7 @@ namespace lotus {
 
 	int64_t getTotalSeconds(Value time, Module& module);
 
-	std::tuple<Int, Int, Int, Int, Int, Int> fromTotalSeconds(Int total_seconds);
+	std::tuple<Int, Int, Int, Int, Int, Int> fromTotalSeconds(Int total_seconds, bool absolute);
 
 	std::wstring string_to_wstring_codecvt(const std::string& str);
 

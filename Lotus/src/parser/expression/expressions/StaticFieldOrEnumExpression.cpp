@@ -13,7 +13,7 @@ Value lotus::StaticFieldOrEnumExpression::eval(Module& module) {
 		return module.statics.get(staticName).getField(field);
 	}
 	else if (module.enums.isExists(staticName)) {
-		return MAKE_PTR<EnumValue>(module.enums.get(staticName).getElement(field), staticName);
+		return module.ENUM_ELEMENT(staticName, field);
 	}
 	else {
 		throw LotusException(STRING_LITERAL("Undefined enum or static with name \"") + staticName + STRING_LITERAL("\""));

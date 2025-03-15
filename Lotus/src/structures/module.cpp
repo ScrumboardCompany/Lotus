@@ -32,6 +32,18 @@ Value& lotus::Module::GET(const char* name) {
 	return GET(STRING_VAR_LITERAL(name));
 }
 
+Value lotus::Module::ENUM_ELEMENT(const String& name, const String& element) {
+	return MAKE_PTR<EnumValue>(enums.get(name).getElement(element), name);
+}
+
+Value lotus::Module::ENUM_ELEMENT(const char* name, const String& element) {
+	return ENUM_ELEMENT(STRING_VAR_LITERAL(name), element);
+}
+
+Value lotus::Module::ENUM_ELEMENT(const char* name, const char* element) {
+	return ENUM_ELEMENT(STRING_VAR_LITERAL(name), STRING_VAR_LITERAL(element));
+}
+
 void lotus::Module::STATIC(const String& name, const Static& value) {
 	statics.declare(name, value);
 }

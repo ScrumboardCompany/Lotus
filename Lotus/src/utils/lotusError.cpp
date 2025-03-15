@@ -9,15 +9,15 @@
 using namespace lotus;
 
 void lotus::throwOverloadError(const String& overload, const String& type) {
-    throw LotusException(type + STRING_LITERAL(": ") + STRING_LITERAL("No overload for ") + overload);
+    throw LotusException(type + STRING_LITERAL(": No overload for ") + overload);
 }
 
 void lotus::throwOverloadError(const String& overload, const String& type1, const String& type2) {
-    throw LotusException(type1 + STRING_LITERAL(": ") + STRING_LITERAL("No overload for ") + overload + STRING_LITERAL(" with ") + type2);
+    throw LotusException(type1 + STRING_LITERAL(": No overload for ") + overload + STRING_LITERAL(" with ") + type2);
 }
 
 void lotus::throwTypeError(const String& type1, const String& type2, Module& module) {
-    module.THROW(STRING(STRING_LITERAL("Expected ") + type1 + STRING_LITERAL("instead of ") + type2), STRING("type_error"));
+    module.THROW(STRING(STRING_LITERAL("Expected ") + type1 + STRING_LITERAL(" instead of ") + type2), STRING("type_error"));
 }
 
 void lotus::throwTypeError(const String& type1, const String& type2, const String& type3, Module& module) {

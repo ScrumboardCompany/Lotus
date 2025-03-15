@@ -477,30 +477,56 @@ E(); # Returns E
 ## [Time module](Lotus/src/parser/modules/timeModule.cpp)
 **Structures**
 ```Lotus
-Time # Class
-Time # Static
+Date # Class
+Date # Static
+TimeUnit # Enum
 ```
 
-**Fields**
+**Enum elements**
 ```Lotus
-Time.sec
-Time.min
-Time.hour
-Time.day
-Time.month
-Time.year
-Time.day_of_week
-Time.day_of_year
-Time.isdst
+TimeUnit::Second
+TimeUnit::Minute
+TimeUnit::Hour
+TimeUnit::Day
+TimeUnit::Month
+TimeUnit::Year
 ```
 
 **Functions**
 ```Lotus
-Time();
-Time(sec, min, hour, day, month, year, isdst);
+Date()
+Date(sec, min, hour, day, month, year, isDst)
 
-Time::now(); # Returns current world time
-Time::sleep(duration); # Stops the code execution for "duration" milliseconds
+Date.__add__(other)
+Date.__substract__(other)
+Date.__asString__()
+
+Date.getSec()
+Date.getMin()
+Date.getHour()
+Date.getDay()
+Date.getWeekDay()
+Date.getYearDay()
+Date.getMonth()
+Date.getYear()
+Date.getIsDst()
+
+Date.setSec(value)
+Date.setMin(value)
+Date.setHour(value)
+Date.setDay(value)
+Date.setMonth(value)
+Date.setYear(value)
+Date.setIsDst(value)
+
+Date.later(date)
+Date.later(value, unit)
+Date.ago(date)
+Date.ago(value, unit)
+
+Date::now() # Returns current world time
+
+sleep(duration) # Stops the code execution for "duration" milliseconds
 ```
 
 ## [Os module](Lotus/src/parser/modules/osModule.cpp)

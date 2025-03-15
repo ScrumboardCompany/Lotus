@@ -9,6 +9,7 @@
 #include "structures/classes.h"
 #include "structures/enums.h"
 #include "structures/flags.h"
+#include "parser/value/enumValue.h"
 #include "parser/statement/cppFunctionStatement.h"
 
 namespace lotus {
@@ -48,6 +49,12 @@ namespace lotus {
 		Value& GET(const String& name);
 
 		Value& GET(const char* name);
+
+		Value ENUM_ELEMENT(const String& name, const String& element);
+
+		Value ENUM_ELEMENT(const char* name, const String& element);
+
+		Value ENUM_ELEMENT(const char* name, const  char* element);
 
 		template <typename... Args>
 		void DEF(const String& name, std::function<void()> body, Args&&... args) {
