@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	struct Argument {
+	struct LOTUS_API Argument {
 		String name;
 		bool isVariadic;
 

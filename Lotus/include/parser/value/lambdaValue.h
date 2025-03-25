@@ -10,7 +10,7 @@ namespace lotus {
 
 	class Variables;
 
-	class LambdaValue : public IValue {
+	class LOTUS_API LambdaValue : public IValue {
 		Function function;
 
 		friend class FunctionExpression;
@@ -26,6 +26,8 @@ namespace lotus {
 
 		Value sizeInRam() override;
 	};
+
+	LOTUS_API Value LAMBDA(const Function& function);
 
 }
 

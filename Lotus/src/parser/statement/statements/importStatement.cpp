@@ -11,6 +11,11 @@
 #include "parser/expression/floatExpression.h"
 #include "parser/statement/expressionStatement.h"
 #include <filesystem>
+#include <iostream>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 using namespace lotus;
 
@@ -166,11 +171,40 @@ void lotus::ImportStatement::execute(Module& currentModule) {
     if (file.find(CHAR_LITERAL('.')) != String::npos) {
         module = Compiler::compile(filePath, {});
     }
-    else {
-        if (modules.find(file) == modules.end()) {
-            throw LotusException(STRING_LITERAL("Module: ") + file + STRING_LITERAL(" not found"));
-        }
+    else if (modules.find(file) != modules.end()) {
         module = modules[file];
+    }
+    else {
+
+        typedef Module(*lotusModuleFuncType)(Module&);
+
+#ifdef _WIN32
+        String extention = STRING_LITERAL(".dll");
+        HMODULE lib = LoadLibraryW((file + extention).c_str());
+
+        if (!lib) {
+            throw LotusException(STRING_LITERAL("Failed to load module ") + file);
+        }
+
+        auto initModule = reinterpret_cast<lotusModuleFuncType>(GetProcAddress(lib, "initModule"));
+
+#else
+        String extention = STRING_LITERAL(".so");
+        void* lib = dlopen((file + extention).c_str(), RTLD_LAZY);
+        if (!lib) {
+            throw LotusException(STRING_LITERAL("Failed to load module ") + file);
+        }
+
+        auto initModule = (lotusModuleFuncType)dlsym(lib, "initModule");
+#endif
+        if (!initModule) {
+            throw LotusException(STRING_LITERAL("Failed to find initModule in ") + file);
+        }
+
+        module = initModule(currentModule);
+
+        // FreeLibrary(lib) is not needed because lib is used until the end of the program
+
     }
 
     loadFromModule(module, currentModule);

@@ -14,14 +14,14 @@ namespace lotus {
 		PROTECTED,
 	};
 
-	struct ClassMemberInfo {
+	struct LOTUS_API ClassMemberInfo {
 		ClassMemberInfo() = default;
 		ClassMemberInfo(const AccessModifierType& accessModifier) : accessModifier(accessModifier) {}
 
 		AccessModifierType accessModifier = AccessModifierType::PRIVATE;
 	};
 
-	struct FieldMemberInfo : public ClassMemberInfo {
+	struct LOTUS_API FieldMemberInfo : public ClassMemberInfo {
 		FieldMemberInfo() = default;
 		FieldMemberInfo(const Value& value, const AccessModifierType& accessModifier) 
 			: ClassMemberInfo(accessModifier), value(value) {}
@@ -29,7 +29,7 @@ namespace lotus {
 		Value value;
 	};
 
-	struct MethodMemberInfo : public ClassMemberInfo {
+	struct LOTUS_API MethodMemberInfo : public ClassMemberInfo {
 		MethodMemberInfo() = default;
 		MethodMemberInfo(const Function& value, const AccessModifierType& accessModifier)
 			: ClassMemberInfo(accessModifier), value(value) {}

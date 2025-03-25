@@ -11,7 +11,7 @@ namespace lotus {
 	class Function;
 	struct Module;
 
-	class IValue {
+	class LOTUS_API IValue {
 	public:
 
 		virtual Int asInt(Module& module);

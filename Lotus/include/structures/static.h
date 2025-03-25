@@ -8,7 +8,7 @@
 
 namespace lotus {
 
-	struct Static {
+	struct LOTUS_API Static {
 
 		void addField(const String& name, const FieldMemberInfo& memberInfo);
 		void addMethod(const String& name, const MethodMemberInfo& memberInfo);

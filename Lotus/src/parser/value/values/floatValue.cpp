@@ -166,3 +166,7 @@ Value lotus::FloatValue::postfixDecrement(Module&) {
 Value lotus::FloatValue::sizeInRam() {
 	return INT(static_cast<Int>(sizeof(*this)));
 }
+
+Value lotus::FLOAT(double value) {
+	return MAKE_PTR<FloatValue>(value);
+}

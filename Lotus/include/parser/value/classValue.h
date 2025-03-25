@@ -8,7 +8,7 @@
 
 namespace lotus {
 
-	class ClassValue : public IValue {
+	class LOTUS_API ClassValue : public IValue {
 		friend class ClassStatement;
 		friend class ObjectExpression;
 		friend struct Class;

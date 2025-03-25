@@ -9,7 +9,7 @@ namespace lotus {
 
 	struct Module;
 
-	class IStatement {
+	class LOTUS_API IStatement {
 	public:
 		virtual void execute(Module& module) = 0;
 		virtual ~IStatement() = default;

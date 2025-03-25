@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class UndefinedValue : public IValue {
+	class LOTUS_API UndefinedValue : public IValue {
 	public:
 
 		UndefinedValue();
@@ -19,6 +19,8 @@ namespace lotus {
 
 		Value sizeInRam() override;
 	};
+
+	LOTUS_API Value UNDEFINED();
 
 }
 

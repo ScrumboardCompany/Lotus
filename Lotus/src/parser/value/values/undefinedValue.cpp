@@ -29,3 +29,7 @@ String lotus::UndefinedValue::asString(Module&) {
 Value lotus::UndefinedValue::sizeInRam() {
     return INT(static_cast<Int>(sizeof(*this)));
 }
+
+Value lotus::UNDEFINED() {
+    return MAKE_PTR<UndefinedValue>();
+}

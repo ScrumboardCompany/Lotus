@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class Enums {
+	class LOTUS_API Enums {
 		StringMap<Enum> enums;
 		friend class ImportStatement;
 

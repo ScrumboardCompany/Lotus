@@ -3,9 +3,11 @@
 #ifndef _FLAG_
 #define _FLAG_
 
+#include "utils/lotusDefines.h"
+
 namespace lotus {
 
-	struct Flag {
+	struct LOTUS_API Flag {
 		bool value;
 		bool defaultValue;
 

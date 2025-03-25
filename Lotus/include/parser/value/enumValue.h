@@ -8,7 +8,7 @@
 
 namespace lotus {
 
-	class EnumValue : public IValue {
+	class LOTUS_API EnumValue : public IValue {
 		Value value;
 
 		Value checkIsEnumAndCompare(const Value& other, Module& module, const std::function<Value(EnumValue, Module&)>& operation);

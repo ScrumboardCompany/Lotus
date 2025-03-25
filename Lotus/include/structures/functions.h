@@ -10,7 +10,7 @@
 
 namespace lotus {
 
-	class Functions {
+	class LOTUS_API Functions {
 
 		StringMap<std::vector<Function>> functions;
 

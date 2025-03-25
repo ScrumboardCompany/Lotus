@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class StringValue : public IValue {
+	class LOTUS_API StringValue : public IValue {
 		String value;
 
 	public:
@@ -41,6 +41,12 @@ namespace lotus {
 		Value size(Module&) override;
 		Value sizeInRam() override;
 	};
+
+	LOTUS_API Value STRING(const char* value);
+
+	LOTUS_API Value STRING(const String& value);
+
+	LOTUS_API Value STRING();
 
 }
 

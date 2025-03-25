@@ -10,7 +10,7 @@ namespace lotus {
 	
 	struct Module;
 
-	class Classes {
+	class LOTUS_API Classes {
 		StringMap<Ptr<Class>> classes;
 
 		friend class ImportStatement;

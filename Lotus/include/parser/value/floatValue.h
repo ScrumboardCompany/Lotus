@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class FloatValue : public IValue {
+	class LOTUS_API FloatValue : public IValue {
 		double value;
 
 	public:
@@ -52,6 +52,8 @@ namespace lotus {
 
 		Value sizeInRam() override;
 	};
+
+	LOTUS_API Value FLOAT(double value);
 
 }
 

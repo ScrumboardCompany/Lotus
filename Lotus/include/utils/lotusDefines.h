@@ -5,17 +5,16 @@
 
 #define MAKE_PTR std::make_shared
 
-#define INT MAKE_PTR<IntValue>
-#define FLOAT MAKE_PTR<FloatValue>
-#define BOOL MAKE_PTR<BoolValue>
-#define STRING MAKE_PTR<StringValue>
-#define UNDEFINED MAKE_PTR<UndefinedValue>
-#define ARRAY MAKE_PTR<ArrayValue>
-#define OBJECT MAKE_PTR<ObjectValue>
-#define LAMBDA MAKE_PTR<LambdaValue>
-
 #define LOTUS_VERSION 1.18
 #define EOF_TOKEN lotus::Token({ lotus::TokenType::END_OF_FILE, STRING_LITERAL("")})
+
+#ifdef BUILDING_DLL
+#define LOTUS_API __declspec(dllexport)
+#elif defined(USING_DLL)
+#define LOTUS_API __declspec(dllimport)
+#else
+#define LOTUS_API
+#endif
 
 #define RETURN_VALUE(value) throw Value(value);
 

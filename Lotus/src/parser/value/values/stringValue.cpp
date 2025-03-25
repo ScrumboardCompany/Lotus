@@ -123,3 +123,15 @@ Value lotus::StringValue::size(Module&) {
 Value lotus::StringValue::sizeInRam() {
     return INT(static_cast<Int>(sizeof(*this)));
 }
+
+Value lotus::STRING(const char* value) {
+    return STRING(STRING_VAR_LITERAL(value));
+}
+
+Value lotus::STRING(const String& value) {
+    return MAKE_PTR<StringValue>(value);
+}
+
+Value lotus::STRING() {
+    return MAKE_PTR<StringValue>();
+}

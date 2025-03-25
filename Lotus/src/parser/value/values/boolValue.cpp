@@ -62,3 +62,7 @@ Value lotus::BoolValue::unaryNot(Module&) {
 Value lotus::BoolValue::sizeInRam() {
     return INT(static_cast<Int>(sizeof(*this)));
 }
+
+Value lotus::BOOL(bool value) {
+    return MAKE_PTR<BoolValue>(value);
+}

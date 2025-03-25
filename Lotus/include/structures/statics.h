@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class Statics {
+	class LOTUS_API Statics {
 		StringMap<Static> statics;
 		friend class ImportStatement;
 

@@ -120,7 +120,7 @@ print(b.Name) # Output: "John"
 ```Lotus
 array.push(value) # Adds value to array at last index
 array.push(value, index) # Adds value to array at passed index
-array.push(value, start, end) # Adds value from start to end
+array.push(value, start, end) # Adds value from start index to end index
 
 array.pop() # Deletes value from array at last index
 array.pop(index) # Deletes value from array at passed index
@@ -430,6 +430,82 @@ class A {};
 ```Lotus
 flag ImportEverythingWithSameName true;
 A <<< "file1.lts" # class A and variable A will be imported
+```
+
+## C++ API
+The C++ API allows you to create custom libraries for Lotus, such as `time`, `math`, and other built-in modules. It enables you to extend the language by adding new functions and classes, as well as optimizing code execution by calling C++ functions.
+
+Each library must contain the `initModule` function marked with `INIT_MODULE_EXPORT`.
+This function should return a `Module` and take the global module (`globalModule`) as an argument.
+
+**Requirements**
+-`Lotus.dll` must be located in the same folder as your library.
+-The library must be compiled as a `.dll` and placed in same directory as your Lotus project
+-Supported platforms: Windows
+
+**Code example**
+```C++
+#include "Lotus/Lotus.h"
+
+using namespace lotus;
+
+extern "C" {
+
+    INIT_MODULE_EXPORT Module initModule(Module& globalModule) {
+
+        Module lib; // Creates new module
+        Class A; // Create new class
+        Static B; // Create new static 
+        
+        lib.LET("PI", FLOAT(3.14)); // Define a variable inside module
+        lib.SET("PI", FLOAT(3.1415)); // Set value for existing variable in module
+        lib.DEF("sumWithPI", [&] {
+            int result = globalModule.GET("PI")->asFloat(globalModule) + globalModule.GET("value")->asFloat(globalModule); // "globalModule.GET("value")" is used to get arguments or variables
+            RETURN_VALUE(FLOAT(result));
+        }, "value"); // Define a function in module
+        lib.CALL("sumWithPI", INT(5));
+
+        A.addMethod("print", METHOD(AccessModifierType::PUBLIC, [&] {
+		    Value args = module.GET("args");
+		    for (Int i = 0, size = args->size(module)->asInt(module); i < size; i++) {
+			    std::wcout << args->getOfIndex(INT(i), module)->asString(module);
+		    }
+		}, "arg...")) // Defines a method in class A
+
+        B.addMethod("print", METHOD(AccessModifierType::PUBLIC, [&] {
+		    Value args = module.GET("args");
+		    for (Int i = 0, size = args->size(module)->asInt(module); i < size; i++) {
+			    std::wcout << args->getOfIndex(INT(i), module)->asString(module);
+		    }
+		}, "arg...")) // Defines a method in static B
+
+        lib.CLASS("A", A, globalModule, true); // Register class "A" inside module "lib"
+        lib.STATIC("B", B, globalModule, true); // Register static "B" inside module "lib"
+
+        return lib; // Must return module that you've created
+    }
+}
+```
+
+**Available methods and functions** 
+```C++
+Module.LET(name, value); # Declares a variable
+Module.SET(name, value); # Sets a value for a variable
+Module.GET(name); # Return value of a variable
+Module.DEF(name, body, args...) # Declares a function
+Module.CALL(name, args...) # Calls a function
+Module.CALL(name, vector<Value>& args, StringMap<Value>& specifiedArgs) # Calls a function with specified arguments
+Module.CLASS(name, class, module, doRegister) # Registers a class
+Module.STATIC(name, static) # Registers a static
+
+INT(value) # Returns an object of class IntValue
+FLOAT(value) # Returns an object of class FloatValue
+BOOL(value) # Returns an object of class BoolValue
+STRING(value) # Returns an object of class StringValue
+ARRAY(vector<Value>& elements, module) # Returns an object of class ArrayValue
+OBJECT(StringMap<Value>& fields) # Returns an object of class ObjectValue2
+LAMBDA(body) # Returns an object of class LambdaValue
+UNDEFINED() # Returns an object of class UndefinedValue
 ```
 
 ## [Standard](Lotus/src/parser/modules/standardModule.cpp)

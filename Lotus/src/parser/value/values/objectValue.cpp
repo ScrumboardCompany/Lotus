@@ -92,3 +92,7 @@ Value lotus::ObjectValue::size(Module&) {
 Value lotus::ObjectValue::sizeInRam() {
     return INT(static_cast<Int>(sizeof(*this)));
 }
+
+Value lotus::OBJECT(const StringMap<Value>& fields) {
+    return MAKE_PTR<ObjectValue>(fields);
+}

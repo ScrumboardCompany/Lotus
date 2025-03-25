@@ -5,6 +5,7 @@
 
 #include "tokenType.h"
 #include "utils/lotusTypes.h"
+#include "utils/lotusDefines.h"
 
 namespace lotus {
 

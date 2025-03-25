@@ -10,7 +10,7 @@ namespace lotus {
 	class Classes;
 	class Functions;
 
-	struct Class : public Static {
+	struct LOTUS_API Class : public Static {
 
 		Class() = default;
 

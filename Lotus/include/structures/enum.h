@@ -10,7 +10,7 @@ namespace lotus {
 
 	struct Module;
 
-	struct Enum {
+	struct LOTUS_API Enum {
 
 		void addElement(const String& key, Value value, Module& module);
 

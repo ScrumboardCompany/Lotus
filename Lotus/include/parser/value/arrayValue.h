@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class ArrayValue : public ClassValue {
+	class LOTUS_API ArrayValue : public ClassValue {
 		std::vector<Value> elements;
 
 	public:
@@ -28,6 +28,8 @@ namespace lotus {
 		Value size(Module&) override;
 		Value sizeInRam() override;
 	};
+
+	LOTUS_API Value ARRAY(const std::vector<Value>& elements, Module& module);
 
 }
 

@@ -259,3 +259,7 @@ Value lotus::IntValue::size(Module&) {
 Value lotus::IntValue::sizeInRam() {
     return INT(static_cast<Int>(sizeof(*this)));
 }
+
+Value lotus::INT(Int value) {
+    return MAKE_PTR<IntValue>(value);
+}

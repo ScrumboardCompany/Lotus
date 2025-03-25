@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class IntValue : public IValue {
+	class LOTUS_API IntValue : public IValue {
 		Int value;
 
 	public:
@@ -66,6 +66,8 @@ namespace lotus {
 		Value size(Module&) override;
 		Value sizeInRam() override;
 	};
+
+	LOTUS_API Value INT(Int value);
 
 }
 

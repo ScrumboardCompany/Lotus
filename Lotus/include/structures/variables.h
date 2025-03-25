@@ -10,13 +10,13 @@
 
 namespace lotus {
 
-	class Variables {
+	class LOTUS_API Variables {
+	public:
 		StringMap<Value> variables;
 		std::vector<StringMap<Value>> scopes;
 		friend class ImportStatement;
 		friend class ClassValue;
 
-	public:
 		Variables() {
 			enterScope();
 		}

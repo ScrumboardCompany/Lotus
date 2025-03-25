@@ -10,7 +10,7 @@
 
 namespace lotus {
 
-	class Function {
+	class LOTUS_API Function {
 		Statement body;
 		std::vector<Argument> args;
 

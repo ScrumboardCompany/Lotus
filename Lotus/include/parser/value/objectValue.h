@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class ObjectValue : public IValue {
+	class LOTUS_API ObjectValue : public IValue {
 		StringMap<Value> fields;
 
 	public:
@@ -28,6 +28,8 @@ namespace lotus {
 		Value size(Module&) override;
 		Value sizeInRam() override;
 	};
+
+	LOTUS_API Value OBJECT(const StringMap<Value>& fields);
 
 }
 

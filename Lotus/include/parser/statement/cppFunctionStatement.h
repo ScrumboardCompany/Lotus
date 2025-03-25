@@ -8,7 +8,7 @@
 
 namespace lotus {
 
-	class CppFunctionStatement : public IStatement {
+	class LOTUS_API CppFunctionStatement : public IStatement {
 		std::function<void()> body;
 
 	public:

@@ -23,7 +23,7 @@ private:                                                                        
 
 namespace lotus {
 
-    class Flags {
+    class LOTUS_API Flags {
         StringMap<Flag> flags;
 
     public:

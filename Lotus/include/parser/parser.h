@@ -13,7 +13,7 @@
 
 namespace lotus {
 
-	class Parser {
+	class LOTUS_API Parser {
 		std::vector<Token> tokens;
 		size_t pos;
 

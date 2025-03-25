@@ -12,10 +12,12 @@
 #include "parser/value/enumValue.h"
 #include "parser/statement/cppFunctionStatement.h"
 
+#define INIT_MODULE_EXPORT __declspec(dllexport)
+
 namespace lotus {
 
 	template <typename... Args>
-	Function MAKE_CPP_FUNCTION(std::function<void()> body, Args&&... args) {
+	Function LOTUS_API MAKE_CPP_FUNCTION(std::function<void()> body, Args&&... args) {
 		return Function(
 			MAKE_PTR<CppFunctionStatement>(body),
 			{ std::forward<Args>(args)... },
@@ -24,13 +26,13 @@ namespace lotus {
 	}
 
 	template <typename... Args>
-	MethodMemberInfo METHOD(const AccessModifierType& accessModifier, std::function<void()> body, Args&&... args) {
+	MethodMemberInfo LOTUS_API METHOD(const AccessModifierType& accessModifier, std::function<void()> body, Args&&... args) {
 		return MethodMemberInfo(MAKE_CPP_FUNCTION(body, std::forward<Args>(args)...), accessModifier);
 	}
 
-	FieldMemberInfo FIELD(const AccessModifierType& accessModifier, const Value& value);
+	FieldMemberInfo LOTUS_API FIELD(const AccessModifierType& accessModifier, const Value& value);
 
-	struct Module {
+	struct LOTUS_API Module {
 		Variables variables;
 		Functions functions;
 		Statics statics;

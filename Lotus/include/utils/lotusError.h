@@ -4,12 +4,13 @@
 #define _LOTUSERROR_
 
 #include "utils/lotusTypes.h"
+#include "utils/lotusDefines.h"
 
 namespace lotus {
 
 	struct Module;
 
-	class LotusException {
+	class LOTUS_API LotusException {
 
 		String msg;
 		size_t _line;
@@ -30,15 +31,15 @@ namespace lotus {
 		}
 	};
 
-	[[noreturn]] void throwOverloadError(const String& overload, const String& type);
+	[[noreturn]] LOTUS_API void throwOverloadError(const String& overload, const String& type);
 
-	[[noreturn]] void throwOverloadError(const String& overload, const String& type1, const String& type2);
+	[[noreturn]] LOTUS_API void throwOverloadError(const String& overload, const String& type1, const String& type2);
 
-	void throwTypeError(const String& type1, const String& type2, Module& module);
+	LOTUS_API void throwTypeError(const String& type1, const String& type2, Module& module);
 
-	void throwTypeError(const String& type1, const String& type2, const String& type3, Module& module);
+	LOTUS_API void throwTypeError(const String& type1, const String& type2, const String& type3, Module& module);
 
-	void checkThrowIndexError(const Value& index, size_t size, Module& module);
+	LOTUS_API void checkThrowIndexError(const Value& index, size_t size, Module& module);
 }
 
 #endif // _LOTUSERROR_

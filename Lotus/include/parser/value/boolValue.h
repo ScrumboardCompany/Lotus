@@ -7,7 +7,7 @@
 
 namespace lotus {
 
-	class BoolValue : public IValue {
+	class LOTUS_API BoolValue : public IValue {
 		bool value;
 
 	public:
@@ -30,6 +30,8 @@ namespace lotus {
 
 		Value sizeInRam() override;
 	};
+
+	LOTUS_API Value BOOL(bool value);
 
 }
 

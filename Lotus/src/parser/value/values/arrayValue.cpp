@@ -158,3 +158,7 @@ Value lotus::ArrayValue::size(Module&) {
 Value lotus::ArrayValue::sizeInRam() {
     return INT(static_cast<Int>(sizeof(*this)));
 }
+
+Value lotus::ARRAY(const std::vector<Value>& elements, Module& module) {
+    return MAKE_PTR<ArrayValue>(elements, module);
+}
