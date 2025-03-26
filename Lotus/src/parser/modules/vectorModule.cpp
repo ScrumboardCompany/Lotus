@@ -8,7 +8,7 @@
 using namespace lotus;
 
 void lotus::Parser::loadVectorModule() {
-	Module Vector;
+	static Module Vector;
 
 	Class Vector2Class;
 
@@ -299,7 +299,7 @@ void lotus::Parser::loadVectorModule() {
 			thisValue->getField("Y")->add(otherValue->callMethod("Y", {}, module)->substract(thisValue->getField("Y"), module)->multiply(t, module), module)));
 		}, "other", "t"));
 
-	Vector.CLASS("Vector2", Vector2Class, module, true);
+	Vector.CLASS("Vector2", Vector2Class, module);
 
 	Class Vector3Class;
 
@@ -613,7 +613,7 @@ void lotus::Parser::loadVectorModule() {
 			thisValue->getField("Z")->add(otherValue->callMethod("Z", {}, module)->substract(thisValue->getField("Z"), module)->multiply(t, module), module)));
 		}, "other", "t"));
 
-	Vector.CLASS("Vector3", Vector3Class, module, true);
+	Vector.CLASS("Vector3", Vector3Class, module);
 
 	modules.emplace(STRING_LITERAL("Vector"), Vector);
 }

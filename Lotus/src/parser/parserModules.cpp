@@ -6,4 +6,5 @@ void lotus::Parser::loadModules() {
 	loadTimeModule();
 	loadOsModule();
 	loadVectorModule();
+	loadUtilityModule();
 }

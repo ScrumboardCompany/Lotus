@@ -682,3 +682,10 @@ vector /= scalar
 size(vector)
 string(vector)
 ```
+
+## [Utility module](Lotus/src/parser/modules/utilsModule.cpp)
+
+**Functions**
+```Lotus
+json(path) # Parses file as JSON to object and returns it
+```

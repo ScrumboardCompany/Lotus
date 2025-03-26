@@ -9,7 +9,7 @@
 using namespace lotus;
 
 void lotus::Parser::loadTimeModule() {
-    Module Time;
+    static Module Time;
 
     // Declare enum for time units
     Enum TimeUnitEnum;
@@ -475,7 +475,7 @@ void lotus::Parser::loadTimeModule() {
         }, "amount", "unit"));
 
     // Register class Date with name "Date"
-    Time.CLASS("Date", DateClass, module, true);
+    Time.CLASS("Date", DateClass, module);
 
     // Static methods: define DateStatic with a now method
     Static DateStatic;

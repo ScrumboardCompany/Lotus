@@ -18,9 +18,5 @@ Value lotus::StaticMethodExpression::eval(Module& module) {
 		specifiedValues.emplace(arg.first, arg.second->eval(module));
 	}
 
-	if (specifiedValues.empty()) {
-		return module.statics.get(staticName).callMethod(method, values, module);
-	}
-
-	return module.statics.get(staticName).callMethod(method, values, module, specifiedValues);
+	return module.STATIC_METHOD_WITH_SPECIFIED_ARGS(staticName, method, values, specifiedValues);
 }

@@ -52,11 +52,42 @@ namespace lotus {
 
 		Value& GET(const char* name);
 
+		Value& STATIC_FIELD(const String& name, const String& element);
+
+		Value& STATIC_FIELD(const char* name, const String& element);
+
+		Value& STATIC_FIELD(const char* name, const char* element);
+
+		template <typename... Args>
+		Value STATIC_METHOD(const String& name, const String& element, Args&&... args) {
+			std::vector<Value> argsToMethod = std::vector<Value>{ std::forward<Args>(args)... };
+			return statics.get(name).callMethod(element, argsToMethod, *this);
+		}
+
+		template <typename... Args>
+		Value STATIC_METHOD(const char* name, const String& element, Args&&... args) {
+			return STATIC_METHOD(STRING_VAR_LITERAL(name), element, std::forward<Args>(args)...);
+		}
+
+		template <typename... Args>
+		Value STATIC_METHOD(const char* name, const char* element, Args&&... args) {
+			return STATIC_METHOD(STRING_VAR_LITERAL(name), STRING_VAR_LITERAL(element), std::forward<Args>(args)...);
+		}
+
+		Value STATIC_METHOD_WITH_SPECIFIED_ARGS(const String& name, const String& element, const std::vector<Value>& args,
+			const StringMap<Value>& specifiedArgs);
+
+		Value STATIC_METHOD_WITH_SPECIFIED_ARGS(const char* name, const String& element,
+			const std::vector<Value>& args, const StringMap<Value>& specifiedArgs);
+
+		Value STATIC_METHOD_WITH_SPECIFIED_ARGS(const char* name, const char* element,
+			const std::vector<Value>& args, const StringMap<Value>& specifiedArgs);
+
 		Value ENUM_ELEMENT(const String& name, const String& element);
 
 		Value ENUM_ELEMENT(const char* name, const String& element);
 
-		Value ENUM_ELEMENT(const char* name, const  char* element);
+		Value ENUM_ELEMENT(const char* name, const char* element);
 
 		template <typename... Args>
 		void DEF(const String& name, std::function<void()> body, Args&&... args) {
@@ -90,9 +121,9 @@ namespace lotus {
 
 		void STATIC(const char* name, const Static& value);
 
-		void CLASS(const String& name, const Class& value, Module& userModule, bool doRegister = false);
+		void CLASS(const String& name, const Class& value, Module& usedModule);
 
-		void CLASS(const char* name, const Class& value, Module& userModule, bool doRegister = false);
+		void CLASS(const char* name, const Class& value, Module& usedModule);
 
 		void ENUM(const String& name, const Enum& value);
 
@@ -105,7 +136,6 @@ namespace lotus {
 		[[noreturn]] void THROW(const Value& msg, const Value& type);
 
 	};
-
 }
 
 #endif // _MODULE_

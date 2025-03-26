@@ -116,5 +116,5 @@ void lotus::Parser::loadStandardModule() {
 		RETURN_VALUE(module.GET("this")->getField("__type"));
 		}));
 
-	module.CLASS("exception", exceptionClass, module, true);
+	module.CLASS("exception", exceptionClass, module);
 }

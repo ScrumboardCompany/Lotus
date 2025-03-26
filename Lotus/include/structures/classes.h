@@ -37,9 +37,9 @@ namespace lotus {
 
 		bool isExists(const char* name);
 
-		void registerClass(const String& name, Module& module);
+		void registerClass(const String& name, Module& module, Module& usedModule);
 
-		void registerClass(const char* name, Module& module);
+		void registerClass(const char* name, Module& module, Module& usedModule);
 	};
 }
 

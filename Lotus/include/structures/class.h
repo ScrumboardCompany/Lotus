@@ -21,7 +21,7 @@ namespace lotus {
 		friend class ClassStatement;
 		friend class Classes;
 
-		void registerClass(Module& module);
+		void registerClass(Module& module, Module& usedModule);
 		Function makeDefaultConstructor();
 	};
 }

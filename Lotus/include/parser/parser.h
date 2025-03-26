@@ -46,6 +46,8 @@ namespace lotus {
 
 		void loadVectorModule();
 
+		void loadUtilityModule();
+
 		Statement getNextGlobalStatement();
 
 		Statement getNextStatement();

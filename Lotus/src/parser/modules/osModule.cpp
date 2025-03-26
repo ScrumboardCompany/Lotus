@@ -10,7 +10,7 @@
 using namespace lotus;
 
 void lotus::Parser::loadOsModule() {
-	Module Os;
+	static Module Os;
 	Os.DEF("platform", [&] {
 #if defined(_WIN32)
 		RETURN_VALUE(STRING("windows"));
@@ -245,7 +245,8 @@ void lotus::Parser::loadOsModule() {
 		RETURN_VALUE(STRING(result));
 		}, "command");
 
-	Os.CLASS("File", FileClass, module, true);
+	Os.CLASS("File", FileClass, module);
 	Os.STATIC("File", FileStatic);
+
 	modules.emplace(STRING_LITERAL("Os"), Os);
 }

@@ -53,12 +53,12 @@ void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
 
             if (from.classes.isExists(key) && type == KeyType::CLASS) {
                 to.classes.forceSet(key, from.classes.get(key));
-                to.classes.registerClass(key, to);
+                to.classes.registerClass(key, to, to);
                 continue;
             } else if (key == STRING_LITERAL("*") && type == KeyType::CLASS) {
                 for (auto& cls : from.classes.classes) {
                     to.classes.forceSet(cls.first, cls.second);
-                    to.classes.registerClass(cls.first, to);
+                    to.classes.registerClass(cls.first, to, to);
                 }
                 continue;
             }
@@ -118,7 +118,7 @@ void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
             if (from.classes.isExists(key)) {
                 to.classes.forceSet(key, from.classes.get(key));
                 if (!importEverythingWithSameName) {
-                    to.classes.registerClass(key, to);
+                    to.classes.registerClass(key, to, to);
                 }
                 found = true;
             }

@@ -32,6 +32,33 @@ Value& lotus::Module::GET(const char* name) {
 	return GET(STRING_VAR_LITERAL(name));
 }
 
+Value& lotus::Module::STATIC_FIELD(const String& name, const String& element) {
+	return statics.get(name).getField(element);
+}
+
+Value& lotus::Module::STATIC_FIELD(const char* name, const String& element) {
+	return STATIC_FIELD(STRING_VAR_LITERAL(name), element);
+}
+
+Value& lotus::Module::STATIC_FIELD(const char* name, const char* element) {
+	return STATIC_FIELD(STRING_VAR_LITERAL(name), STRING_VAR_LITERAL(element));
+}
+
+Value lotus::Module::STATIC_METHOD_WITH_SPECIFIED_ARGS(const String& name, const String& element,
+	const std::vector<Value>& args, const StringMap<Value>& specifiedArgs) {
+	return statics.get(name).callMethod(element, args, *this, specifiedArgs);
+}
+
+Value lotus::Module::STATIC_METHOD_WITH_SPECIFIED_ARGS(const char* name, const String& element,
+	const std::vector<Value>& args, const StringMap<Value>& specifiedArgs) {
+	return STATIC_METHOD_WITH_SPECIFIED_ARGS(STRING_VAR_LITERAL(name), element, args, specifiedArgs);
+}
+
+Value lotus::Module::STATIC_METHOD_WITH_SPECIFIED_ARGS(const char* name, const char* element,
+	const std::vector<Value>& args, const StringMap<Value>& specifiedArgs) {
+	return STATIC_METHOD_WITH_SPECIFIED_ARGS(STRING_VAR_LITERAL(name), STRING_VAR_LITERAL(element), args, specifiedArgs);
+}
+
 Value lotus::Module::ENUM_ELEMENT(const String& name, const String& element) {
 	return MAKE_PTR<EnumValue>(enums.get(name).getElement(element), name);
 }
@@ -52,15 +79,13 @@ void lotus::Module::STATIC(const char* name, const Static& value) {
 	STATIC(STRING_VAR_LITERAL(name), value);
 }
 
-void lotus::Module::CLASS(const String& name, const Class& value, Module& userModule, bool doRegister) {
+void lotus::Module::CLASS(const String& name, const Class& value, Module& usedModule) {
 	classes.declare(name, MAKE_PTR<Class>(value));
-	if (doRegister) {
-		classes.registerClass(name, userModule);
-	}
+	classes.registerClass(name, *this, usedModule);
 }
 
-void lotus::Module::CLASS(const char* name, const Class& value, Module& userModule, bool doRegister) {
-	CLASS(STRING_VAR_LITERAL(name), value, userModule, doRegister);
+void lotus::Module::CLASS(const char* name, const Class& value, Module& usedModule) {
+	CLASS(STRING_VAR_LITERAL(name), value, usedModule);
 }
 
 void lotus::Module::ENUM(const String& name, const Enum& value) {

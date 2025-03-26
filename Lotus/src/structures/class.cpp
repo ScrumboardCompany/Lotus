@@ -22,7 +22,7 @@ void lotus::Class::setName(const char* name) {
 	setName(STRING_VAR_LITERAL(name));
 }
 
-void lotus::Class::registerClass(Module& module) {
+void lotus::Class::registerClass(Module& module, Module& usedModule) {
 	String name = value.getType();
 	if (value.methods.find(name) != value.methods.end()) {
 		for (auto& method : value.methods[name]) {
@@ -31,9 +31,9 @@ void lotus::Class::registerClass(Module& module) {
 
 				std::vector<Value> argsValues;
 				for (auto& arg : method.value.args) {
-					argsValues.push_back(module.variables.get(arg.name));
+					argsValues.push_back(usedModule.variables.get(arg.name));
 				}
-				value.callMethod(value.getType(), argsValues, module);
+				value.callMethod(value.getType(), argsValues, usedModule);
 
 				RETURN_VALUE(MAKE_PTR<ClassValue>(value));
 				}), method.value.args);

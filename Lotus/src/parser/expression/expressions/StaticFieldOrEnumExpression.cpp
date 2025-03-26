@@ -10,7 +10,7 @@ lotus::StaticFieldOrEnumExpression::StaticFieldOrEnumExpression(const String& st
 
 Value lotus::StaticFieldOrEnumExpression::eval(Module& module) {
 	if (module.statics.isExists(staticName)) {
-		return module.statics.get(staticName).getField(field);
+		return module.STATIC_FIELD(staticName, field);
 	}
 	else if (module.enums.isExists(staticName)) {
 		return module.ENUM_ELEMENT(staticName, field);

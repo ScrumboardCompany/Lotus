@@ -32,68 +32,6 @@ Value lotus::callAllExpressionsAndReturnLastValue(const std::vector<Expression>&
 }
 
 std::wstring lotus::wreadContent(const std::wstring& filePath) {
-    //// Open the file in binary mode to check the BOM
-    //std::ifstream file(filePath, std::ios::binary);
-    //if (!file) {
-    //    throw LotusException(STRING_LITERAL("Unable to open file: ") + filePath);
-    //}
-
-    //// Read the first few bytes to check the BOM
-    //std::vector<unsigned char> bom(4, 0);
-    //file.read(reinterpret_cast<char*>(bom.data()), 4);
-    //file.seekg(0);  // Let's return the pointer to the beginning of the file
-
-    //std::wstring content;
-
-    //if (bom[0] == 0xEF && bom[1] == 0xBB && bom[2] == 0xBF) {
-    //    // File in UTF-8 with BOM
-    //    file.seekg(3);  // Skipping BOM
-    //    std::stringstream buffer;
-    //    buffer << file.rdbuf();
-    //    std::string utf8Str = buffer.str();
-
-    //    // Convert UTF-8 to wstring
-    //    std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-    //    content = conv.from_bytes(utf8Str);
-    //}
-    //else if (bom[0] == 0xFF && bom[1] == 0xFE) {
-    //    // File in UTF-16 LE
-    //    file.seekg(2);
-    //    std::wifstream wfile(filePath, std::ios::binary);
-    //    wfile.imbue(std::locale(wfile.getloc(), new std::codecvt_utf16<wchar_t, 0x10FFFF, std::little_endian>));
-    //    std::wstringstream wbuffer;
-    //    wbuffer << wfile.rdbuf();
-    //    content = wbuffer.str();
-    //}
-    //else if (bom[0] == 0xFE && bom[1] == 0xFF) {
-    //    // File in UTF-16 BE
-    //    file.seekg(2);
-    //    std::wifstream wfile(filePath, std::ios::binary);
-    //    wfile.imbue(std::locale(wfile.getloc(), new std::codecvt_utf16<wchar_t, 0x10FFFF, std::consume_header>));
-    //    std::wstringstream wbuffer;
-    //    wbuffer << wfile.rdbuf();
-    //    content = wbuffer.str();
-    //}
-    //else {
-    //    // File in ANSI/Windows-1251 or UTF-8 without BOM
-    //    std::stringstream buffer;
-    //    buffer << file.rdbuf();
-    //    std::string rawStr = buffer.str();
-
-    //    try {
-    //        std::wstring_convert<std::codecvt_utf8<wchar_t>> conv;
-    //        content = conv.from_bytes(rawStr);
-    //    }
-    //    catch (...) {
-    //        // If it didn't work, read as Windows-1251
-    //        std::wstring_convert<std::codecvt<wchar_t, char, std::mbstate_t>, wchar_t> cp1251conv(
-    //            new std::codecvt_byname<wchar_t, char, std::mbstate_t>("ru_RU.1251"));
-    //        content = cp1251conv.from_bytes(rawStr);
-    //    }
-    //}
-
-    //return content;
-
     std::ifstream file(filePath, std::ios::binary);
     if (!file) {
         throw LotusException(STRING_LITERAL("Unable to open file: ") + filePath);
@@ -150,7 +88,6 @@ std::pair<Int, Int> lotus::evalDayOfYearAndDayOfWeek(Int day, Int month, Int yea
         day_of_year += days_in_months[i];
     }
 
-    // Вычисляем день недели по формуле Зеллера
     Int y = (month < 3) ? year - 1 : year;
     Int m = (month < 3) ? month + 12 : month;
     Int K = y % 100;
@@ -168,8 +105,6 @@ bool lotus::isValidDate(Int day, Int month, Int year) {
     return day <= days_in_months[static_cast<int>(month) - 1];
 }
 
-// Если объект представляет абсолютное время (дата задана), вычисляем секунды от 1 января 1970;
-// иначе – считаем относительный интервал по единицам (месяц = 30 дней, год = 365 дней).
 int64_t lotus::getTotalSeconds(Value time, Module& module) {
     Int sec = time->getField("sec")->asInt(module);
     Int min = time->getField("min")->asInt(module);
@@ -178,7 +113,6 @@ int64_t lotus::getTotalSeconds(Value time, Module& module) {
     Int month = time->getField("month")->asInt(module);
     Int year = time->getField("year")->asInt(module);
 
-    // Абсолютный режим: все компоненты даты заданы (не равны 0)
     if (day != 0 && month != 0 && year != 0) {
         int64_t total_days = 0;
         for (Int y = 1970; y < year; y++) {
@@ -194,13 +128,10 @@ int64_t lotus::getTotalSeconds(Value time, Module& module) {
         return total_days * 86400ll + hour * 3600ll + min * 60ll + sec;
     }
     else {
-        // Относительный режим: учитываем все компоненты как интервалы
         return sec + min * 60ll + hour * 3600ll + day * 86400ll + month * 30 * 86400ll + year * 365 * 86400ll;
     }
 }
 
-// Новая версия fromTotalSeconds с дополнительным параметром absolute:
-// Если absolute==true, начинаем с 1970 года (дни начинаются с 1), иначе – с 0.
 std::tuple<Int, Int, Int, Int, Int, Int> lotus::fromTotalSeconds(int64_t total_seconds, bool absolute) {
     Int year, month, day, hour, min, sec;
     if (absolute) {
@@ -228,16 +159,16 @@ std::tuple<Int, Int, Int, Int, Int, Int> lotus::fromTotalSeconds(int64_t total_s
                 break;
             }
         }
-        // Для абсолютных дат дни начинаются с 1
+
         day = static_cast<Int>(total_seconds / 86400ll + 1ll);
     }
     else {
-        // Относительный режим: интервал переводим в года, месяцы, дни по упрощённой схеме
+
         year = total_seconds / (365 * 86400ll);
         total_seconds %= (365 * 86400ll);
         month = total_seconds / (30 * 86400ll);
         total_seconds %= (30 * 86400ll);
-        day = total_seconds / 86400ll; // Здесь день считается от 0
+        day = total_seconds / 86400ll;
     }
     total_seconds %= 86400ll;
     hour = static_cast<Int>(total_seconds / 3600ll);

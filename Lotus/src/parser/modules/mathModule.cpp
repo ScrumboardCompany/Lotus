@@ -9,7 +9,7 @@
 using namespace lotus;
 
 void lotus::Parser::loadMathModule() {
-	Module Math;
+	static Module Math;
 
 	Math.DEF("absolute", [&] {
 		if (!isNumber(module.GET("x"))) throwTypeError(STRING_LITERAL("int"), STRING_LITERAL("float"), module.GET("x")->getType(), module);
