@@ -16,12 +16,12 @@ void lotus::Parser::loadUtilityModule() {
         String path = module.GET("path")->asString(module);
 
         if (!std::filesystem::exists(path)) {
-            module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path), STRING("file_error"));
+            module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path, module), STRING("file_error", module));
         }
 
         std::wifstream file(path);
         if (!file) {
-            module.THROW(STRING(STRING_LITERAL("Failed to read file: ") + path), STRING("file_error"));
+            module.THROW(STRING(STRING_LITERAL("Failed to read file: ") + path, module), STRING("file_error", module));
         }
 
         std::wstringstream buffer;
@@ -31,12 +31,12 @@ void lotus::Parser::loadUtilityModule() {
         json parsed_json = json::parse(buffer.str(), nullptr, false);
 
         if (parsed_json.is_discarded()) {
-            module.THROW(STRING("Invalid JSON format"), STRING("json_error"));
+            module.THROW(STRING("Invalid JSON format", module), STRING("json_error", module));
         }
 
         StringMap<Value> obj;
         for (auto& [key, value] : parsed_json.items()) {
-            obj.emplace(string_to_wstring_codecvt(key.c_str()), STRING(string_to_wstring_codecvt(value.dump().c_str())));
+            obj.emplace(string_to_wstring_codecvt(key.c_str()), STRING(string_to_wstring_codecvt(value.dump().c_str()), module));
         }
 
         RETURN_VALUE(OBJECT(obj));

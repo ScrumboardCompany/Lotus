@@ -13,39 +13,39 @@ void lotus::Parser::loadOsModule() {
 	static Module Os;
 	Os.DEF("platform", [&] {
 #if defined(_WIN32)
-		RETURN_VALUE(STRING("windows"));
+		RETURN_VALUE(STRING("windows", module));
 #elif defined(__APPLE__) && defined(__MACH__)
-		RETURN_VALUE(STRING("macos"));
+		RETURN_VALUE(STRING("macos", module));
 #elif defined(__linux__)
-		RETURN_VALUE(STRING("linux"));
+		RETURN_VALUE(STRING("linux", module));
 #elif defined(__unix__)
-		RETURN_VALUE(STRING("unix"));
+		RETURN_VALUE(STRING("unix", module));
 #elif defined(__FreeBSD__)
-		RETURN_VALUE(STRING("freebsd"));
+		RETURN_VALUE(STRING("freebsd", module));
 #elif defined(__OpenBSD__)
-		RETURN_VALUE(STRING("openbsd"));
+		RETURN_VALUE(STRING("openbsd", module));
 #elif defined(__NetBSD__)
-		RETURN_VALUE(STRING("netbsd"));
+		RETURN_VALUE(STRING("netbsd", module));
 #elif defined(__ANDROID__)
-		RETURN_VALUE(STRING("android"));
+		RETURN_VALUE(STRING("android", module));
 #elif defined(__CYGWIN__)
-		RETURN_VALUE(STRING("cygwin"));
+		RETURN_VALUE(STRING("cygwin", module));
 #elif defined(_POSIX_VERSION)
-		RETURN_VALUE(STRING("posix"));
+		RETURN_VALUE(STRING("posix", module));
 #elif defined(__HAIKU__)
-		RETURN_VALUE(STRING("haiku"));
+		RETURN_VALUE(STRING("haiku", module));
 #elif defined(__sun) && defined(__SVR4)
-		RETURN_VALUE(STRING("solaris"));
+		RETURN_VALUE(STRING("solaris", module));
 #elif defined(__QNX__)
-		RETURN_VALUE(STRING("qnx"));
+		RETURN_VALUE(STRING("qnx", module));
 #elif defined(__VXWORKS__)
-		RETURN_VALUE(STRING("vxworks"));
+		RETURN_VALUE(STRING("vxworks", module));
 #elif defined(__riscos__)
-		RETURN_VALUE(STRING("riscos"));
+		RETURN_VALUE(STRING("riscos", module));
 #elif defined(__EMSCRIPTEN__)
-		RETURN_VALUE(STRING("emscripten"));
+		RETURN_VALUE(STRING("emscripten", module));
 #else
-		RETURN_VALUE(STRING("unknown"));
+		RETURN_VALUE(STRING("unknown", module));
 #endif
 		});
 
@@ -57,7 +57,7 @@ void lotus::Parser::loadOsModule() {
 	FileClass.addMethod("File", METHOD(AccessModifierType::PUBLIC, [&] {}));
 
 	FileClass.addMethod("File", METHOD(AccessModifierType::PUBLIC, [&] {
-		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type"), STRING("type_error"));
+		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type", module), STRING("type_error", module));
 		Value& this_file = module.GET("this");
 
 		this_file->getField("_path") = module.GET("path");
@@ -72,7 +72,7 @@ void lotus::Parser::loadOsModule() {
 	FileClass.addMethod("fullPath", METHOD(AccessModifierType::PUBLIC, [&] {
 		Value& this_file = module.GET("this");
 
-		RETURN_VALUE(STRING(std::filesystem::absolute(this_file->getField("_path")->asString(module)).wstring()));
+		RETURN_VALUE(STRING(std::filesystem::absolute(this_file->getField("_path")->asString(module)).wstring(), module));
 		}));
 
 	FileClass.addMethod("fullName", METHOD(AccessModifierType::PUBLIC, [&] {
@@ -81,7 +81,7 @@ void lotus::Parser::loadOsModule() {
 
 		std::filesystem::path file_path(path);
 
-		RETURN_VALUE(STRING(file_path.filename().wstring()));
+		RETURN_VALUE(STRING(file_path.filename().wstring(), module));
 		}));
 
 	FileClass.addMethod("name", METHOD(AccessModifierType::PUBLIC, [&] {
@@ -90,7 +90,7 @@ void lotus::Parser::loadOsModule() {
 
 		std::filesystem::path file_path(path);
 
-		RETURN_VALUE(STRING(file_path.stem().wstring()));
+		RETURN_VALUE(STRING(file_path.stem().wstring(), module));
 		}));
 
 	FileClass.addMethod("extension", METHOD(AccessModifierType::PUBLIC, [&] {
@@ -99,11 +99,11 @@ void lotus::Parser::loadOsModule() {
 
 		std::filesystem::path file_path(path);
 
-		RETURN_VALUE(STRING(file_path.extension().wstring()));
+		RETURN_VALUE(STRING(file_path.extension().wstring(), module));
 		}));
 
 	FileClass.addMethod("setPath", METHOD(AccessModifierType::PUBLIC, [&] {
-		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type"), STRING("type_error"));
+		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type", module), STRING("type_error", module));
 		Value& this_file = module.GET("this");
 
 		this_file->getField("_path") = module.GET("path");
@@ -114,13 +114,13 @@ void lotus::Parser::loadOsModule() {
 		String path = this_file->getField("_path")->asString(module);
 
 		if (!std::filesystem::exists(path)) {
-			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path, module), STRING("file_error", module));
 		}
 
 		std::error_code ec;
 		std::filesystem::remove(path, ec);
 		if (ec) {
-			module.THROW(STRING(STRING_LITERAL("Failed to delete file: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("Failed to delete file: ") + path, module), STRING("file_error", module));
 		}
 		}));
 
@@ -130,12 +130,12 @@ void lotus::Parser::loadOsModule() {
 		String content = module.GET("content")->asString(module);
 
 		if (!std::filesystem::exists(path)) {
-			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path, module), STRING("file_error", module));
 		}
 
 		std::wofstream file(path, std::ios::out | std::ios::trunc);
 		if (!file) {
-			module.THROW(STRING(STRING_LITERAL("Failed to write file: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("Failed to write file: ") + path, module), STRING("file_error", module));
 		}
 		file << content;
 		}, "content"));
@@ -145,18 +145,18 @@ void lotus::Parser::loadOsModule() {
 		String path = this_file->getField("_path")->asString(module);
 
 		if (!std::filesystem::exists(path)) {
-			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path, module), STRING("file_error", module));
 		}
 
 		std::wifstream file(path);
 		if (!file) {
-			module.THROW(STRING(STRING_LITERAL("Failed to read file: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("Failed to read file: ") + path, module), STRING("file_error", module));
 		}
 
 		std::wstringstream buffer;
 		buffer << file.rdbuf();
 		file.close();
-		RETURN_VALUE(STRING(buffer.str()));
+		RETURN_VALUE(STRING(buffer.str(), module));
 		}));
 
 	FileClass.addMethod("append", METHOD(AccessModifierType::PUBLIC, [&] {
@@ -165,24 +165,24 @@ void lotus::Parser::loadOsModule() {
 		String content = module.GET("content")->asString(module);
 
 		if (!std::filesystem::exists(path)) {
-			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + path, module), STRING("file_error", module));
 		}
 
 		std::wofstream file(path, std::ios::out | std::ios::app);
 		if (!file) {
-			module.THROW(STRING(STRING_LITERAL("Failed to append file: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("Failed to append file: ") + path, module), STRING("file_error", module));
 		}
 		file << content;
 		}, "content"));
 
 	FileClass.addMethod("rename", METHOD(AccessModifierType::PUBLIC, [&] {
-		if (!module.GET("new_path")->instanceOf("string")) module.THROW(STRING("Incorrect type"), STRING("type_error"));
+		if (!module.GET("new_path")->instanceOf("string")) module.THROW(STRING("Incorrect type", module), STRING("type_error", module));
 		Value& this_file = module.GET("this");
 		String old_path = this_file->getField("_path")->asString(module);
 		String new_path = module.GET("new_path")->asString(module);
 
 		if (!std::filesystem::exists(old_path)) {
-			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + old_path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("File does not exist: ") + old_path, module), STRING("file_error", module));
 		}
 
 		std::filesystem::path src(old_path);
@@ -191,15 +191,15 @@ void lotus::Parser::loadOsModule() {
 		std::error_code ec;
 		std::filesystem::rename(src, dst, ec);
 		if (ec) {
-			module.THROW(STRING(STRING_LITERAL("Failed to rename file: ") + old_path + STRING_LITERAL(" to ") + new_path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("Failed to rename file: ") + old_path + STRING_LITERAL(" to ") + new_path, module), STRING("file_error", module));
 		}
 
-		this_file->getField("_path") = STRING(new_path);
+		this_file->getField("_path") = STRING(new_path, module);
 		}, "new_path"));
 
 	FileStatic.addMethod("create", METHOD(AccessModifierType::PUBLIC, [&] {
 
-		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type"), STRING("type_error"));
+		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type", module), STRING("type_error", module));
 
 		String path = module.GET("path")->asString(module);
 
@@ -207,14 +207,14 @@ void lotus::Parser::loadOsModule() {
 
 		std::ofstream file(file_path, std::ios::out | std::ios::trunc);
 		if (!file) {
-			module.THROW(STRING(STRING_LITERAL("Failed to create file: ") + path), STRING("file_error"));
+			module.THROW(STRING(STRING_LITERAL("Failed to create file: ") + path, module), STRING("file_error", module));
 		}
 
-		RETURN_VALUE(STRING(std::filesystem::absolute(path).wstring()));
+		RETURN_VALUE(STRING(std::filesystem::absolute(path).wstring(), module));
 		}, "path"));
 
 	FileStatic.addMethod("exists", METHOD(AccessModifierType::PUBLIC, [&] {
-		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type"), STRING("type_error"));
+		if (!module.GET("path")->instanceOf("string")) module.THROW(STRING("Incorrect type", module), STRING("type_error", module));
 		RETURN_VALUE(BOOL(std::filesystem::exists(std::filesystem::path(module.GET("path")->asString(module)))));
 		}, "path"));
 
@@ -230,7 +230,7 @@ void lotus::Parser::loadOsModule() {
 #endif
 
 		if (!pipe) {
-			module.THROW(STRING(STRING_LITERAL("Failed to run command: ") + command), STRING("execute_error"));
+			module.THROW(STRING(STRING_LITERAL("Failed to run command: ") + command, module), STRING("execute_error", module));
 		}
 		while (fgetws(buffer.data(), (Int)buffer.size(), pipe) != nullptr) {
 			result += buffer.data();
@@ -242,7 +242,7 @@ void lotus::Parser::loadOsModule() {
 		pclose(pipe);
 #endif
 
-		RETURN_VALUE(STRING(result));
+		RETURN_VALUE(STRING(result, module));
 		}, "command");
 
 	Os.CLASS("File", FileClass, module);

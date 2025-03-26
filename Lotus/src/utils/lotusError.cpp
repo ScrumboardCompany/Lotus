@@ -17,15 +17,15 @@ void lotus::throwOverloadError(const String& overload, const String& type1, cons
 }
 
 void lotus::throwTypeError(const String& type1, const String& type2, Module& module) {
-    module.THROW(STRING(STRING_LITERAL("Expected ") + type1 + STRING_LITERAL(" instead of ") + type2), STRING("type_error"));
+    module.THROW(STRING(STRING_LITERAL("Expected ") + type1 + STRING_LITERAL(" instead of ") + type2, module), STRING("type_error", module));
 }
 
 void lotus::throwTypeError(const String& type1, const String& type2, const String& type3, Module& module) {
-    module.THROW(STRING(STRING_LITERAL("Expected ") + type1 + STRING_LITERAL(" or ") + type2 + STRING_LITERAL(" instead of ") + type3), STRING("type_error"));
+    module.THROW(STRING(STRING_LITERAL("Expected ") + type1 + STRING_LITERAL(" or ") + type2 + STRING_LITERAL(" instead of ") + type3, module), STRING("type_error", module));
 }
 
 void lotus::checkThrowIndexError(const Value& index, size_t size, Module& module) {
     if (index->asInt(module) < 0ll || static_cast<size_t>(index->asInt(module)) >= size) {
-        module.THROW(STRING(INT(index->asInt(module))->asString(module) + STRING_LITERAL(" is invalid index")));
+        module.THROW(STRING(INT(index->asInt(module))->asString(module) + STRING_LITERAL(" is invalid index"), module));
     }
 }

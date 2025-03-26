@@ -40,7 +40,7 @@ void lotus::Parser::loadStandardModule() {
 	module.DEF("input", [&] {
 		String input;
 		std::wcin >> input;
-		RETURN_VALUE(STRING(input));
+		RETURN_VALUE(STRING(input, module));
 		});
 
 	module.DEF("rand", [&] {
@@ -65,7 +65,7 @@ void lotus::Parser::loadStandardModule() {
 		}, "max");
 
 	module.DEF("typeof", [&] {
-		RETURN_VALUE(STRING(module.GET("value")->getType()));
+		RETURN_VALUE(STRING(module.GET("value")->getType(), module));
 		}, "value");
 
 	module.DEF("size", [&] {
@@ -85,7 +85,7 @@ void lotus::Parser::loadStandardModule() {
 		}, "value");
 
 	module.DEF("string", [&] {
-		RETURN_VALUE(STRING(module.GET("value")->asString(module)));
+		RETURN_VALUE(STRING(module.GET("value")->asString(module), module));
 		}, "value");
 
 	module.DEF("bool", [&] {
@@ -94,8 +94,8 @@ void lotus::Parser::loadStandardModule() {
 
 	Class exceptionClass;
 
-	exceptionClass.addField("__msg", FIELD(AccessModifierType::PRIVATE, STRING("error")));
-	exceptionClass.addField("__type", FIELD(AccessModifierType::PRIVATE, STRING("error")));
+	exceptionClass.addField("__msg", FIELD(AccessModifierType::PRIVATE, STRING("error", module)));
+	exceptionClass.addField("__type", FIELD(AccessModifierType::PRIVATE, STRING("error", module)));
 
 	exceptionClass.addMethod("exception", METHOD(AccessModifierType::PUBLIC, [&] {}));
 
@@ -116,5 +116,57 @@ void lotus::Parser::loadStandardModule() {
 		RETURN_VALUE(module.GET("this")->getField("__type"));
 		}));
 
+	Static stringStatic;
+
+	stringStatic.addMethod(STRING_LITERAL("replace"), METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("old")->instanceOf("string") || !module.GET("new")->instanceOf("string"))
+			module.THROW(STRING("Both old and new values must be strings", module), STRING("type_error", module));
+		if (!module.GET("value")->instanceOf("string"))
+			module.THROW(STRING("Value must be a string", module), STRING("type_error", module));
+		String oldStr = module.GET("old")->asString(module);
+		String newStr = module.GET("new")->asString(module);
+		String value = module.GET("value")->asString(module);
+		size_t pos = 0;
+		while ((pos = value.find(oldStr, pos)) != String::npos) {
+			value.replace(pos, oldStr.length(), newStr);
+			pos += newStr.length();
+		}
+		RETURN_VALUE(STRING(value, module));
+		}, "value", "old", "new"));
+
+	stringStatic.addMethod(STRING_LITERAL("toUpper"), METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("value")->instanceOf("string"))
+			module.THROW(STRING("Value must be a string", module), STRING("type_error", module));
+		String value = module.GET("value")->asString(module);
+		std::transform(value.begin(), value.end(), value.begin(), ::toupper);
+		RETURN_VALUE(STRING(value, module));
+		}, "value"));
+
+	stringStatic.addMethod(STRING_LITERAL("toLower"), METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("value")->instanceOf("string"))
+			module.THROW(STRING("Value must be a string", module), STRING("type_error", module));
+		String value = module.GET("value")->asString(module);
+		std::transform(value.begin(), value.end(),value.begin(), ::tolower);
+		RETURN_VALUE(STRING(value, module));
+		}, "value"));
+
+	stringStatic.addMethod(STRING_LITERAL("trim"), METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("value")->instanceOf("string"))
+			module.THROW(STRING("Value must be a string", module), STRING("type_error", module));
+		String value = module.GET("value")->asString(module);
+		value.erase(0, value.find_first_not_of(L" \t\n\r"));
+		value.erase(value.find_last_not_of(L" \t\n\r") + 1);
+		RETURN_VALUE(STRING(value, module));
+		}, "value"));
+
+	stringStatic.addMethod(STRING_LITERAL("reverse"), METHOD(AccessModifierType::PUBLIC, [&] {
+		if (!module.GET("value")->instanceOf("string"))
+			module.THROW(STRING("Value must be a string", module), STRING("type_error", module));
+		String value = module.GET("value")->asString(module);
+		std::reverse(value.begin(), value.end());
+		RETURN_VALUE(STRING(value, module));
+		}, "value"));
+
 	module.CLASS("exception", exceptionClass, module);
+	module.STATIC("string", stringStatic);
 }

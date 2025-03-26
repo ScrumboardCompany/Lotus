@@ -235,7 +235,7 @@ void lotus::Parser::loadVectorModule() {
 		Value thisValue = module.GET("this");
 
 		RETURN_VALUE(STRING(STRING_LITERAL("X: ") + thisValue->getField("X")->asString(module)
-			+ STRING_LITERAL(" Y: ") + thisValue->getField("Y")->asString(module)));
+			+ STRING_LITERAL(" Y: ") + thisValue->getField("Y")->asString(module), module));
 		}));
 
 	Vector2Class.addMethod("normalize", METHOD(AccessModifierType::PUBLIC, [&] {
@@ -558,7 +558,7 @@ void lotus::Parser::loadVectorModule() {
 
 		RETURN_VALUE(STRING(STRING_LITERAL("X: ") + thisValue->getField("X")->asString(module)
 			+ STRING_LITERAL(" Y: ") + thisValue->getField("Y")->asString(module)
-			+ STRING_LITERAL(" Z: ") + thisValue->getField("Z")->asString(module)));
+			+ STRING_LITERAL(" Z: ") + thisValue->getField("Z")->asString(module), module));
 		}));
 
 	Vector3Class.addMethod("normalize", METHOD(AccessModifierType::PUBLIC, [&] {

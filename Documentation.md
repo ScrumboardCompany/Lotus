@@ -127,7 +127,43 @@ array.pop(index) # Deletes value from array at passed index
 array.pop(start, end) # Deletes values from array from start to end indexes
 
 array.clear() # Clears the array
-array.empty() # Returns is array empty
+array.isEmpty() # Returns is array empty
+```
+
+## String
+**Note**: String class methods modify the original string instance and return it's value rather than returning a new one.
+
+**String class methods**
+```
+string.size() # Returns length of a string
+string.clear() # Clears the string
+string.isEmpty() # Returns true if the string is empty, otherwise false
+
+string.substring(start, length) # Returns a substring starting at start position with the specified length
+string.substring(length) # Returns a substring starting at start position
+string.find(substring) # Returns the index of the first occurrence of the given substring
+string.findLast(substring) # Returns the index of the last occurrence of the given substring
+string.replace(old, new) # Replaces all occurrences of old substring with new substring
+string.split(delimiter) # Splits the string by the given delimiter and returns an array of substrings
+
+string.toUpper() # Converts the string to uppercase
+string.toLower() # Converts the string to lowercase
+string.trim() # Removes leading and trailing spaces from the string
+
+string.startsWith(substring) # Returns true if the string begins with the specified substring
+string.endsWith(substring) # Returns true if the string ends with the specified substring
+string.contains(substring) # Returns true if the string contains the specified substring
+
+string.reverse() # Reverses the string
+```
+
+**String static methods**
+```
+string::replace(string, old, new) # Replaces all occurrences of old substring with new substring
+string::toUpper(string) # Converts the string to uppercase
+string::toLower(string) # Converts the string to lowercase
+string::trim(string) # Removes leading and trailing spaces from the string
+string::reverse(value) # Reverses the string
 ```
 
 ## Loops

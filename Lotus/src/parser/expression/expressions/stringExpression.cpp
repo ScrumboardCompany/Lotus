@@ -5,6 +5,6 @@ using namespace lotus;
 
 lotus::StringExpression::StringExpression(const String& value) : value(value) {}
 
-Value lotus::StringExpression::eval(Module&) {
-	return STRING(value);
+Value lotus::StringExpression::eval(Module& module) {
+	return STRING(value, module);
 }

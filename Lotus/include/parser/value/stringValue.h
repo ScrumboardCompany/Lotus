@@ -3,18 +3,19 @@
 #ifndef _STRINGVALUE_
 #define _STRINGVALUE_
 
-#include "parser/value/value.h"
+#include "parser/value/classValue.h"
 
 namespace lotus {
 
-	class LOTUS_API StringValue : public IValue {
+	class LOTUS_API StringValue : public ClassValue {
 		String value;
 
 	public:
 
-		StringValue(const char* value);
-		StringValue(const String& value);
+		StringValue(const char* value, Module& module);
+		StringValue(const String& value, Module& module);
 		StringValue() = default;
+		StringValue(StringValue&&) = default;
 
 		Int asInt(Module&) override;
 		double asDouble(Module&) override;
@@ -42,9 +43,9 @@ namespace lotus {
 		Value sizeInRam() override;
 	};
 
-	LOTUS_API Value STRING(const char* value);
+	LOTUS_API Value STRING(const char* value, Module& module);
 
-	LOTUS_API Value STRING(const String& value);
+	LOTUS_API Value STRING(const String& value, Module& module);
 
 	LOTUS_API Value STRING();
 

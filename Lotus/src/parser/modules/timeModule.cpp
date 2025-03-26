@@ -66,7 +66,7 @@ void lotus::Parser::loadTimeModule() {
 
         if (day != 0 && month != 0 && year != 0) {
             if (!isValidDate(day, month, year)) {
-                module.THROW(STRING("Invalid date"));
+                module.THROW(STRING("Invalid date", module));
             }
             auto days = evalDayOfYearAndDayOfWeek(day, month, year);
             this_time->getField("day_of_year") = INT(days.first);
@@ -146,7 +146,7 @@ void lotus::Parser::loadTimeModule() {
         result += this_time->getField("min")->asString(module);
         result += STRING_LITERAL(":");
         result += this_time->getField("sec")->asString(module);
-        RETURN_VALUE(STRING(result));
+        RETURN_VALUE(STRING(result, module));
         }));
 
     // Getters
