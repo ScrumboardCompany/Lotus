@@ -7,7 +7,7 @@
 using namespace lotus;
 
 Function lotus::Class::makeDefaultConstructor() {
-	Function defaultConstructor(MAKE_PTR<CppFunctionStatement>([&]() {
+	Function defaultConstructor(MAKE_PTR<CppFunctionStatement>([&](Module&) {
 		RETURN_VALUE(MAKE_PTR<ClassValue>(value));
 		}), {});
 
@@ -22,18 +22,18 @@ void lotus::Class::setName(const char* name) {
 	setName(STRING_VAR_LITERAL(name));
 }
 
-void lotus::Class::registerClass(Module& module, Module& usedModule) {
+void lotus::Class::registerClass(Module& module) {
 	String name = value.getType();
 	if (value.methods.find(name) != value.methods.end()) {
 		for (auto& method : value.methods[name]) {
 
-			Function constructor(MAKE_PTR<CppFunctionStatement>([&]() {
+			Function constructor(MAKE_PTR<CppFunctionStatement>([&](Module& module) {
 
 				std::vector<Value> argsValues;
 				for (auto& arg : method.value.args) {
-					argsValues.push_back(usedModule.variables.get(arg.name));
+					argsValues.push_back(module.variables.get(arg.name));
 				}
-				value.callMethod(value.getType(), argsValues, usedModule);
+				value.callMethod(value.getType(), argsValues, module);
 
 				RETURN_VALUE(MAKE_PTR<ClassValue>(value));
 				}), method.value.args);

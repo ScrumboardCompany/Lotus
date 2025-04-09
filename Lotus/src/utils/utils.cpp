@@ -2,6 +2,7 @@
 #include "parser/expression/expression.h"
 #include "parser/value/value.h"
 #include "parser/value/undefinedValue.h"
+#include "parser/value/stringValue.h"
 #include "utils/lotusError.h"
 #include "parser/parser.h"
 #include "lexer/lexer.h"
@@ -9,6 +10,7 @@
 #include <sstream>
 #include <chrono>
 #include <iostream>
+#include <filesystem>
 #include <locale>
 #include <codecvt>
 #include "parser/expression/letExpression.h"
@@ -241,21 +243,35 @@ String lotus::nowTimeInString() {
 double lotus::Cstod(const String& str) {
     std::wstringstream ss(str);
     ss.imbue(std::locale("C"));
+    std::cout << std::to_string(1.8);
     double value;
     ss >> value;
     return value;
 }
 
+LOTUS_API long long lotus::stoll(const String& str, Module& module, size_t* idx, int base) {
+    try {
+        return std::stoll(str, idx, base);
+    }
+    catch (...) {
+        module.THROW(STRING("Failed to convert string to number"), STRING("value_error"));
+    }
+}
+
 std::vector<Ptr<Parser>> Compiler::parsers = {};
+
+std::vector<String> Compiler::additionalPaths;
 
 Module& lotus::Compiler::compile(const String& filePath, const StringMap<bool>& flags) {
     try {
-        String content = wreadContent(filePath);
+        String path = getPath(filePath);
+
+        String content = wreadContent(path);
 
         Lexer lexer(content);
         auto tokens = lexer.tokenize();
 
-        Ptr<Parser> parser = MAKE_PTR<Parser>(tokens, filePath);
+        Ptr<Parser> parser = MAKE_PTR<Parser>(tokens, path);
         for (const auto& [name, value] : flags) {
             parser->getModule().flags.set(name, value);
         }
@@ -299,10 +315,21 @@ Module& lotus::Compiler::compile(const String& filePath, const StringMap<bool>& 
     catch (const ThrowValue&) {
         std::cout << std::endl << "No exception processing found" << std::endl;
     }
-    catch (...) {
-        std::cout << std::endl << "Unhandled exception" << std::endl;
-    }
     throw -1;
+}
+
+String lotus::Compiler::getPath(const String& path) {
+    if (std::filesystem::exists(path)) return path;
+
+    for (auto& additionalPath : additionalPaths) {
+        String resultPath = additionalPath + STRING_LITERAL("/") + path;
+        if (std::filesystem::exists(resultPath)) return resultPath;
+    }
+    return path;
+}
+
+void lotus::Compiler::addAdditionalPath(const String& path) {
+    additionalPaths.push_back(path);
 }
 
 bool lotus::isNumber(const Value& value) {

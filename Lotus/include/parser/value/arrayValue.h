@@ -12,7 +12,7 @@ namespace lotus {
 
 	public:
 
-		ArrayValue(const std::vector<Value>& elements, Module& module);
+		ArrayValue(const std::vector<Value>& elements);
 
 		ArrayValue(ArrayValue&&) = default;
 
@@ -29,7 +29,7 @@ namespace lotus {
 		Value sizeInRam() override;
 	};
 
-	LOTUS_API Value ARRAY(const std::vector<Value>& elements, Module& module);
+	LOTUS_API Value ARRAY(const std::vector<Value>& elements);
 
 }
 

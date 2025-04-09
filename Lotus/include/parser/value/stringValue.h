@@ -12,8 +12,8 @@ namespace lotus {
 
 	public:
 
-		StringValue(const char* value, Module& module);
-		StringValue(const String& value, Module& module);
+		StringValue(const char* value);
+		StringValue(const String& value);
 		StringValue() = default;
 		StringValue(StringValue&&) = default;
 
@@ -43,9 +43,9 @@ namespace lotus {
 		Value sizeInRam() override;
 	};
 
-	LOTUS_API Value STRING(const char* value, Module& module);
+	LOTUS_API Value STRING(const char* value);
 
-	LOTUS_API Value STRING(const String& value, Module& module);
+	LOTUS_API Value STRING(const String& value);
 
 	LOTUS_API Value STRING();
 

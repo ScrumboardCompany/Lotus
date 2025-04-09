@@ -20,7 +20,7 @@ namespace lotus {
 		String filePath;
 		Module module;
 
-		StringMap<Module> modules;
+		static StringMap<Module> modules;
 		friend class ImportStatement;
 
 	public:
@@ -30,23 +30,23 @@ namespace lotus {
 
 		Module& getModule();
 
+		static void loadModules();
+
 	private:
 
 		bool isValidImportStatement();
 
-		void loadModules();
-
 		void loadStandardModule();
 
-		void loadMathModule();
+		static void loadMathModule();
 
-		void loadTimeModule();
+		static void loadTimeModule();
 
-		void loadOsModule();
+		static void loadOsModule();
 
-		void loadVectorModule();
+		static void loadVectorModule();
 
-		void loadUtilityModule();
+		static void loadUtilityModule();
 
 		Statement getNextGlobalStatement();
 

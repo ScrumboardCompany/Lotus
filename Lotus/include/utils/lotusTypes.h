@@ -7,12 +7,14 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
+#include <functional>
 
 namespace lotus {
 
     class IValue;
     class IExpression;
     class IStatement;
+    struct Module;
 
     struct ClassMemberInfo;
     struct FieldMemberInfo;
@@ -38,6 +40,7 @@ namespace lotus {
     using RawFields_t = StringMap<std::pair<Expression, ClassMemberInfo>>;
     using Fields_t = StringMap<FieldMemberInfo>;
     using Methods_t = StringMap<std::vector<MethodMemberInfo>>;
+    using ModuleBody_t = std::function<void(Module&)>;
 }
 
 #endif // _LOTUSTYPES_

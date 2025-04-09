@@ -57,15 +57,15 @@ bool lotus::Classes::isExists(const char* name) {
 	return isExists(STRING_VAR_LITERAL(name));
 }
 
-void lotus::Classes::registerClass(const String& name, Module& module, Module& usedModule) {
+void lotus::Classes::registerClass(const String& name, Module& module) {
 	if (isExists(name)) {
-		classes[name]->registerClass(module, usedModule);
+		classes[name]->registerClass(module);
 		return;
 	}
 
 	throw LotusException(STRING_LITERAL("Undefined class \"") + name + STRING_LITERAL("\""));
 }
 
-void lotus::Classes::registerClass(const char* name, Module& module, Module& usedModule) {
-	registerClass(STRING_VAR_LITERAL(name), module, usedModule);
+void lotus::Classes::registerClass(const char* name, Module& module) {
+	registerClass(STRING_VAR_LITERAL(name), module);
 }

@@ -36,7 +36,6 @@ x >> y
 ```Lotus
 x || y
 x && y
-!x
 ```
 
 **Comparison operators**
@@ -84,7 +83,7 @@ x[i] = y
 
 **Calling**
 ```Lotus
-x()
+x(args...)
 ```
 
 **Literals**
@@ -110,11 +109,11 @@ let b = 2 + 2 * 3
 ```Lotus
 let a = [10, 20, 30];
 let b = {
-    Name = "John";
-    Age = 30;
+    name = "John";
+    age = 30;
 }
 
-print(b.Name) # Output: "John"
+print(b.name) # Output: "John"
 ```
 **Methods**
 ```Lotus
@@ -168,16 +167,16 @@ string::reverse(value) # Reverses the string
 
 ## Loops
 ```Lotus
-while(true) {
+while (true) {
     print("Hello World!");
 }
 
-for(let i = 0; i < 10; i++) {
+for (let i = 0; i < 10; i++) {
     print(i);
 }
 
 let a = [10, 20, 30];
-foreach(el : a) {
+foreach (el : a) {
     print(el);
 }
 ```
@@ -188,21 +187,23 @@ let a = 10;
 
 if (a > 10) {
     print("a is greater than 10");
-} else if (a == 10) {
+}
+else if (a == 10) {
     print("a is equal to 10");
-} else {
+}
+else {
     print("a is less than 10");
 }
 ```
 
 ## Try catch
 ```Lotus
-def function() {
+def foo() {
     throw(msg => "Exception", type => "Error");
 }
 
 try {
-    function();
+    foo();
 }
 catch(ex) {
     println(ex.message(), ex.type());
@@ -240,7 +241,7 @@ let a = def() {
     print("Hello World!");
 }
 ```
-Regular functiona have higher priority than regular variables, so in this situation - regular function will be called
+Regular function have higher priority than regular variables, so in this situation - regular function will be called
 ```Lotus
 let a = def() {
     print("Lambda");
@@ -281,7 +282,7 @@ public:
     }
 }
 
-print(Counter::get());
+println(Counter::get());
 Counter::increase();
 print(Counter::get());
 ```
@@ -299,8 +300,8 @@ public:
 	}
 }
 
-let John = Person(30, "John");
-print(John.age, John.name);
+let john = Person(30, "John");
+println(john.age, john.name);
 ```
 > **IMPORTANT** In classes and statics the access modifier is `private` by default!
 > **IMPORTANT** Classes and statics can be named the same
@@ -308,7 +309,7 @@ print(John.age, John.name);
 **Available overloads**
 ```Lotus
 __asInt__()
-__asDouble__()
+__asFloat__()
 __asBool__()
 __asString__()
 
@@ -487,7 +488,7 @@ using namespace lotus;
 
 extern "C" {
 
-    INIT_MODULE_EXPORT Module initModule(Module& globalModule) {
+    INIT_MODULE_EXPORT Module initModule() {
 
         Module lib; // Creates new module
         Class A; // Create new class
@@ -495,28 +496,32 @@ extern "C" {
         
         lib.LET("PI", FLOAT(3.14)); // Define a variable inside module
         lib.SET("PI", FLOAT(3.1415)); // Set value for existing variable in module
-        lib.DEF("sumWithPI", [&] {
-            int result = globalModule.GET("PI")->asFloat(globalModule) + globalModule.GET("value")->asFloat(globalModule); // "globalModule.GET("value")" is used to get arguments or variables
+        lib.DEF("sumWithPI", [] (Module& module) {
+            int result = module.GET("PI")->asFloat(module) + module.GET("value")->asFloat(module); // module.GET("value") is used to get arguments or variables
             RETURN_VALUE(FLOAT(result));
         }, "value"); // Define a function in module
         lib.CALL("sumWithPI", INT(5));
 
-        A.addMethod("print", METHOD(AccessModifierType::PUBLIC, [&] {
+        A.addMethod("print", METHOD(AccessModifierType::PUBLIC, [] (Module& module) {
 		    Value args = module.GET("args");
 		    for (Int i = 0, size = args->size(module)->asInt(module); i < size; i++) {
 			    std::wcout << args->getOfIndex(INT(i), module)->asString(module);
 		    }
-		}, "arg...")) // Defines a method in class A
+		}, "args...")) // Defines a method in class A
 
-        B.addMethod("print", METHOD(AccessModifierType::PUBLIC, [&] {
+        B.addMethod("print", METHOD(AccessModifierType::PUBLIC, [] (Module& module) {
 		    Value args = module.GET("args");
 		    for (Int i = 0, size = args->size(module)->asInt(module); i < size; i++) {
 			    std::wcout << args->getOfIndex(INT(i), module)->asString(module);
 		    }
-		}, "arg...")) // Defines a method in static B
+		}, "args...")) // Defines a method in static B
 
-        lib.CLASS("A", A, globalModule, true); // Register class "A" inside module "lib"
-        lib.STATIC("B", B, globalModule, true); // Register static "B" inside module "lib"
+        lib.CLASS("A", A); // Register class "A" inside module "lib"
+        lib.STATIC("B", B); // Register static "B" inside module "lib"
+
+        lib.LET("lambdaVar", LAMBDA(MAKE_CPP_FUNCTION([](Module& module) { // Example of creating of lambda
+		RETURN_VALUE(module.GET("value")->multiply(INT(2), module));
+		}, "value")));
 
         return lib; // Must return module that you've created
     }
@@ -525,22 +530,30 @@ extern "C" {
 
 **Available methods and functions** 
 ```C++
-Module.LET(name, value); # Declares a variable
-Module.SET(name, value); # Sets a value for a variable
-Module.GET(name); # Return value of a variable
-Module.DEF(name, body, args...) # Declares a function
-Module.CALL(name, args...) # Calls a function
-Module.CALL(name, vector<Value>& args, StringMap<Value>& specifiedArgs) # Calls a function with specified arguments
-Module.CLASS(name, class, module, doRegister) # Registers a class
-Module.STATIC(name, static) # Registers a static
+Module.LET(String name, Value value) # Declares a variable
+Module.SET(String name, Value value) # Sets a value for a variable
+Module.GET(String name) # Return value of a variable
+Module.STATIC_FIELD(String staticName, String fieldName) # Returns value of field from static
+Module.STATIC_METHOD(String staticName, String methodName, Value args...) Calls a method from static
+Module.STATIC_METHOD_WITH_SPECIFIED_ARGS(String staticName, String methodName, Value args...) Calls a method from static with specified arguments
+Module.ENUM_ELEMENT(String enumName, String elementName) # Returns value of element from enum
+Module.DEF(String name, function<void(Module&)> body, String args...) # Declares a function
+Module.CALL(String name, Value args...) # Calls a function
+Module.CALL(String name, vector<Value> args, StringMap<Value> specifiedArgs) # Calls a function with specified arguments
+Module.CLASS(String name, Class class) # Registers a class
+Module.STATIC(String name, Static static) # Registers a static
+Module.ENUM(String name, Enum enum) # Registers a enum
+Module.THROW() # Throws a class exception object without parameters
+Module.THROW(Value msg) # Throws a class exception object with msg
+Module.THROW(Value msg, Value type) # Throws a class exception object with msg and type
 
-INT(value) # Returns an object of class IntValue
-FLOAT(value) # Returns an object of class FloatValue
-BOOL(value) # Returns an object of class BoolValue
-STRING(value) # Returns an object of class StringValue
-ARRAY(vector<Value>& elements, module) # Returns an object of class ArrayValue
-OBJECT(StringMap<Value>& fields) # Returns an object of class ObjectValue2
-LAMBDA(body) # Returns an object of class LambdaValue
+INT(int64_t value) # Returns an object of class IntValue
+FLOAT(double value) # Returns an object of class FloatValue
+BOOL(bool value) # Returns an object of class BoolValue
+STRING(String value) # Returns an object of class StringValue
+ARRAY(vector<Value> elements) # Returns an object of class ArrayValue
+OBJECT(StringMap<Value> fields) # Returns an object of class ObjectValue
+LAMBDA(Function body) # Returns an object of class LambdaValue
 UNDEFINED() # Returns an object of class UndefinedValue
 ```
 
@@ -562,11 +575,11 @@ print(args...); # Prints arguments
 println(args...); # Prints arguments with split "\n"
 input(); # Takes input and returns string
 typeof(value); # Returns type of the value
-swap(value1, value2) # Swaps the value1 and value2 values
-size(value); # Returns size of the array
+swap(value1, value2); # Swaps the value1 and value2 values
+size(value); # Returns size of value (calls __size__)
 sizeof(value); # Returns size of value in RAM
-int(value); # Casts value to integer
-float(value); # Casts value to float
+int(value); # Casts value to integer (calls __asInt__)
+float(value); # Casts value to float (calls __asFloat__)
 bool(value); # Casts value to bool
 string(value); # Casts value to string
 throw(); # Throw default exception
@@ -670,7 +683,7 @@ File::create(path); # Creates file in specified path and returns absolute file p
 File::exists(path); # Returns if specified file exists
 
 execute(command); # Executes specified command and returns result
-platform(); # Returns name of the user’s platform
+platform(); # Returns name of the user's platform
 ```
 
 ## [Vector module](Lotus/src/parser/modules/vectorModule.cpp)

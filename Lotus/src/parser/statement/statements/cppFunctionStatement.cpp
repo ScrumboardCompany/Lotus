@@ -2,9 +2,9 @@
 
 using namespace lotus;
 
-lotus::CppFunctionStatement::CppFunctionStatement(const std::function<void()>& body)
+lotus::CppFunctionStatement::CppFunctionStatement(const ModuleBody_t& body)
 	: body(body) {}
 
-void lotus::CppFunctionStatement::execute(Module&) {
-	body();
+void lotus::CppFunctionStatement::execute(Module& module) {
+	body(module);
 }

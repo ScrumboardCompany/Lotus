@@ -53,12 +53,12 @@ void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
 
             if (from.classes.isExists(key) && type == KeyType::CLASS) {
                 to.classes.forceSet(key, from.classes.get(key));
-                to.classes.registerClass(key, to, to);
+                to.classes.registerClass(key, to);
                 continue;
             } else if (key == STRING_LITERAL("*") && type == KeyType::CLASS) {
                 for (auto& cls : from.classes.classes) {
                     to.classes.forceSet(cls.first, cls.second);
-                    to.classes.registerClass(cls.first, to, to);
+                    to.classes.registerClass(cls.first, to);
                 }
                 continue;
             }
@@ -118,7 +118,7 @@ void lotus::ImportStatement::loadFromModule(Module& from, Module& to) {
             if (from.classes.isExists(key)) {
                 to.classes.forceSet(key, from.classes.get(key));
                 if (!importEverythingWithSameName) {
-                    to.classes.registerClass(key, to, to);
+                    to.classes.registerClass(key, to);
                 }
                 found = true;
             }
@@ -175,12 +175,13 @@ void lotus::ImportStatement::execute(Module& currentModule) {
         module = modules[file];
     }
     else {
+        String path = Compiler::getPath(filePath);
 
-        typedef Module(*lotusModuleFuncType)(Module&);
+        typedef Module(*lotusModuleFuncType)();
 
 #ifdef _WIN32
         String extention = STRING_LITERAL(".dll");
-        HMODULE lib = LoadLibraryW((file + extention).c_str());
+        HMODULE lib = LoadLibraryW((path + extention).c_str());
 
         if (!lib) {
             throw LotusException(STRING_LITERAL("Failed to load module ") + file);
@@ -190,7 +191,7 @@ void lotus::ImportStatement::execute(Module& currentModule) {
 
 #else
         String extention = STRING_LITERAL(".so");
-        void* lib = dlopen((file + extention).c_str(), RTLD_LAZY);
+        void* lib = dlopen((path + extention).c_str(), RTLD_LAZY);
         if (!lib) {
             throw LotusException(STRING_LITERAL("Failed to load module ") + file);
         }
@@ -201,7 +202,7 @@ void lotus::ImportStatement::execute(Module& currentModule) {
             throw LotusException(STRING_LITERAL("Failed to find initModule in ") + file);
         }
 
-        module = initModule(currentModule);
+        module = initModule();
 
         // FreeLibrary(lib) is not needed because lib is used until the end of the program
 

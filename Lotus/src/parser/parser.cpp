@@ -1,6 +1,7 @@
 #include "parser/parser.h"
 #include "utils/lotusError.h"
 #include "parser/statement/expressionStatement.h"
+#include "parser/statement/importStatement.h"
 
 using namespace lotus;
 
@@ -9,8 +10,7 @@ lotus::Parser::Parser(const std::list<Token>& tokens, const String& filePath) : 
 	for (auto& token : tokens) {
 		this->tokens.push_back(token);
 	}
-
-	loadModules();
+	loadStandardModule();
 }
 
 std::vector<Statement> lotus::Parser::parse() {

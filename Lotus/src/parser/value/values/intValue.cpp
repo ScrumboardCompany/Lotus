@@ -51,7 +51,7 @@ Value lotus::IntValue::multiply(const Value& other, Module& module) {
         for (int i = 0; i < value; i++) {
             result += other->asString(module);
         }
-        return STRING(result, module);
+        return STRING(result);
     }
     return FLOAT(value * other->asDouble(module));
 }

@@ -5,7 +5,7 @@
 
 #define MAKE_PTR std::make_shared
 
-#define LOTUS_VERSION 1.21
+#define LOTUS_VERSION 1.22
 #define EOF_TOKEN lotus::Token({ lotus::TokenType::END_OF_FILE, STRING_LITERAL("")})
 
 #ifdef BUILDING_DLL

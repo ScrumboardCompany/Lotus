@@ -11,7 +11,7 @@ namespace lotus {
 		String value;
 
 	public:
-		StringExpression(const String& value);
+		StringExpression(const String&);
 
 		Value eval(Module& module) override;
 	};

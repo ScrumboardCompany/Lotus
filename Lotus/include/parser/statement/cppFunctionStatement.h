@@ -9,12 +9,12 @@
 namespace lotus {
 
 	class LOTUS_API CppFunctionStatement : public IStatement {
-		std::function<void()> body;
+		ModuleBody_t body;
 
 	public:
-		CppFunctionStatement(const std::function<void()>& body);
+		CppFunctionStatement(const ModuleBody_t& body);
 
-		void execute(Module&) override;
+		void execute(Module& module) override;
 	};
 }
 

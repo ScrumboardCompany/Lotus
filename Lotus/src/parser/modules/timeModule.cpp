@@ -13,13 +13,13 @@ void lotus::Parser::loadTimeModule() {
 
     // Declare enum for time units
     Enum TimeUnitEnum;
-    TimeUnitEnum.addElement("Second", UNDEFINED(), module);
-    TimeUnitEnum.addElement("Minute", UNDEFINED(), module);
-    TimeUnitEnum.addElement("Hour", UNDEFINED(), module);
-    TimeUnitEnum.addElement("Day", UNDEFINED(), module);
-    TimeUnitEnum.addElement("Month", UNDEFINED(), module);
-    TimeUnitEnum.addElement("Year", UNDEFINED(), module);
-    module.ENUM("TimeUnit", TimeUnitEnum);
+    TimeUnitEnum.addElement("Second", UNDEFINED(), Time);
+    TimeUnitEnum.addElement("Minute", UNDEFINED(), Time);
+    TimeUnitEnum.addElement("Hour", UNDEFINED(), Time);
+    TimeUnitEnum.addElement("Day", UNDEFINED(), Time);
+    TimeUnitEnum.addElement("Month", UNDEFINED(), Time);
+    TimeUnitEnum.addElement("Year", UNDEFINED(), Time);
+    Time.ENUM("TimeUnit", TimeUnitEnum);
 
     Class DateClass;
 
@@ -35,10 +35,10 @@ void lotus::Parser::loadTimeModule() {
     DateClass.addField("isdst", FIELD(AccessModifierType::PRIVATE, BOOL(false)));
 
     // Default ctor
-    DateClass.addMethod("Date", METHOD(AccessModifierType::PUBLIC, [&] {}));
+    DateClass.addMethod("Date", METHOD(AccessModifierType::PUBLIC, [](Module& module) {}));
 
     // Ctor with paramaters
-    DateClass.addMethod("Date", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("Date", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value& this_time = module.GET("this");
 
         if (!module.GET("sec")->instanceOf("int"))
@@ -66,7 +66,7 @@ void lotus::Parser::loadTimeModule() {
 
         if (day != 0 && month != 0 && year != 0) {
             if (!isValidDate(day, month, year)) {
-                module.THROW(STRING("Invalid date", module));
+                module.THROW(STRING("Invalid date"));
             }
             auto days = evalDayOfYearAndDayOfWeek(day, month, year);
             this_time->getField("day_of_year") = INT(days.first);
@@ -103,7 +103,7 @@ void lotus::Parser::loadTimeModule() {
         }, "sec", "min", "hour", "day", "month", "year", "isdst"));
 
     // Operator overload +
-    DateClass.addMethod("__add__", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("__add__", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         if (!module.GET("time")->instanceOf("Date"))
             throwTypeError(STRING_LITERAL("Date"), module.GET("time")->getType(), module);
         Value this_time = module.GET("this");
@@ -117,7 +117,7 @@ void lotus::Parser::loadTimeModule() {
         }, "time"));
 
     // Operator overload -
-    DateClass.addMethod("__substract__", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("__substract__", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         if (!module.GET("time")->instanceOf("Date"))
             throwTypeError(STRING_LITERAL("Date"), module.GET("time")->getType(), module);
         Value this_time = module.GET("this");
@@ -132,7 +132,7 @@ void lotus::Parser::loadTimeModule() {
         }, "time"));
 
     // __asString__
-    DateClass.addMethod("__asString__", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("__asString__", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         String result;
         result += this_time->getField("day")->asString(module);
@@ -146,49 +146,49 @@ void lotus::Parser::loadTimeModule() {
         result += this_time->getField("min")->asString(module);
         result += STRING_LITERAL(":");
         result += this_time->getField("sec")->asString(module);
-        RETURN_VALUE(STRING(result, module));
+        RETURN_VALUE(STRING(result));
         }));
 
     // Getters
-    DateClass.addMethod("getSec", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getSec", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         RETURN_VALUE(module.GET("this")->getField("sec"));
         }));
-    DateClass.addMethod("getMin", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getMin", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         RETURN_VALUE(module.GET("this")->getField("min"));
         }));
-    DateClass.addMethod("getHour", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getHour", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         RETURN_VALUE(module.GET("this")->getField("hour"));
         }));
-    DateClass.addMethod("getDay", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getDay", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         RETURN_VALUE(module.GET("this")->getField("day"));
         }));
-    DateClass.addMethod("getWeekDay", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getWeekDay", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         RETURN_VALUE(INT(evalDayOfYearAndDayOfWeek(
             this_time->getField("day")->asInt(module),
             this_time->getField("month")->asInt(module),
             this_time->getField("year")->asInt(module)).second));
         }));
-    DateClass.addMethod("getYearDay", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getYearDay", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         RETURN_VALUE(INT(evalDayOfYearAndDayOfWeek(
             this_time->getField("day")->asInt(module),
             this_time->getField("month")->asInt(module),
             this_time->getField("year")->asInt(module)).first));
         }));
-    DateClass.addMethod("getMonth", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getMonth", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         RETURN_VALUE(module.GET("this")->getField("month"));
         }));
-    DateClass.addMethod("getYear", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getYear", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         RETURN_VALUE(module.GET("this")->getField("year"));
         }));
-    DateClass.addMethod("getIsDst", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("getIsDst", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         RETURN_VALUE(module.GET("this")->getField("isdst"));
         }));
 
     // Setters
 
-    DateClass.addMethod("setSec", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("setSec", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         if (!module.GET("value")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("value")->getType(), module);
@@ -217,7 +217,7 @@ void lotus::Parser::loadTimeModule() {
         }
         }, "value"));
 
-    DateClass.addMethod("setMin", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("setMin", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         if (!module.GET("value")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("value")->getType(), module);
@@ -246,7 +246,7 @@ void lotus::Parser::loadTimeModule() {
         }
         }, "value"));
 
-    DateClass.addMethod("setHour", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("setHour", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         if (!module.GET("value")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("value")->getType(), module);
@@ -275,7 +275,7 @@ void lotus::Parser::loadTimeModule() {
         }
         }, "value"));
 
-    DateClass.addMethod("setDay", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("setDay", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         if (!module.GET("value")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("value")->getType(), module);
@@ -304,7 +304,7 @@ void lotus::Parser::loadTimeModule() {
         }
         }, "value"));
 
-    DateClass.addMethod("setMonth", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("setMonth", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         if (!module.GET("value")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("value")->getType(), module);
@@ -333,7 +333,7 @@ void lotus::Parser::loadTimeModule() {
         }
         }, "value"));
 
-    DateClass.addMethod("setYear", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("setYear", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         if (!module.GET("value")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("value")->getType(), module);
@@ -362,7 +362,7 @@ void lotus::Parser::loadTimeModule() {
         }
         }, "value"));
 
-    DateClass.addMethod("setIsDst", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("setIsDst", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         Value this_time = module.GET("this");
         if (!module.GET("value")->instanceOf("bool"))
             throwTypeError(STRING_LITERAL("bool"), module.GET("value")->getType(), module);
@@ -372,7 +372,7 @@ void lotus::Parser::loadTimeModule() {
 
     // --- Methods later and ago ---
     // later(other): shifts time forward by a value specified by another Date object
-    DateClass.addMethod("later", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("later", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         if (!module.GET("other")->instanceOf("Date"))
             throwTypeError(STRING_LITERAL("Date"), module.GET("other")->getType(), module);
         Value this_time = module.GET("this");
@@ -386,7 +386,7 @@ void lotus::Parser::loadTimeModule() {
         }, "other"));
 
     // later(amount, unit) : shifts time forward by a given number of time units
-    DateClass.addMethod("later", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("later", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         if (!module.GET("amount")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("amount")->getType(), module);
         if (!module.GET("unit")->instanceOf("TimeUnit"))
@@ -423,7 +423,7 @@ void lotus::Parser::loadTimeModule() {
         }, "amount", "unit"));
 
     // ago(other) : rewind time back to the value specified by another Date object
-    DateClass.addMethod("ago", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("ago", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         if (!module.GET("other")->instanceOf("Date"))
             throwTypeError(STRING_LITERAL("Date"), module.GET("other")->getType(), module);
         Value this_time = module.GET("this");
@@ -438,7 +438,7 @@ void lotus::Parser::loadTimeModule() {
         }, "other"));
 
     // ago(amount, unit) : rewind time back by the given amount of time units
-    DateClass.addMethod("ago", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateClass.addMethod("ago", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         if (!module.GET("amount")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("amount")->getType(), module);
         if (!module.GET("unit")->instanceOf("TimeUnit"))
@@ -475,11 +475,11 @@ void lotus::Parser::loadTimeModule() {
         }, "amount", "unit"));
 
     // Register class Date with name "Date"
-    Time.CLASS("Date", DateClass, module);
+    Time.CLASS("Date", DateClass);
 
     // Static methods: define DateStatic with a now method
     Static DateStatic;
-    DateStatic.addMethod("now", METHOD(AccessModifierType::PUBLIC, [&] {
+    DateStatic.addMethod("now", METHOD(AccessModifierType::PUBLIC, [](Module& module) {
         std::tm end_time;
         lotus::nowTime(&end_time);
         RETURN_VALUE(module.CALL("Date",
@@ -495,7 +495,7 @@ void lotus::Parser::loadTimeModule() {
     Time.STATIC("Date", DateStatic);
 
     // Functions: sleep
-    Time.DEF("sleep", [&] {
+    Time.DEF("sleep", [](Module& module) {
         if (!module.GET("duration")->instanceOf("int"))
             throwTypeError(STRING_LITERAL("int"), module.GET("duration")->getType(), module);
         std::this_thread::sleep_for(std::chrono::milliseconds(module.GET("duration")->asInt(module)));

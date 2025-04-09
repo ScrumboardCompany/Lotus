@@ -79,13 +79,13 @@ void lotus::Module::STATIC(const char* name, const Static& value) {
 	STATIC(STRING_VAR_LITERAL(name), value);
 }
 
-void lotus::Module::CLASS(const String& name, const Class& value, Module& usedModule) {
+void lotus::Module::CLASS(const String& name, const Class& value) {
 	classes.declare(name, MAKE_PTR<Class>(value));
-	classes.registerClass(name, *this, usedModule);
+	classes.registerClass(name, *this);
 }
 
-void lotus::Module::CLASS(const char* name, const Class& value, Module& usedModule) {
-	CLASS(STRING_VAR_LITERAL(name), value, usedModule);
+void lotus::Module::CLASS(const char* name, const Class& value) {
+	CLASS(STRING_VAR_LITERAL(name), value);
 }
 
 void lotus::Module::ENUM(const String& name, const Enum& value) {

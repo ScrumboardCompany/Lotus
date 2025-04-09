@@ -82,7 +82,7 @@ Int lotus::ClassValue::asInt(Module& module) {
 }
 
 double lotus::ClassValue::asDouble(Module& module) {
-    return callMethod(STRING_LITERAL("__asDouble__"), {}, module)->asDouble(module);
+    return callMethod(STRING_LITERAL("__asFloat__"), {}, module)->asDouble(module);
 }
 
 bool lotus::ClassValue::asBool(Module& module) {

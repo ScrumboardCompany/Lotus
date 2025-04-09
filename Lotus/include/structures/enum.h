@@ -12,8 +12,10 @@ namespace lotus {
 
 	struct LOTUS_API Enum {
 
+		// You can pass anything module. It's stub
 		void addElement(const String& key, Value value, Module& module);
 
+		// You can pass anything module. It's stub
 		void addElement(const char* key, const Value& value, Module& module);
 
 		Value& getElement(const String& key);

@@ -2,6 +2,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include <locale>
+#include <iostream>
 
 #ifdef _WIN32
 #include <windows.h>

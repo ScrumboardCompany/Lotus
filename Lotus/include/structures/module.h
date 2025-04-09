@@ -17,7 +17,7 @@
 namespace lotus {
 
 	template <typename... Args>
-	Function LOTUS_API MAKE_CPP_FUNCTION(std::function<void()> body, Args&&... args) {
+	Function LOTUS_API MAKE_CPP_FUNCTION(const ModuleBody_t& body, Args&&... args) {
 		return Function(
 			MAKE_PTR<CppFunctionStatement>(body),
 			{ std::forward<Args>(args)... },
@@ -26,7 +26,7 @@ namespace lotus {
 	}
 
 	template <typename... Args>
-	MethodMemberInfo LOTUS_API METHOD(const AccessModifierType& accessModifier, std::function<void()> body, Args&&... args) {
+	MethodMemberInfo LOTUS_API METHOD(const AccessModifierType& accessModifier, const ModuleBody_t& body, Args&&... args) {
 		return MethodMemberInfo(MAKE_CPP_FUNCTION(body, std::forward<Args>(args)...), accessModifier);
 	}
 
@@ -90,12 +90,12 @@ namespace lotus {
 		Value ENUM_ELEMENT(const char* name, const char* element);
 
 		template <typename... Args>
-		void DEF(const String& name, std::function<void()> body, Args&&... args) {
+		void DEF(const String& name, const ModuleBody_t& body, Args&&... args) {
 			functions.declare(name, MAKE_CPP_FUNCTION(body, std::forward<Args>(args)...));
 		}
 
 		template <typename... Args>
-		void DEF(const char* name, std::function<void()> body, Args&&... args) {
+		void DEF(const char* name, const ModuleBody_t& body, Args&&... args) {
 			DEF(STRING_VAR_LITERAL(name), body, std::forward<Args>(args)...);
 		}
 
@@ -121,9 +121,9 @@ namespace lotus {
 
 		void STATIC(const char* name, const Static& value);
 
-		void CLASS(const String& name, const Class& value, Module& usedModule);
+		void CLASS(const String& name, const Class& value);
 
-		void CLASS(const char* name, const Class& value, Module& usedModule);
+		void CLASS(const char* name, const Class& value);
 
 		void ENUM(const String& name, const Enum& value);
 

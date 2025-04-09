@@ -33,6 +33,7 @@ Flags
 --version, -v - outputs lotus version
 --flag [name] [value] - set flag value before interpretation
 --flag-config [cfgFilePath] - specify flags config
+--include, -i [path] - adds additional include path
 ```
 
 

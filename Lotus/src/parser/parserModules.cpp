@@ -1,7 +1,10 @@
 #include "parser/parser.h"
 
+using namespace lotus;
+
+StringMap<Module> Parser::modules;
+
 void lotus::Parser::loadModules() {
-	loadStandardModule();
 	loadMathModule();
 	loadTimeModule();
 	loadOsModule();

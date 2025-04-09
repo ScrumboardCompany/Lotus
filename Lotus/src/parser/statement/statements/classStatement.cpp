@@ -33,5 +33,5 @@ void lotus::ClassStatement::execute(Module& module) {
 	}
 
 	module.classes.declare(name, newClass);
-	module.classes.registerClass(name, module, module);
+	module.classes.registerClass(name, module);
 }

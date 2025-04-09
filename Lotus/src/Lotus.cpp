@@ -13,10 +13,11 @@ int handleArgsAndCompile(int argc, char* argv[]) {
     for (size_t i = 0; i < args.size(); i++) {
         if (args[i] == "--help" || args[i] == "-h") {
             std::cout <<
-                "--help, -h - outputs all CLI flags\n"
-                "--version, -v - outputs lotus version\n"
+                "--help, -h - outputs all CLI flags\n";
+                "--version, -v - outputs lotus version\n";
                 "--flag [name] [value] - set flag value before interpretation\n";
-            "--flag-config [cfgFilePath] - specify flags config";
+                "--flag-config [cfgFilePath] - specify flags config\n";
+                "--include, -i [path] - adds additional include path";
             break;
         }
         else if (args[i] == "--version" || args[i] == "-v") {
@@ -51,6 +52,16 @@ int handleArgsAndCompile(int argc, char* argv[]) {
 
             flags = flagConfigParser.getFlags();
         }
+        else if (args[i] == "--include" || args[i] == "-i") {
+            if (i + 1 >= args.size()) {
+                std::cerr << "Error: expected additional include path\n";
+                return 1;
+            }
+
+            String additionalPath = STRING_VAR_LITERAL(args[++i].c_str());
+
+            Compiler::addAdditionalPath(additionalPath);
+        }
         else {
             try {
                 Compiler::compile(STRING_VAR_LITERAL(args[i].c_str()), flags);
@@ -66,16 +77,17 @@ int handleArgsAndCompile(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-    setConsoleLocale();
+    //setConsoleLocale();
+    Parser::loadModules();
 
-    //return handleArgsAndCompile(argc, argv);
+    return handleArgsAndCompile(argc, argv);
 
-    try {
+    /*try {
         Compiler::compile(L"test.lts", {});
     }
     catch (...) {
         return 1;
     }
 
-    return 0;
+    return 0;*/
 }

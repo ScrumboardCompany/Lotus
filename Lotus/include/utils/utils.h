@@ -39,11 +39,18 @@ namespace lotus {
 
 	LOTUS_API double Cstod(const String& str);
 
+	LOTUS_API long long stoll(const String& str, Module& module, size_t* idx = nullptr, int base = 10);
+
 	class LOTUS_API Compiler {
 		static std::vector<Ptr<Parser>> parsers;
 
+		static std::vector<String> additionalPaths;
 	public:
 		static Module& compile(const String& filePath, const StringMap<bool>& flags);
+
+		static String getPath(const String& path);
+
+		static void addAdditionalPath(const String& path);
 	};
 
 	LOTUS_API bool isNumber(const Value& value);
